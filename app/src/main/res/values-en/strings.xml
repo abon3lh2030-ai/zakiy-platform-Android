@@ -79,6 +79,7 @@
     <string name="room_code_placeholder">Room code</string>
     <string name="your_name_placeholder">Your name</string>
     <string name="btn_join_room">Enter room</string>
+    <string name="login_required_for_rooms">You must log in to join a live lesson or group session</string>
     <string name="room_type_classroom">Live Lesson</string>
     <string name="group_room">Group Room</string>
     <string name="leaderboard_label">Leaderboard</string>

@@ -87,6 +87,7 @@
     <string name="room_code_placeholder">كود الغرفة</string>
     <string name="your_name_placeholder">اسمك</string>
     <string name="btn_join_room">ادخل الغرفة</string>
+    <string name="login_required_for_rooms">لازم تسجل الدخول عشان تدخل درس مباشر أو جلسة جماعية</string>
     <string name="room_type_classroom">درس مباشر</string>
     <string name="group_room">غرفة جماعية</string>
     <string name="leaderboard_label">لوحة المتصدرين</string>

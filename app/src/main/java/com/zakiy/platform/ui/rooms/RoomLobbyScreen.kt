@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -30,11 +33,11 @@ import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.CreateRoomRequest
 import kotlinx.coroutines.launch
 
+/** لازم حساب مسجّل عشان تدخل أي درس مباشر أو جلسة جماعية - ما فيه دخول
+ * كضيف إطلاقًا (نفس القيد اللي الباك إند يفرضه). */
 @Composable
 fun RoomLobbyScreen(roomType: String, authManager: AuthManager, onEnterRoom: (String, Boolean) -> Unit) {
     val isAuthenticated by authManager.isAuthenticated.collectAsStateWithLifecycle()
-    val savedUsername by authManager.username.collectAsStateWithLifecycle()
-    var guestName by remember { mutableStateOf("") }
     var joinCode by remember { mutableStateOf("") }
     var isCreating by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
@@ -42,22 +45,29 @@ fun RoomLobbyScreen(roomType: String, authManager: AuthManager, onEnterRoom: (St
     val genericError = stringResource(R.string.error_generic)
     val title = if (roomType == "classroom") stringResource(R.string.room_type_classroom) else stringResource(R.string.group_room)
 
+    if (!isAuthenticated) {
+        Column(
+            modifier = Modifier.fillMaxSize().padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Icon(Icons.Filled.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            Spacer(modifier = Modifier.size(12.dp))
+            Text(
+                stringResource(R.string.login_required_for_rooms),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        return
+    }
+
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         Text(title, style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.size(20.dp))
-
-        if (!isAuthenticated) {
-            OutlinedTextField(
-                value = guestName,
-                onValueChange = { guestName = it },
-                label = { Text(stringResource(R.string.your_name_placeholder)) },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Spacer(modifier = Modifier.size(12.dp))
-        }
 
         if (errorMessage != null) {
             Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
