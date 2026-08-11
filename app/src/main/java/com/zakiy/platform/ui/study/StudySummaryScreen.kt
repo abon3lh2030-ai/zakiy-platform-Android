@@ -38,6 +38,7 @@ import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.GenerateQuizRequest
 import com.zakiy.platform.network.dto.QuizQuestion
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 @OptIn(ExperimentalMaterial3Api::class)

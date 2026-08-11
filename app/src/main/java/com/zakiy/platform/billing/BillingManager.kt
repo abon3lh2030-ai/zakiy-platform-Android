@@ -10,6 +10,7 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
+import com.android.billingclient.api.QueryProductDetailsResult
 import com.android.billingclient.api.QueryPurchasesParams
 import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.GoogleVerifyRequest
@@ -59,8 +60,8 @@ class BillingManager(context: Context) {
                 .build()
         }
         val params = QueryProductDetailsParams.newBuilder().setProductList(products).build()
-        client.queryProductDetailsAsync(params) { _, result ->
-            productDetailsList = result.productDetailsList ?: emptyList()
+        client.queryProductDetailsAsync(params) { _, result: QueryProductDetailsResult ->
+            productDetailsList = result.productDetailsList
         }
     }
 
