@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- الواجهة كاملة Jetpack Compose - هذا الثيم يُستخدم بس للحظة إقلاع
+         النشاط الأولى (نافذة النظام/شريط الحالة) قبل ما Compose يتولى الرسم -->
+    <style name="Theme.Zakiy" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/ic_launcher_background</item>
+    </style>
+</resources>

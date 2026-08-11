@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ذكيّ</string>
+
+    <!-- عام -->
+    <string name="loading">جاري التحميل…</string>
+    <string name="error_generic">صار خطأ غير متوقع، حاول مرة ثانية</string>
+    <string name="ok">حسنًا</string>
+    <string name="cancel">إلغاء</string>
+    <string name="save">حفظ</string>
+    <string name="delete">حذف</string>
+    <string name="rename">تعديل الاسم</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="never_logged_in">ما دخل بعد</string>
+
+    <!-- تسجيل الدخول / إنشاء حساب -->
+    <string name="login">تسجيل الدخول</string>
+    <string name="signup">إنشاء حساب</string>
+    <string name="login_identifier_label">البريد الإلكتروني أو اسم المستخدم</string>
+    <string name="password_label">كلمة السر</string>
+    <string name="confirm_password_label">أعد كتابة كلمة السر</string>
+    <string name="username_label">اسمك</string>
+    <string name="email_label">البريد الإلكتروني</string>
+    <string name="btn_login">دخول</string>
+    <string name="btn_signup">إنشاء الحساب</string>
+    <string name="link_go_signup">ما عندك حساب؟ سجّل الآن</string>
+    <string name="link_go_login">عندك حساب؟ سجّل دخولك</string>
+    <string name="continue_as_guest">استمر بدون حساب</string>
+    <string name="err_fill_fields">لازم تعبي كل الحقول</string>
+    <string name="err_password_mismatch">كلمتا السر غير متطابقتين</string>
+    <string name="err_password_min">كلمة السر لازم ٦ أحرف على الأقل</string>
+    <string name="force_pw_heading">لازم تغيّر كلمة السر أول</string>
+    <string name="force_pw_desc">حسابك اتسوى بكلمة سر مؤقتة - اختر كلمة سر جديدة تعرفها بس قبل ما تكمل</string>
+    <string name="new_password_placeholder">كلمة مرور جديدة</string>
+
+    <!-- التنقل الرئيسي -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_library">مكتبتي</string>
+    <string name="nav_performance">أدائي</string>
+    <string name="nav_archive">الأرشيف</string>
+    <string name="nav_friends">الأصدقاء</string>
+    <string name="nav_messages">الرسائل</string>
+    <string name="nav_settings">الإعدادات</string>
+    <string name="nav_my_schedule">جدولي</string>
+
+    <!-- الرئيسية -->
+    <string name="mode_solo">🧑‍🎓 مذاكرة فردية</string>
+    <string name="mode_room">👥 غرفة جماعية</string>
+    <string name="mode_classroom">🖍️ درس مباشر</string>
+    <string name="mode_select_heading">وش تبي تسوي اليوم؟</string>
+    <string name="hero_title">حوّل أي ملف دراسي إلى ملخص واختبار جاهز</string>
+    <string name="hero_desc">ارفع ملزمة أو أوراق عمل بصيغة PDF، وخلّ ذكيّ يلخصها ويحول محتواها لاختبار تفاعلي يقيس فهمك.</string>
+
+    <!-- المذاكرة الفردية -->
+    <string name="btn_upload_pdf">📄 ارفع ملف PDF</string>
+    <string name="btn_pick_from_library">📚 اختر من مكتبتك</string>
+    <string name="btn_summarize">لخّص المحتوى</string>
+    <string name="btn_generate_quiz">ولّد اختبار</string>
+    <string name="btn_save_to_library">💾 احفظ بمكتبتك</string>
+    <string name="extracted_text_label">النص المستخرج</string>
+    <string name="summary_label">الملخص</string>
+    <string name="num_questions_label">عدد الأسئلة</string>
+    <string name="quiz_submit">سلّم الإجابات</string>
+    <string name="quiz_score_label">درجتك</string>
+    <string name="quiz_review_label">مراجعة الإجابات</string>
+
+    <!-- المكتبة -->
+    <string name="library_empty">مكتبتك فاضية - ارفع أول كتاب لك</string>
+    <string name="add_book">إضافة كتاب</string>
+    <string name="book_title_placeholder">عنوان الكتاب</string>
+    <string name="open_for_study">افتح للمذاكرة</string>
+    <string name="confirm_delete_book">متأكد تبي تحذف هذا الكتاب؟</string>
+
+    <!-- الأداء والأرشيف -->
+    <string name="performance_empty">ما فيه أداء مسجّل بعد - جرّب اختبار أول</string>
+    <string name="stat_attempts">عدد المحاولات</string>
+    <string name="stat_avg">متوسط الدرجات</string>
+    <string name="stat_best">أفضل درجة</string>
+    <string name="stat_study_minutes">دقائق المذاكرة</string>
+    <string name="weak_topics_heading">مواضيعك الضعيفة</string>
+    <string name="archive_empty">ما فيه جلسات مؤرشفة بعد</string>
+
+    <!-- الغرف -->
+    <string name="create_room">أنشئ غرفة</string>
+    <string name="join_by_code">انضم بكود</string>
+    <string name="room_code_placeholder">كود الغرفة</string>
+    <string name="your_name_placeholder">اسمك</string>
+    <string name="btn_join_room">ادخل الغرفة</string>
+    <string name="room_type_classroom">درس مباشر</string>
+    <string name="group_room">غرفة جماعية</string>
+    <string name="leaderboard_label">لوحة المتصدرين</string>
+    <string name="chat_label">الشات</string>
+    <string name="raise_hand">✋ ارفع يدك</string>
+    <string name="mic_on">🎙️ الميك شغّال</string>
+    <string name="mic_off">🔇 الميك مقفول</string>
+    <string name="whiteboard_label">السبورة</string>
+    <string name="btn_start_class">▶️ ابدأ الحصة</string>
+    <string name="btn_start_quiz_for_all">📝 ابدأ اختبار للجميع</string>
+
+    <!-- الإعدادات والاشتراك -->
+    <string name="settings_heading">إعدادات حسابك</string>
+    <string name="settings_language_heading">اللغة</string>
+    <string name="settings_appearance_heading">المظهر</string>
+    <string name="subscription">الاشتراك</string>
+    <string name="subscription_subtitle">شوف باقتك أو رقّيها</string>
+    <string name="current_plan">باقتك الحالية</string>
+    <string name="billing_period">دورة الفوترة</string>
+    <string name="monthly_label">شهري</string>
+    <string name="yearly_label">سنوي</string>
+    <string name="btn_subscribe">اشترك</string>
+    <string name="current_plan_badge">✅ باقتك الحالية</string>
+    <string name="restore_purchases">استرجاع المشتريات</string>
+    <string name="plan_free">المجاني</string>
+    <string name="plan_plus">بلس</string>
+    <string name="plan_pro">برو</string>
+    <string name="plan_ultimate">ألتميت</string>
+
+    <!-- الرسائل والتنبيهات -->
+    <string name="messages_heading">الرسائل</string>
+    <string name="no_conversations_yet">ما فيه محادثات بعد</string>
+    <string name="type_a_message">اكتب رسالتك…</string>
+    <string name="notifications_heading">التنبيهات</string>
+    <string name="no_notifications_yet">ما فيه تنبيهات بعد</string>
+    <string name="btn_start_now">🖍️ ابدأ الحصة الآن</string>
+    <string name="btn_join_class_now">🖍️ انضم للحصة الآن</string>
+
+    <!-- الأصدقاء والبروفايل -->
+    <string name="friends_heading">الأصدقاء</string>
+    <string name="search_users_placeholder">ابحث عن مستخدم…</string>
+    <string name="add_friend">➕ أضف صديق</string>
+    <string name="my_profile">بروفايلي</string>
+    <string name="edit_profile">تعديل البروفايل</string>
+
+    <!-- الأدوار المؤسسية -->
+    <string name="admin_dash_heading">المدارس المشتركة</string>
+    <string name="school_dash_heading">إدارة المدرسة</string>
+    <string name="teacher_dash_heading">فصولي</string>
+    <string name="tab_teachers">👨‍🏫 المعلمون</string>
+    <string name="tab_students">👥 الطلاب</string>
+    <string name="tab_classes">🏷️ الفصول والجدول</string>
+    <string name="tab_bulk_students">➕ إضافة طلاب</string>
+    <string name="tab_attendance">📋 الحضور</string>
+    <string name="tab_library">📚 المكتبة</string>
+    <string name="tab_roster">👥 الطلاب</string>
+    <string name="tab_performance">📊 الأداء</string>
+    <string name="tab_schedule">🗓️ جدولي</string>
+    <string name="admin_staff_heading">🧑‍💼 إداريو المدرسة</string>
+    <string name="btn_start_live_class">🖍️ ابدأ درس مباشر</string>
+    <string name="btn_reset_password">🔑 كلمة سر جديدة</string>
+    <string name="btn_add_teacher">إضافة معلم</string>
+    <string name="btn_add_admin_staff">إضافة إداري</string>
+</resources>
