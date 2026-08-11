@@ -100,7 +100,12 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
             val username = backStackEntry.arguments?.getString("username").orEmpty()
             ThreadScreen(otherUserId = userId, otherUsername = username, authManager = authManager, onBack = { navController.popBackStack() })
         }
-        composable(Screen.Notifications) { NotificationsScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.Notifications) {
+            NotificationsScreen(
+                onBack = { navController.popBackStack() },
+                onOpenThread = { userId, username -> navController.navigate(Screen.thread(userId, username)) },
+            )
+        }
 
         composable(Screen.RoomPattern) { backStackEntry ->
             val code = backStackEntry.arguments?.getString("code").orEmpty()

@@ -1,5 +1,6 @@
 package com.zakiy.platform.ui.messages
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,7 +35,7 @@ import com.zakiy.platform.network.dto.NotificationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationsScreen(onBack: () -> Unit) {
+fun NotificationsScreen(onBack: () -> Unit, onOpenThread: (String, String) -> Unit) {
     var notifications by remember { mutableStateOf<List<NotificationItem>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
@@ -60,7 +61,19 @@ fun NotificationsScreen(onBack: () -> Unit) {
                 }
                 else -> LazyColumn(modifier = Modifier.fillMaxSize().padding(12.dp)) {
                     items(notifications) { notification ->
-                        Card(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+                        val isMessage = notification.type == "new_message" && notification.senderId != null
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 6.dp)
+                                .let {
+                                    if (isMessage) {
+                                        it.clickable {
+                                            onOpenThread(notification.senderId!!, senderName(notification.title))
+                                        }
+                                    } else it
+                                },
+                        ) {
                             Column(modifier = Modifier.padding(14.dp)) {
                                 Text(notification.title, style = MaterialTheme.typography.titleMedium)
                                 notification.body?.let {
@@ -73,4 +86,11 @@ fun NotificationsScreen(onBack: () -> Unit) {
             }
         }
     }
+}
+
+/** العنوان مخزّن دايمًا بصيغة "رسالة جديدة من {الاسم}" - نستخرج الاسم منه
+ * بدل ما نضيف حقل ثاني بالباك إند لغرض تجميلي بس */
+private fun senderName(title: String): String {
+    val parts = title.split("من ")
+    return if (parts.size > 1) parts.last().trim() else title
 }

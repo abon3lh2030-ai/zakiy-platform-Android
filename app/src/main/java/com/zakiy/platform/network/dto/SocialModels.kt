@@ -87,6 +87,7 @@ data class NotificationItem(
     val type: String,
     val title: String,
     val body: String? = null,
+    @SerialName("sender_id") val senderId: String? = null,
     @SerialName("related_class_id") val relatedClassId: String? = null,
     @SerialName("related_room_code") val relatedRoomCode: String? = null,
     @SerialName("created_at") val createdAt: String? = null,

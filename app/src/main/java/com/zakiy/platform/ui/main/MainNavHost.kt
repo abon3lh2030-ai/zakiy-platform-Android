@@ -106,7 +106,10 @@ fun MainNavHost(authManager: AuthManager) {
                 ThreadScreen(otherUserId = userId, otherUsername = username, authManager = authManager, onBack = { navController.popBackStack() })
             }
             composable(Screen.Notifications) {
-                NotificationsScreen(onBack = { navController.popBackStack() })
+                NotificationsScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenThread = { userId, username -> navController.navigate(Screen.thread(userId, username)) },
+                )
             }
             composable(Screen.Settings) {
                 SettingsScreen(
