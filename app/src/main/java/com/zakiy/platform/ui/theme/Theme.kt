@@ -10,6 +10,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+private val Color_White = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
+
 private val LightColors = lightColorScheme(
     primary = LightTeal,
     onPrimary = Color_White,
@@ -35,8 +37,6 @@ private val DarkColors = darkColorScheme(
     surfaceVariant = DarkPaperDim,
     error = DarkDanger,
 )
-
-private val Color_White = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
 
 private val ZakiyTypography = Typography(
     headlineSmall = TextStyle(fontWeight = FontWeight.Bold, fontSize = 22.sp),
