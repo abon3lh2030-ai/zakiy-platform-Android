@@ -69,4 +69,9 @@ object Screen {
     const val TeacherAttendance = "teacher_attendance"
     const val TeacherLibrary = "teacher_library"
     const val StudentSchedule = "student_schedule"
+
+    // دفتر الواجبات (معلم/طالب بس)
+    const val Assignments = "assignments"
+    fun assignmentDetail(id: String) = "assignments/$id"
+    const val AssignmentDetailPattern = "assignments/{assignmentId}"
 }

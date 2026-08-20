@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Book
@@ -51,6 +52,7 @@ fun TeacherDashboardScreen(
     onOpenAttendance: () -> Unit,
     onOpenLibrary: () -> Unit,
     onOpenMessages: () -> Unit,
+    onOpenAssignments: () -> Unit,
     onEnterRoom: (String) -> Unit,
 ) {
     var classes by remember { mutableStateOf<List<SchoolClassSummary>>(emptyList()) }
@@ -102,6 +104,7 @@ fun TeacherDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.CalendarMonth, Color(0xFFFF9800), stringResource(R.string.tab_schedule), onOpenSchedule) }
                 item { DashboardMenuRow(Icons.Filled.Assignment, Color(0xFF009688), stringResource(R.string.tab_attendance), onOpenAttendance) }
                 item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF3949AB), stringResource(R.string.tab_library), onOpenLibrary) }
+                item { DashboardMenuRow(Icons.Filled.Edit, Color(0xFFE91E63), stringResource(R.string.assignments), onOpenAssignments) }
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
             }
         }

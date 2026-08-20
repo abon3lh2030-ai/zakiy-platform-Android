@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ fun SettingsScreen(
     onOpenSubscription: () -> Unit,
     onOpenStudentSchedule: () -> Unit,
     onOpenNotes: () -> Unit,
+    onOpenAssignments: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val isAuthenticated by authManager.isAuthenticated.collectAsStateWithLifecycle()
@@ -68,14 +70,16 @@ fun SettingsScreen(
                     SettingsRow(Icons.Filled.Star, stringResource(R.string.subscription), onOpenSubscription)
                     // دفتر الملاحظات ميزة حساب فردي بس - نفس شرط الاشتراك، أي
                     // حساب مؤسسي (role موجود) ما يشوفه إطلاقًا
-                    SettingsRow(Icons.Filled.Assignment, stringResource(R.string.notes), onOpenNotes)
+                    SettingsRow(Icons.Filled.Label, stringResource(R.string.notes), onOpenNotes)
                 }
                 SettingsRow(Icons.Filled.Group, stringResource(R.string.nav_friends), onOpenFriends)
                 SettingsRow(Icons.Filled.Archive, stringResource(R.string.nav_archive), onOpenArchive)
-                // طالب مرتبط بمدرسة (role="student") يشوف جدوله من هنا -
-                // إضافة بسيطة فوق تجربة الحساب الفردي العادية، بدون أي لوحة مستقلة
+                // طالب مرتبط بمدرسة (role="student") يشوف جدوله ودفتر واجباته
+                // من هنا - إضافة بسيطة فوق تجربة الحساب الفردي، بدون لوحة مستقلة
+                // (المعلم يشوف الواجبات من لوحته الخاصة TeacherDashboardScreen)
                 if (role == "student") {
                     SettingsRow(Icons.Filled.CalendarMonth, stringResource(R.string.nav_my_schedule), onOpenStudentSchedule)
+                    SettingsRow(Icons.Filled.Assignment, stringResource(R.string.assignments), onOpenAssignments)
                 }
                 HorizontalDivider()
                 SettingsRow(Icons.Filled.Logout, stringResource(R.string.logout)) {

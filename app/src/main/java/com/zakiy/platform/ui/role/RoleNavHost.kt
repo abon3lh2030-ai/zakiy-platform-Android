@@ -7,6 +7,8 @@ import androidx.navigation.compose.rememberNavController
 import com.zakiy.platform.network.AccountRole
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.ui.admin.AdminDashboardScreen
+import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
+import com.zakiy.platform.ui.assignments.AssignmentsScreen
 import com.zakiy.platform.ui.library.LibraryDetailScreen
 import com.zakiy.platform.ui.library.LibraryScreen
 import com.zakiy.platform.ui.messages.MessagesScreen
@@ -72,6 +74,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenAttendance = { navController.navigate(Screen.TeacherAttendance) },
                 onOpenLibrary = { navController.navigate(Screen.TeacherLibrary) },
                 onOpenMessages = { navController.navigate(Screen.Messages) },
+                onOpenAssignments = { navController.navigate(Screen.Assignments) },
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
             )
         }
@@ -85,6 +88,18 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
         composable(Screen.LibraryDetailPattern) { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId").orEmpty()
             LibraryDetailScreen(bookId = bookId, onBack = { navController.popBackStack() })
+        }
+        // دفتر الواجبات - معلم هنا (isTeacher=true)، نفس المسار يُستخدم بجهة
+        // الطالب من MainNavHost بمعطى مختلف
+        composable(Screen.Assignments) {
+            AssignmentsScreen(
+                authManager = authManager,
+                onOpenAssignment = { id -> navController.navigate(Screen.assignmentDetail(id)) },
+            )
+        }
+        composable(Screen.AssignmentDetailPattern) { backStackEntry ->
+            val assignmentId = backStackEntry.arguments?.getString("assignmentId").orEmpty()
+            AssignmentDetailScreen(assignmentId = assignmentId, isTeacher = true, onBack = { navController.popBackStack() })
         }
 
         // الرسائل متاحة لكل الأدوار المؤسسية من داخل لوحاتها

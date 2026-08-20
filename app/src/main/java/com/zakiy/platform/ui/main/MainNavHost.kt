@@ -25,6 +25,8 @@ import androidx.navigation.compose.rememberNavController
 import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.ui.archive.ArchiveScreen
+import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
+import com.zakiy.platform.ui.assignments.AssignmentsScreen
 import com.zakiy.platform.ui.friends.FriendsScreen
 import com.zakiy.platform.ui.home.HomeNavHost
 import com.zakiy.platform.ui.library.LibraryDetailScreen
@@ -124,6 +126,7 @@ fun MainNavHost(authManager: AuthManager) {
                     onOpenSubscription = { navController.navigate(Screen.Subscription) },
                     onOpenStudentSchedule = { navController.navigate(Screen.StudentSchedule) },
                     onOpenNotes = { navController.navigate(Screen.Notes) },
+                    onOpenAssignments = { navController.navigate(Screen.Assignments) },
                 )
             }
             composable(Screen.Notes) {
@@ -132,6 +135,18 @@ fun MainNavHost(authManager: AuthManager) {
             composable(Screen.NoteEditorPattern) { backStackEntry ->
                 val noteId = backStackEntry.arguments?.getString("noteId").orEmpty()
                 NoteEditorScreen(noteId = noteId, onBack = { navController.popBackStack() })
+            }
+            // دفتر الواجبات - طالب بس هنا (نفس المسار يُستخدم بجهة المعلم من
+            // RoleNavHost بمعطى isTeacher=true مختلف)
+            composable(Screen.Assignments) {
+                AssignmentsScreen(
+                    authManager = authManager,
+                    onOpenAssignment = { id -> navController.navigate(Screen.assignmentDetail(id)) },
+                )
+            }
+            composable(Screen.AssignmentDetailPattern) { backStackEntry ->
+                val assignmentId = backStackEntry.arguments?.getString("assignmentId").orEmpty()
+                AssignmentDetailScreen(assignmentId = assignmentId, isTeacher = false, onBack = { navController.popBackStack() })
             }
             composable(Screen.StudentSchedule) { StudentScheduleScreen(authManager = authManager, onBack = { navController.popBackStack() }) }
             composable(Screen.MyProfile) { ProfileScreen(userId = null, authManager = authManager, onBack = { navController.popBackStack() }) }

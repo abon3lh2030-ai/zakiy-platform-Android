@@ -21,6 +21,20 @@ fun uriToMultipart(context: Context, uri: Uri, fieldName: String): MultipartBody
     return MultipartBody.Part.createFormData(fieldName, fileName, requestBody)
 }
 
+/** نفس مبدأ uriToMultipart بس بدون افتراض PDF - تستخدمها ميزات ملفات عامة
+ * (زي تسليم واجب) اللي ممكن يجي منها أي نوع ملف، نوع المحتوى يُكتشف من
+ * الـ Uri نفسه بدل ما يكون ثابت. */
+fun uriToMultipartAny(context: Context, uri: Uri, fieldName: String): MultipartBody.Part {
+    val fileName = queryDisplayName(context, uri) ?: "upload_${System.currentTimeMillis()}"
+    val tempFile = File(context.cacheDir, fileName)
+    context.contentResolver.openInputStream(uri)?.use { input ->
+        tempFile.outputStream().use { output -> input.copyTo(output) }
+    }
+    val mimeType = context.contentResolver.getType(uri) ?: "application/octet-stream"
+    val requestBody = tempFile.asRequestBody(mimeType.toMediaTypeOrNull())
+    return MultipartBody.Part.createFormData(fieldName, fileName, requestBody)
+}
+
 private fun queryDisplayName(context: Context, uri: Uri): String? {
     return runCatching {
         context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->

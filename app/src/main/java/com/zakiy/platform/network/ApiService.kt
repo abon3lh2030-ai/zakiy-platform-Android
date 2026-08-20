@@ -240,9 +240,50 @@ interface ApiService {
     @POST("api/teacher/broadcast")
     suspend fun teacherBroadcast(@Body body: BroadcastRequest): BroadcastResponse
 
+    // ---- دفتر الواجبات - معلم ----
+    @POST("api/teacher/assignments")
+    suspend fun createAssignment(@Body body: CreateAssignmentRequest): AssignmentDetail
+
+    @GET("api/teacher/assignments")
+    suspend fun teacherAssignments(): AssignmentsResponse
+
+    @GET("api/teacher/assignments/{id}")
+    suspend fun teacherAssignmentDetail(@Path("id") id: String): AssignmentDetail
+
+    @PATCH("api/teacher/assignments/{id}/submissions/{studentId}")
+    suspend fun gradeAssignmentSubmission(
+        @Path("id") id: String,
+        @Path("studentId") studentId: String,
+        @Body body: GradeRequest,
+    )
+
+    @GET("api/teacher/assignments/{id}/submissions/{studentId}/file")
+    suspend fun teacherSubmissionFileUrl(@Path("id") id: String, @Path("studentId") studentId: String): FileUrlResponse
+
+    @DELETE("api/teacher/assignments/{id}")
+    suspend fun deleteAssignment(@Path("id") id: String)
+
     // ---- Student ----
     @GET("api/student/schedule")
     suspend fun studentSchedule(): ScheduleResponse
+
+    // ---- دفتر الواجبات - طالب ----
+    @GET("api/student/assignments")
+    suspend fun studentAssignments(): AssignmentsResponse
+
+    @GET("api/student/assignments/{id}")
+    suspend fun studentAssignmentDetail(@Path("id") id: String): AssignmentDetail
+
+    @Multipart
+    @POST("api/student/assignments/{id}/submit")
+    suspend fun submitAssignment(
+        @Path("id") id: String,
+        @Part file: MultipartBody.Part,
+        @Part("note") note: RequestBody? = null,
+    ): AssignmentSubmission
+
+    @GET("api/student/assignments/{id}/file")
+    suspend fun studentSubmissionFileUrl(@Path("id") id: String): FileUrlResponse
 
     // ---- الرسائل والتنبيهات ----
     @GET("api/messages/conversations")
