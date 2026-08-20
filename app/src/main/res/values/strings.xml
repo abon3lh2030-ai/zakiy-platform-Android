@@ -118,7 +118,7 @@
     <string name="notes_delete_confirm">تحذف هذي الملاحظة نهائيًا؟</string>
     <string name="notes_delete_folder_confirm">تحذف هذا المجلد؟ الملاحظات جواه تبقى بدون مجلد</string>
     <string name="note_type_text">نص</string>
-    <string name="note_type_checklist">تو-دو</string>
+    <string name="note_type_checklist">قائمة المهام</string>
     <string name="note_title_placeholder">عنوان الملاحظة</string>
     <string name="note_content_placeholder">اكتب ملاحظتك هنا...</string>
     <string name="note_checklist_add_placeholder">إضافة عنصر...</string>
