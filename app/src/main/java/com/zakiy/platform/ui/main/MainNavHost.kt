@@ -33,6 +33,8 @@ import com.zakiy.platform.ui.messages.MessagesScreen
 import com.zakiy.platform.ui.messages.NotificationsScreen
 import com.zakiy.platform.ui.messages.ThreadScreen
 import com.zakiy.platform.ui.navigation.Screen
+import com.zakiy.platform.ui.notes.NoteEditorScreen
+import com.zakiy.platform.ui.notes.NotesScreen
 import com.zakiy.platform.ui.performance.PerformanceScreen
 import com.zakiy.platform.ui.profile.EditProfileScreen
 import com.zakiy.platform.ui.profile.ProfileScreen
@@ -121,7 +123,15 @@ fun MainNavHost(authManager: AuthManager) {
                     onOpenArchive = { navController.navigate(Screen.Archive) },
                     onOpenSubscription = { navController.navigate(Screen.Subscription) },
                     onOpenStudentSchedule = { navController.navigate(Screen.StudentSchedule) },
+                    onOpenNotes = { navController.navigate(Screen.Notes) },
                 )
+            }
+            composable(Screen.Notes) {
+                NotesScreen(onOpenNote = { noteId -> navController.navigate(Screen.noteEditor(noteId)) })
+            }
+            composable(Screen.NoteEditorPattern) { backStackEntry ->
+                val noteId = backStackEntry.arguments?.getString("noteId").orEmpty()
+                NoteEditorScreen(noteId = noteId, onBack = { navController.popBackStack() })
             }
             composable(Screen.StudentSchedule) { StudentScheduleScreen(authManager = authManager, onBack = { navController.popBackStack() }) }
             composable(Screen.MyProfile) { ProfileScreen(userId = null, authManager = authManager, onBack = { navController.popBackStack() }) }

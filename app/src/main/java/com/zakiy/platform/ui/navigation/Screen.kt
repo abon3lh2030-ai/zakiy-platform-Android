@@ -36,6 +36,11 @@ object Screen {
     // الاشتراك
     const val Subscription = "subscription"
 
+    // دفتر الملاحظات (حساب فردي بس)
+    const val Notes = "notes"
+    fun noteEditor(noteId: String) = "notes/$noteId"
+    const val NoteEditorPattern = "notes/{noteId}"
+
     // الغرف
     const val RoomLobbyGroup = "room_lobby/quiz"
     const val RoomLobbyClassroom = "room_lobby/classroom"

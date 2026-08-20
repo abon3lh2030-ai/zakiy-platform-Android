@@ -54,6 +54,37 @@ interface ApiService {
     @DELETE("api/library/{id}")
     suspend fun deleteLibraryBook(@Path("id") id: String)
 
+    // ---- دفتر الملاحظات (حساب فردي بس - الباك إند يرفض أي حساب مؤسسي) ----
+    @GET("api/notes/folders")
+    suspend fun noteFolders(): NoteFoldersResponse
+
+    @POST("api/notes/folders")
+    suspend fun createNoteFolder(@Body body: Map<String, String>): NoteFolder
+
+    @PATCH("api/notes/folders/{id}")
+    suspend fun renameNoteFolder(@Path("id") id: String, @Body body: Map<String, String>): NoteFolder
+
+    @DELETE("api/notes/folders/{id}")
+    suspend fun deleteNoteFolder(@Path("id") id: String)
+
+    @GET("api/notes")
+    suspend fun notes(
+        @Query("folder_id") folderId: String? = null,
+        @Query("q") query: String? = null,
+    ): NotesResponse
+
+    @GET("api/notes/{id}")
+    suspend fun note(@Path("id") id: String): NoteDetail
+
+    @POST("api/notes")
+    suspend fun createNote(@Body body: CreateNoteRequest): NoteDetail
+
+    @PATCH("api/notes/{id}")
+    suspend fun updateNote(@Path("id") id: String, @Body body: UpdateNoteRequest): NoteDetail
+
+    @DELETE("api/notes/{id}")
+    suspend fun deleteNote(@Path("id") id: String)
+
     // ---- الأداء والأرشيف ----
     @GET("api/performance")
     suspend fun performance(): PerformanceResponse

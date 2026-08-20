@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Archive
+import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Group
@@ -43,6 +44,7 @@ fun SettingsScreen(
     onOpenArchive: () -> Unit,
     onOpenSubscription: () -> Unit,
     onOpenStudentSchedule: () -> Unit,
+    onOpenNotes: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val isAuthenticated by authManager.isAuthenticated.collectAsStateWithLifecycle()
@@ -64,6 +66,9 @@ fun SettingsScreen(
                 // شخصي - ما نعرض له زر الاشتراك إطلاقًا (نفس قاعدة iOS/الموقع)
                 if (role == null) {
                     SettingsRow(Icons.Filled.Star, stringResource(R.string.subscription), onOpenSubscription)
+                    // دفتر الملاحظات ميزة حساب فردي بس - نفس شرط الاشتراك، أي
+                    // حساب مؤسسي (role موجود) ما يشوفه إطلاقًا
+                    SettingsRow(Icons.Filled.Assignment, stringResource(R.string.notes), onOpenNotes)
                 }
                 SettingsRow(Icons.Filled.Group, stringResource(R.string.nav_friends), onOpenFriends)
                 SettingsRow(Icons.Filled.Archive, stringResource(R.string.nav_archive), onOpenArchive)
