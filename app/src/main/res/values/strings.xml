@@ -152,6 +152,17 @@
     <string name="assignment_grade_shown">الدرجة: %1$s</string>
     <string name="assignment_not_graded_yet">لسا ما تصحح</string>
     <string name="err_assignment_need_class">لازم تختار الفصل</string>
+    <string name="ai_assistant">المساعد الذكي</string>
+    <string name="ai_new_conversation">محادثة جديدة</string>
+    <string name="ai_new_conversation_title">محادثة جديدة</string>
+    <string name="ai_conversations_empty">ما فيه محادثات لحد الحين - ابدأ وحدة جديدة!</string>
+    <string name="ai_message_placeholder">اكتب رسالتك...</string>
+    <string name="ai_send">إرسال</string>
+    <string name="ai_summarize_book">لخّص كتاب</string>
+    <string name="ai_source_library">من مكتبتك</string>
+    <string name="ai_source_upload">ارفع ملف</string>
+    <string name="ai_upload_hint">ارفع ملف PDF وذكيّ يلخّصه لك</string>
+    <string name="ai_pick_file">اختر ملف PDF</string>
     <string name="current_plan">باقتك الحالية</string>
     <string name="billing_period">دورة الفوترة</string>
     <string name="monthly_label">شهري</string>

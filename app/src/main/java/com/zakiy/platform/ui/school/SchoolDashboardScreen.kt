@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.PersonAddAlt
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Label
+import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
@@ -46,6 +47,7 @@ fun SchoolDashboardScreen(
     onOpenAttendance: () -> Unit,
     onOpenLibrary: () -> Unit,
     onOpenMessages: () -> Unit,
+    onOpenAiAssistant: () -> Unit,
 ) {
     var info by remember { mutableStateOf<SchoolInfo?>(null) }
     LaunchedEffect(Unit) { info = runCatching { NetworkModule.backendApi.schoolInfo() }.getOrNull() }
@@ -67,6 +69,7 @@ fun SchoolDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Assignment, Color(0xFF9C27B0), stringResource(R.string.tab_attendance), onOpenAttendance) }
                 item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF3949AB), stringResource(R.string.tab_library), onOpenLibrary) }
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
+                item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
             }
         }
     }

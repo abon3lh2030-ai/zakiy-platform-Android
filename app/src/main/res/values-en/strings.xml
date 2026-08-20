@@ -143,6 +143,17 @@
     <string name="assignment_grade_shown">Grade: %1$s</string>
     <string name="assignment_not_graded_yet">Not graded yet</string>
     <string name="err_assignment_need_class">You need to pick a class</string>
+    <string name="ai_assistant">AI Assistant</string>
+    <string name="ai_new_conversation">New conversation</string>
+    <string name="ai_new_conversation_title">New conversation</string>
+    <string name="ai_conversations_empty">No conversations yet - start a new one!</string>
+    <string name="ai_message_placeholder">Type your message...</string>
+    <string name="ai_send">Send</string>
+    <string name="ai_summarize_book">Summarize a book</string>
+    <string name="ai_source_library">From your library</string>
+    <string name="ai_source_upload">Upload a file</string>
+    <string name="ai_upload_hint">Upload a PDF and Zakiy will summarize it for you</string>
+    <string name="ai_pick_file">Choose a PDF file</string>
     <string name="current_plan">Current plan</string>
     <string name="billing_period">Billing period</string>
     <string name="monthly_label">Monthly</string>

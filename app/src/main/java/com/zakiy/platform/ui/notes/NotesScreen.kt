@@ -111,14 +111,16 @@ fun NotesScreen(onOpenNote: (String) -> Unit) {
 
             LazyRow(modifier = Modifier.padding(horizontal = 8.dp), horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)) {
                 item {
-                    FilterChipView(stringResource(R.string.notes_folder_all), activeFilter is FolderFilter.All) {
-                        activeFilter = FolderFilter.All
-                    }
+                    FilterChipView(
+                        stringResource(R.string.notes_folder_all), activeFilter is FolderFilter.All,
+                        onClick = { activeFilter = FolderFilter.All },
+                    )
                 }
                 item {
-                    FilterChipView(stringResource(R.string.notes_folder_unfiled), activeFilter is FolderFilter.Unfiled) {
-                        activeFilter = FolderFilter.Unfiled
-                    }
+                    FilterChipView(
+                        stringResource(R.string.notes_folder_unfiled), activeFilter is FolderFilter.Unfiled,
+                        onClick = { activeFilter = FolderFilter.Unfiled },
+                    )
                 }
                 items(folders, key = { it.id }) { folder ->
                     FilterChipView(
@@ -129,9 +131,10 @@ fun NotesScreen(onOpenNote: (String) -> Unit) {
                     )
                 }
                 item {
-                    FilterChipView("+ " + stringResource(R.string.notes_new_folder), false) {
-                        showNewFolderDialog = true
-                    }
+                    FilterChipView(
+                        "+ " + stringResource(R.string.notes_new_folder), false,
+                        onClick = { showNewFolderDialog = true },
+                    )
                 }
             }
             Spacer(modifier = Modifier.size(8.dp))

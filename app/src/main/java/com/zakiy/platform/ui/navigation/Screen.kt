@@ -41,6 +41,13 @@ object Screen {
     fun noteEditor(noteId: String) = "notes/$noteId"
     const val NoteEditorPattern = "notes/{noteId}"
 
+    // المساعد الذكي (محادثات محفوظة - متاح لأي حساب)
+    const val AiConversations = "ai_conversations"
+    fun aiConversation(conversationId: String) = "ai_conversations/$conversationId"
+    const val AiConversationPattern = "ai_conversations/{conversationId}"
+    fun aiBookPicker(conversationId: String) = "ai_conversations/$conversationId/book_picker"
+    const val AiBookPickerPattern = "ai_conversations/{conversationId}/book_picker"
+
     // الغرف
     const val RoomLobbyGroup = "room_lobby/quiz"
     const val RoomLobbyClassroom = "room_lobby/classroom"

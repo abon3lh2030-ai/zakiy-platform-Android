@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -24,6 +25,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
+import com.zakiy.platform.ui.ai.AiBookPickerScreen
+import com.zakiy.platform.ui.ai.AiConversationScreen
+import com.zakiy.platform.ui.ai.AiConversationsScreen
 import com.zakiy.platform.ui.archive.ArchiveScreen
 import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
@@ -127,6 +131,7 @@ fun MainNavHost(authManager: AuthManager) {
                     onOpenStudentSchedule = { navController.navigate(Screen.StudentSchedule) },
                     onOpenNotes = { navController.navigate(Screen.Notes) },
                     onOpenAssignments = { navController.navigate(Screen.Assignments) },
+                    onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 )
             }
             composable(Screen.Notes) {
@@ -135,6 +140,35 @@ fun MainNavHost(authManager: AuthManager) {
             composable(Screen.NoteEditorPattern) { backStackEntry ->
                 val noteId = backStackEntry.arguments?.getString("noteId").orEmpty()
                 NoteEditorScreen(noteId = noteId, onBack = { navController.popBackStack() })
+            }
+            composable(Screen.AiConversations) {
+                AiConversationsScreen(onOpenConversation = { id -> navController.navigate(Screen.aiConversation(id)) })
+            }
+            composable(Screen.AiConversationPattern) { backStackEntry ->
+                val conversationId = backStackEntry.arguments?.getString("conversationId").orEmpty()
+                val pendingTitle by backStackEntry.savedStateHandle.getStateFlow<String?>("ai_pending_book_title", null).collectAsStateWithLifecycle()
+                val pendingText by backStackEntry.savedStateHandle.getStateFlow<String?>("ai_pending_book_text", null).collectAsStateWithLifecycle()
+                AiConversationScreen(
+                    conversationId = conversationId,
+                    pendingBookTitle = pendingTitle,
+                    pendingBookText = pendingText,
+                    onConsumedPendingBook = {
+                        backStackEntry.savedStateHandle["ai_pending_book_title"] = null
+                        backStackEntry.savedStateHandle["ai_pending_book_text"] = null
+                    },
+                    onOpenBookPicker = { navController.navigate(Screen.aiBookPicker(conversationId)) },
+                    onBack = { navController.popBackStack() },
+                )
+            }
+            composable(Screen.AiBookPickerPattern) {
+                AiBookPickerScreen(
+                    onPicked = { bookTitle, bookText ->
+                        navController.previousBackStackEntry?.savedStateHandle?.set("ai_pending_book_title", bookTitle)
+                        navController.previousBackStackEntry?.savedStateHandle?.set("ai_pending_book_text", bookText)
+                        navController.popBackStack()
+                    },
+                    onBack = { navController.popBackStack() },
+                )
             }
             // دفتر الواجبات - طالب بس هنا (نفس المسار يُستخدم بجهة المعلم من
             // RoleNavHost بمعطى isTeacher=true مختلف)

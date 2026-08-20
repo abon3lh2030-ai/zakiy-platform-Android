@@ -1,12 +1,17 @@
 package com.zakiy.platform.ui.role
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.zakiy.platform.network.AccountRole
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.ui.admin.AdminDashboardScreen
+import com.zakiy.platform.ui.ai.AiBookPickerScreen
+import com.zakiy.platform.ui.ai.AiConversationScreen
+import com.zakiy.platform.ui.ai.AiConversationsScreen
 import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
 import com.zakiy.platform.ui.library.LibraryDetailScreen
@@ -43,7 +48,12 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
     }
 
     NavHost(navController = navController, startDestination = start) {
-        composable(Screen.AdminDashboard) { AdminDashboardScreen(authManager = authManager) }
+        composable(Screen.AdminDashboard) {
+            AdminDashboardScreen(
+                authManager = authManager,
+                onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
+            )
+        }
 
         composable(Screen.SchoolDashboard) {
             SchoolDashboardScreen(
@@ -55,6 +65,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenAttendance = { navController.navigate(Screen.SchoolAttendance) },
                 onOpenLibrary = { navController.navigate(Screen.SchoolLibrary) },
                 onOpenMessages = { navController.navigate(Screen.Messages) },
+                onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
             )
         }
         composable(Screen.SchoolTeachers) { SchoolStaffScreen(isTeachers = true, authManager = authManager) }
@@ -75,6 +86,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenLibrary = { navController.navigate(Screen.TeacherLibrary) },
                 onOpenMessages = { navController.navigate(Screen.Messages) },
                 onOpenAssignments = { navController.navigate(Screen.Assignments) },
+                onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
             )
         }
@@ -119,6 +131,38 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
             NotificationsScreen(
                 onBack = { navController.popBackStack() },
                 onOpenThread = { userId, username -> navController.navigate(Screen.thread(userId, username)) },
+            )
+        }
+
+        // المساعد الذكي - متاح لكل الأدوار المؤسسية (نفس تسجيل المسارات
+        // بـ MainNavHost بالضبط، الطالب يستخدم تلك النسخة بدل هذي)
+        composable(Screen.AiConversations) {
+            AiConversationsScreen(onOpenConversation = { id -> navController.navigate(Screen.aiConversation(id)) })
+        }
+        composable(Screen.AiConversationPattern) { backStackEntry ->
+            val conversationId = backStackEntry.arguments?.getString("conversationId").orEmpty()
+            val pendingTitle by backStackEntry.savedStateHandle.getStateFlow<String?>("ai_pending_book_title", null).collectAsStateWithLifecycle()
+            val pendingText by backStackEntry.savedStateHandle.getStateFlow<String?>("ai_pending_book_text", null).collectAsStateWithLifecycle()
+            AiConversationScreen(
+                conversationId = conversationId,
+                pendingBookTitle = pendingTitle,
+                pendingBookText = pendingText,
+                onConsumedPendingBook = {
+                    backStackEntry.savedStateHandle["ai_pending_book_title"] = null
+                    backStackEntry.savedStateHandle["ai_pending_book_text"] = null
+                },
+                onOpenBookPicker = { navController.navigate(Screen.aiBookPicker(conversationId)) },
+                onBack = { navController.popBackStack() },
+            )
+        }
+        composable(Screen.AiBookPickerPattern) {
+            AiBookPickerScreen(
+                onPicked = { bookTitle, bookText ->
+                    navController.previousBackStackEntry?.savedStateHandle?.set("ai_pending_book_title", bookTitle)
+                    navController.previousBackStackEntry?.savedStateHandle?.set("ai_pending_book_text", bookText)
+                    navController.popBackStack()
+                },
+                onBack = { navController.popBackStack() },
             )
         }
 

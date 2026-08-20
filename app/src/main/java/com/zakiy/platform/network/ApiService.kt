@@ -85,6 +85,22 @@ interface ApiService {
     @DELETE("api/notes/{id}")
     suspend fun deleteNote(@Path("id") id: String)
 
+    // ---- المساعد الذكي (محادثات محفوظة - متاح لأي حساب، فردي أو مؤسسي) ----
+    @GET("api/ai/conversations")
+    suspend fun aiConversations(): AiConversationsResponse
+
+    @POST("api/ai/conversations")
+    suspend fun createAiConversation(): AiConversationDetail
+
+    @GET("api/ai/conversations/{id}")
+    suspend fun aiConversation(@Path("id") id: String): AiConversationDetail
+
+    @DELETE("api/ai/conversations/{id}")
+    suspend fun deleteAiConversation(@Path("id") id: String)
+
+    @POST("api/ai/conversations/{id}/messages")
+    suspend fun sendAiMessage(@Path("id") id: String, @Body body: SendAiMessageRequest): SendAiMessageResponse
+
     // ---- الأداء والأرشيف ----
     @GET("api/performance")
     suspend fun performance(): PerformanceResponse
