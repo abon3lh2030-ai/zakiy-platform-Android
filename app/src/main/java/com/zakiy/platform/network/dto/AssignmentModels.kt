@@ -62,7 +62,6 @@ data class AssignmentDetail(
 @Serializable
 data class CreateAssignmentRequest(
     @SerialName("class_id") val classId: String,
-    @SerialName("target_student_id") val targetStudentId: String? = null,
     val subject: String,
     val title: String,
     val content: String = "",

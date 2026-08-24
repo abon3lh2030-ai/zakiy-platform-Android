@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,6 +49,7 @@ fun SettingsScreen(
     onOpenStudentSchedule: () -> Unit,
     onOpenNotes: () -> Unit,
     onOpenAssignments: () -> Unit,
+    onOpenQuizzes: () -> Unit,
     onOpenAiAssistant: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -85,6 +87,7 @@ fun SettingsScreen(
                 if (role == "student") {
                     SettingsRow(Icons.Filled.CalendarMonth, stringResource(R.string.nav_my_schedule), onOpenStudentSchedule)
                     SettingsRow(Icons.Filled.Assignment, stringResource(R.string.assignments), onOpenAssignments)
+                    SettingsRow(Icons.Filled.Quiz, stringResource(R.string.quizzes), onOpenQuizzes)
                 }
                 HorizontalDivider()
                 SettingsRow(Icons.Filled.Logout, stringResource(R.string.logout)) {

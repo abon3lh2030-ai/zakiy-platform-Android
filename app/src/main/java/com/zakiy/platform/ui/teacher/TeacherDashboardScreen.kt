@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material3.Button
@@ -54,6 +55,7 @@ fun TeacherDashboardScreen(
     onOpenLibrary: () -> Unit,
     onOpenMessages: () -> Unit,
     onOpenAssignments: () -> Unit,
+    onOpenQuizzes: () -> Unit,
     onOpenAiAssistant: () -> Unit,
     onEnterRoom: (String) -> Unit,
 ) {
@@ -107,6 +109,7 @@ fun TeacherDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Assignment, Color(0xFF009688), stringResource(R.string.tab_attendance), onOpenAttendance) }
                 item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF3949AB), stringResource(R.string.tab_library), onOpenLibrary) }
                 item { DashboardMenuRow(Icons.Filled.Edit, Color(0xFFE91E63), stringResource(R.string.assignments), onOpenAssignments) }
+                item { DashboardMenuRow(Icons.Filled.Quiz, Color(0xFF00897B), stringResource(R.string.quizzes), onOpenQuizzes) }
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
                 item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
             }

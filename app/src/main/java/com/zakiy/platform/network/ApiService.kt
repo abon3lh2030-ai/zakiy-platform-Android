@@ -279,6 +279,32 @@ interface ApiService {
     @DELETE("api/teacher/assignments/{id}")
     suspend fun deleteAssignment(@Path("id") id: String)
 
+    // ---- الاختبارات - معلم ----
+    @POST("api/teacher/quizzes")
+    suspend fun createQuiz(@Body body: CreateQuizRequest): QuizSummary
+
+    @GET("api/teacher/quizzes")
+    suspend fun teacherQuizzes(@Query("class_id") classId: String? = null): TeacherQuizzesResponse
+
+    @GET("api/teacher/quizzes/{id}")
+    suspend fun teacherQuizDetail(@Path("id") id: String): TeacherQuizDetail
+
+    @PATCH("api/teacher/quizzes/{id}")
+    suspend fun updateQuiz(@Path("id") id: String, @Body body: UpdateQuizRequest): QuizSummary
+
+    @POST("api/teacher/quizzes/{id}/publish")
+    suspend fun publishQuiz(@Path("id") id: String): QuizSummary
+
+    @DELETE("api/teacher/quizzes/{id}")
+    suspend fun deleteQuiz(@Path("id") id: String)
+
+    @PATCH("api/teacher/quizzes/{id}/attempts/{studentId}")
+    suspend fun gradeQuizAttempt(
+        @Path("id") id: String,
+        @Path("studentId") studentId: String,
+        @Body body: GradeAttemptRequest,
+    ): QuizAttemptDto
+
     // ---- Student ----
     @GET("api/student/schedule")
     suspend fun studentSchedule(): ScheduleResponse
@@ -300,6 +326,19 @@ interface ApiService {
 
     @GET("api/student/assignments/{id}/file")
     suspend fun studentSubmissionFileUrl(@Path("id") id: String): FileUrlResponse
+
+    // ---- الاختبارات - طالب ----
+    @GET("api/student/quizzes")
+    suspend fun studentQuizzes(): StudentQuizzesResponse
+
+    @GET("api/student/quizzes/{id}")
+    suspend fun studentQuizDetail(@Path("id") id: String): StudentQuizDetail
+
+    @POST("api/student/quizzes/{id}/start")
+    suspend fun startQuiz(@Path("id") id: String): QuizAttemptDto
+
+    @POST("api/student/quizzes/{id}/submit")
+    suspend fun submitQuiz(@Path("id") id: String, @Body body: SubmitQuizRequest): QuizAttemptDto
 
     // ---- الرسائل والتنبيهات ----
     @GET("api/messages/conversations")

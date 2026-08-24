@@ -20,6 +20,9 @@ import com.zakiy.platform.ui.messages.MessagesScreen
 import com.zakiy.platform.ui.messages.NotificationsScreen
 import com.zakiy.platform.ui.messages.ThreadScreen
 import com.zakiy.platform.ui.navigation.Screen
+import com.zakiy.platform.ui.quizzes.QuizDetailScreen
+import com.zakiy.platform.ui.quizzes.QuizEditScreen
+import com.zakiy.platform.ui.quizzes.QuizzesScreen
 import com.zakiy.platform.ui.rooms.RoomLobbyScreen
 import com.zakiy.platform.ui.rooms.RoomScreen
 import com.zakiy.platform.ui.school.SchoolAttendanceScreen
@@ -86,6 +89,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenLibrary = { navController.navigate(Screen.TeacherLibrary) },
                 onOpenMessages = { navController.navigate(Screen.Messages) },
                 onOpenAssignments = { navController.navigate(Screen.Assignments) },
+                onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
             )
@@ -112,6 +116,30 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
         composable(Screen.AssignmentDetailPattern) { backStackEntry ->
             val assignmentId = backStackEntry.arguments?.getString("assignmentId").orEmpty()
             AssignmentDetailScreen(assignmentId = assignmentId, isTeacher = true, onBack = { navController.popBackStack() })
+        }
+        // الاختبارات - معلم هنا (isTeacher يُستنتج داخل QuizzesScreen من الدور
+        // نفسه)، الطالب يستخدم QuizzesScreen/QuizTakeScreen من MainNavHost
+        composable(Screen.Quizzes) {
+            QuizzesScreen(
+                authManager = authManager,
+                onOpenQuiz = { id, _ -> navController.navigate(Screen.quizDetail(id)) },
+                onCreateQuiz = { navController.navigate(Screen.QuizCreate) },
+            )
+        }
+        composable(Screen.QuizCreate) {
+            QuizEditScreen(quizId = null, onBack = { navController.popBackStack() }, onSaved = { navController.popBackStack() })
+        }
+        composable(Screen.QuizEditPattern) { backStackEntry ->
+            val quizId = backStackEntry.arguments?.getString("quizId").orEmpty()
+            QuizEditScreen(quizId = quizId, onBack = { navController.popBackStack() }, onSaved = { navController.popBackStack() })
+        }
+        composable(Screen.QuizDetailPattern) { backStackEntry ->
+            val quizId = backStackEntry.arguments?.getString("quizId").orEmpty()
+            QuizDetailScreen(
+                quizId = quizId,
+                onBack = { navController.popBackStack() },
+                onEdit = { id -> navController.navigate(Screen.quizEdit(id)) },
+            )
         }
 
         // الرسائل متاحة لكل الأدوار المؤسسية من داخل لوحاتها

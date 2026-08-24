@@ -32,21 +32,19 @@ import com.zakiy.platform.R
 import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.CreateAssignmentRequest
 import com.zakiy.platform.network.dto.SchoolClassSummary
-import com.zakiy.platform.network.dto.SchoolStudent
 import kotlinx.coroutines.launch
 
+/** إنشاء واجب جديد - دايمًا لكل طلاب الفصل (الباك إند ما عاد يقبل استهداف
+ * طالب واحد بعينه - target_student_id أُزيل تمامًا). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssignmentCreateSheet(onDismiss: () -> Unit, onCreated: () -> Unit) {
     var classes by remember { mutableStateOf<List<SchoolClassSummary>>(emptyList()) }
-    var students by remember { mutableStateOf<List<SchoolStudent>>(emptyList()) }
     var selectedClassId by remember { mutableStateOf<String?>(null) }
-    var selectedTargetId by remember { mutableStateOf<String?>(null) }
     var subject by remember { mutableStateOf("") }
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
     var classMenuExpanded by remember { mutableStateOf(false) }
-    var targetMenuExpanded by remember { mutableStateOf(false) }
     var isSaving by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
@@ -54,11 +52,8 @@ fun AssignmentCreateSheet(onDismiss: () -> Unit, onCreated: () -> Unit) {
     LaunchedEffect(Unit) {
         val roster = runCatching { NetworkModule.backendApi.teacherRoster() }.getOrNull()
         classes = roster?.classes ?: emptyList()
-        students = roster?.students ?: emptyList()
         selectedClassId = classes.firstOrNull()?.id
     }
-
-    val studentsInClass = students.filter { it.classId == selectedClassId }
 
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(20.dp)) {
@@ -74,30 +69,7 @@ fun AssignmentCreateSheet(onDismiss: () -> Unit, onCreated: () -> Unit) {
                     classes.forEach { c ->
                         DropdownMenuItem(text = { Text(c.name) }, onClick = {
                             selectedClassId = c.id
-                            selectedTargetId = null
                             classMenuExpanded = false
-                        })
-                    }
-                }
-            }
-
-            // اختيار الطالب المستهدف (أو الكل)
-            Box {
-                TextButton(onClick = { targetMenuExpanded = true }) {
-                    Text(
-                        studentsInClass.firstOrNull { it.userId == selectedTargetId }?.let { it.fullName ?: it.username }
-                            ?: stringResource(R.string.assignment_target_all)
-                    )
-                }
-                DropdownMenu(expanded = targetMenuExpanded, onDismissRequest = { targetMenuExpanded = false }) {
-                    DropdownMenuItem(text = { Text(stringResource(R.string.assignment_target_all)) }, onClick = {
-                        selectedTargetId = null
-                        targetMenuExpanded = false
-                    })
-                    studentsInClass.forEach { s ->
-                        DropdownMenuItem(text = { Text(s.fullName ?: s.username) }, onClick = {
-                            selectedTargetId = s.userId
-                            targetMenuExpanded = false
                         })
                     }
                 }
@@ -143,7 +115,6 @@ fun AssignmentCreateSheet(onDismiss: () -> Unit, onCreated: () -> Unit) {
                             NetworkModule.backendApi.createAssignment(
                                 CreateAssignmentRequest(
                                     classId = classId,
-                                    targetStudentId = selectedTargetId,
                                     subject = subject,
                                     title = title,
                                     content = content,

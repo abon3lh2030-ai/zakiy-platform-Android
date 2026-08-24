@@ -81,4 +81,14 @@ object Screen {
     const val Assignments = "assignments"
     fun assignmentDetail(id: String) = "assignments/$id"
     const val AssignmentDetailPattern = "assignments/{assignmentId}"
+
+    // الاختبارات (معلم/طالب بس)
+    const val Quizzes = "quizzes"
+    const val QuizCreate = "quizzes/create"
+    fun quizEdit(id: String) = "quizzes/$id/edit"
+    const val QuizEditPattern = "quizzes/{quizId}/edit"
+    fun quizDetail(id: String) = "quizzes/$id"
+    const val QuizDetailPattern = "quizzes/{quizId}"
+    fun quizTake(id: String) = "quizzes/$id/take"
+    const val QuizTakePattern = "quizzes/{quizId}/take"
 }
