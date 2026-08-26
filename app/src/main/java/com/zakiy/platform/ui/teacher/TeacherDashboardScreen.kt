@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Assessment
 import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -57,6 +58,7 @@ fun TeacherDashboardScreen(
     onOpenMessages: () -> Unit,
     onOpenAssignments: () -> Unit,
     onOpenQuizzes: () -> Unit,
+    onOpenGradesheet: () -> Unit,
     onOpenAiAssistant: () -> Unit,
     onOpenMadrasati: () -> Unit,
     onEnterRoom: (String) -> Unit,
@@ -112,6 +114,7 @@ fun TeacherDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF3949AB), stringResource(R.string.tab_library), onOpenLibrary) }
                 item { DashboardMenuRow(Icons.Filled.Edit, Color(0xFFE91E63), stringResource(R.string.assignments), onOpenAssignments) }
                 item { DashboardMenuRow(Icons.Filled.Quiz, Color(0xFF00897B), stringResource(R.string.quizzes), onOpenQuizzes) }
+                item { DashboardMenuRow(Icons.Filled.Assessment, Color(0xFF7B1FA2), stringResource(R.string.tab_gradesheet), onOpenGradesheet) }
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
                 item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
                 item { DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF00897B), stringResource(R.string.madrasati_heading), onOpenMadrasati) }

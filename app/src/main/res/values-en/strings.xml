@@ -195,6 +195,18 @@
     <string name="quiz_result_awaiting">Quiz submitted — awaiting grading</string>
     <string name="quiz_auto_submitted_notice">Time ran out, so your answers were submitted automatically</string>
 
+    <!-- Gradesheet (teacher only) -->
+    <string name="gradesheet_heading">Students\' gradesheet</string>
+    <string name="gradesheet_desc">Enter each student\'s participation and performance-task grades - assignment and quiz grades are computed automatically from your grading, and the total updates live and can\'t be edited.</string>
+    <string name="gradesheet_class_label">Class</string>
+    <string name="gradesheet_empty">No students in this class</string>
+    <string name="gradesheet_participation_label">Participation</string>
+    <string name="gradesheet_performance_tasks_label">Performance tasks</string>
+    <string name="gradesheet_assignments_avg_label">Assignments</string>
+    <string name="gradesheet_quizzes_avg_label">Quizzes</string>
+    <string name="gradesheet_total_label">Total</string>
+    <string name="btn_save_gradesheet_row">💾 Save</string>
+
     <!-- Madrasati & Zakiy tools (available to any signed-in account, no role restriction) -->
     <string name="madrasati_heading">Madrasati &amp; Zakiy tools</string>
     <string name="madrasati_desc">A quick shortcut to the official Madrasati site, plus Zakiy\'s own AI tools for teachers and students - fully independent of Madrasati, sharing no data with it whatsoever.</string>
@@ -212,6 +224,7 @@
     <string name="md_record_grades">Record grades</string>
     <string name="md_class_schedule">Class timetable</string>
     <string name="md_record_attendance">Record attendance</string>
+    <string name="md_gradesheet_label">Gradesheet</string>
     <string name="md_lesson_prep_label">Smart lesson prep</string>
     <string name="md_enrichment_label">Enrichment activity</string>
     <string name="md_results_analysis_label">Analyze student results</string>
@@ -337,6 +350,7 @@
     <string name="tab_roster">👥 Students</string>
     <string name="tab_performance">📊 Performance</string>
     <string name="tab_schedule">🗓️ My Schedule</string>
+    <string name="tab_gradesheet">📋 Gradesheet</string>
     <string name="admin_staff_heading">🧑‍💼 School Administrative Staff</string>
     <string name="btn_start_live_class">🖍️ Start a Live Lesson</string>
     <string name="btn_reset_password">🔑 New Password</string>

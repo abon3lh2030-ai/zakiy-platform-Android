@@ -305,6 +305,16 @@ interface ApiService {
         @Body body: GradeAttemptRequest,
     ): QuizAttemptDto
 
+    // ---- كشف الدرجات - معلم ----
+    @GET("api/teacher/gradesheet")
+    suspend fun teacherGradesheet(@Query("class_id") classId: String): GradesheetResponse
+
+    @PATCH("api/teacher/gradesheet/{studentId}")
+    suspend fun updateGradesheetRow(
+        @Path("studentId") studentId: String,
+        @Body body: UpdateGradesheetRowRequest,
+    ): GradesheetRowUpdateResponse
+
     // ---- Student ----
     @GET("api/student/schedule")
     suspend fun studentSchedule(): ScheduleResponse

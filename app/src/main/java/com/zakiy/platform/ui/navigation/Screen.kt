@@ -75,6 +75,7 @@ object Screen {
     const val TeacherSchedule = "teacher_schedule"
     const val TeacherAttendance = "teacher_attendance"
     const val TeacherLibrary = "teacher_library"
+    const val Gradesheet = "gradesheet"
     const val StudentSchedule = "student_schedule"
 
     // دفتر الواجبات (معلم/طالب بس)

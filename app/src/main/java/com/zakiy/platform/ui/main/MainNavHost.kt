@@ -32,6 +32,7 @@ import com.zakiy.platform.ui.archive.ArchiveScreen
 import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
 import com.zakiy.platform.ui.friends.FriendsScreen
+import com.zakiy.platform.ui.gradesheet.GradesheetScreen
 import com.zakiy.platform.ui.home.HomeNavHost
 import com.zakiy.platform.ui.library.LibraryDetailScreen
 import com.zakiy.platform.ui.library.LibraryScreen
@@ -150,6 +151,7 @@ fun MainNavHost(authManager: AuthManager) {
                     onBack = { navController.popBackStack() },
                     onOpenAssignments = { navController.navigate(Screen.Assignments) },
                     onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
+                    onOpenGradesheet = { navController.navigate(Screen.Gradesheet) },
                     onOpenStudentSchedule = { navController.navigate(Screen.StudentSchedule) },
                     onOpenLibrary = { navController.navigate(Screen.Library) },
                     onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
@@ -241,6 +243,10 @@ fun MainNavHost(authManager: AuthManager) {
                 val quizId = backStackEntry.arguments?.getString("quizId").orEmpty()
                 QuizTakeScreen(quizId = quizId, onBack = { navController.popBackStack() })
             }
+            // كشف الدرجات - معلم بس (نفس منطق تسجيل Assignments/Quizzes هنا: مسجّل
+            // بكل الـ NavHost عشان بطاقة "مدرستي" تلقاه، لكن ما يوصله فعليًا إلا
+            // حساب معلم - isMadrasatiTeacher بـ MadrasatiHubScreen)
+            composable(Screen.Gradesheet) { GradesheetScreen() }
             composable(Screen.StudentSchedule) { StudentScheduleScreen(authManager = authManager, onBack = { navController.popBackStack() }) }
             composable(Screen.MyProfile) { ProfileScreen(userId = null, authManager = authManager, onBack = { navController.popBackStack() }) }
             composable(Screen.ProfilePattern) { backStackEntry ->

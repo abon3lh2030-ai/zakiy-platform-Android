@@ -14,6 +14,7 @@ import com.zakiy.platform.ui.ai.AiConversationScreen
 import com.zakiy.platform.ui.ai.AiConversationsScreen
 import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
+import com.zakiy.platform.ui.gradesheet.GradesheetScreen
 import com.zakiy.platform.ui.library.LibraryDetailScreen
 import com.zakiy.platform.ui.library.LibraryScreen
 import com.zakiy.platform.ui.madrasati.EnrichmentScreen
@@ -98,6 +99,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenMessages = { navController.navigate(Screen.Messages) },
                 onOpenAssignments = { navController.navigate(Screen.Assignments) },
                 onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
+                onOpenGradesheet = { navController.navigate(Screen.Gradesheet) },
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
@@ -107,6 +109,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
         composable(Screen.TeacherPerformance) { TeacherPerformanceScreen() }
         composable(Screen.TeacherSchedule) { TeacherScheduleScreen() }
         composable(Screen.TeacherAttendance) { TeacherAttendanceScreen() }
+        composable(Screen.Gradesheet) { GradesheetScreen() }
         composable(Screen.TeacherLibrary) {
             LibraryScreen(authManager = authManager, onOpenBook = { navController.navigate(Screen.libraryDetail(it)) })
         }
@@ -211,6 +214,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onBack = { navController.popBackStack() },
                 onOpenAssignments = { navController.navigate(Screen.Assignments) },
                 onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
+                onOpenGradesheet = { navController.navigate(Screen.Gradesheet) },
                 // جدولي (جدول الطالب الشخصي) غير قابل للوصول إطلاقًا من هذا
                 // الـ NavHost - الطالب (الدور الوحيد اللي يفعّل هذي البطاقة)
                 // يكمل بـ MainNavHost دايمًا (RootApp)، فما يوصل

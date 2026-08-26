@@ -76,6 +76,7 @@ fun MadrasatiHubScreen(
     onBack: () -> Unit,
     onOpenAssignments: () -> Unit,
     onOpenQuizzes: () -> Unit,
+    onOpenGradesheet: () -> Unit,
     onOpenStudentSchedule: () -> Unit,
     onOpenLibrary: () -> Unit,
     onOpenAiAssistant: () -> Unit,
@@ -158,6 +159,7 @@ fun MadrasatiHubScreen(
     val sAiHelp = stringResource(R.string.nav_ai_help)
     val sHomeworkHelpLabel = stringResource(R.string.md_homework_help_label)
     val sStudyPlanLabel = stringResource(R.string.md_study_plan_label)
+    val sGradesheetLabel = stringResource(R.string.md_gradesheet_label)
     val sLessonPrepLabel = stringResource(R.string.md_lesson_prep_label)
     val sEnrichmentLabel = stringResource(R.string.md_enrichment_label)
     val sResultsAnalysisLabel = stringResource(R.string.md_results_analysis_label)
@@ -174,8 +176,7 @@ fun MadrasatiHubScreen(
     val teacherZakiyCards = buildList {
         if (isInstTeacher) add(MdCardItem("📚", sAssignments, true, onOpenAssignments))
         if (isInstTeacher) add(MdCardItem("📝", sQuizzes, true, onOpenQuizzes))
-        // ما فيه شاشة "كشف الدرجات" مستقلة بالتطبيق لحد الآن (بعكس الموقع) -
-        // تُضاف هذي البطاقة لاحقًا بمجرد ما الشاشة تُبنى
+        if (isInstTeacher) add(MdCardItem("📋", sGradesheetLabel, true, onOpenGradesheet))
         add(MdCardItem("🧠", sLessonPrepLabel, true, onNewLessonPrep))
         add(MdCardItem("🌟", sEnrichmentLabel, true, onOpenEnrichment))
         add(MdCardItem("📊", sResultsAnalysisLabel, true, onOpenResultsAnalysis))

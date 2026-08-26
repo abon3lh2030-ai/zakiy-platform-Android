@@ -204,6 +204,18 @@
     <string name="quiz_result_awaiting">تم تسليم الاختبار - بانتظار التصحيح</string>
     <string name="quiz_auto_submitted_notice">انتهى الوقت وتم تسليم إجاباتك تلقائيًا</string>
 
+    <!-- كشف الدرجات (معلم بس) -->
+    <string name="gradesheet_heading">كشف درجات الطلاب</string>
+    <string name="gradesheet_desc">حط درجة المشاركة والمهام الأدائية لكل طالب - درجتي الواجبات والاختبارات تُحسب تلقائيًا من تصحيحك لها، والمجموع يُحسب لحظيًا بدون ما تقدر تعدّله.</string>
+    <string name="gradesheet_class_label">الفصل</string>
+    <string name="gradesheet_empty">ما فيه طلاب بهذا الفصل</string>
+    <string name="gradesheet_participation_label">المشاركة</string>
+    <string name="gradesheet_performance_tasks_label">المهام الأدائية</string>
+    <string name="gradesheet_assignments_avg_label">الواجبات</string>
+    <string name="gradesheet_quizzes_avg_label">الاختبارات</string>
+    <string name="gradesheet_total_label">المجموع</string>
+    <string name="btn_save_gradesheet_row">💾 حفظ</string>
+
     <!-- مدرستي وأدوات ذكيّ (متاح لأي حساب مسجّل دخول، بدون تقييد دور) -->
     <string name="madrasati_heading">مدرستي وأدوات ذكيّ</string>
     <string name="madrasati_desc">اختصار سريع لموقع مدرستي الرسمي، بالإضافة لأدوات ذكيّ الذكية للمعلمين والطلاب - مستقلة تمامًا عن مدرستي وما تشارك أي بيانات وياها.</string>
@@ -221,6 +233,7 @@
     <string name="md_record_grades">رصد الدرجات</string>
     <string name="md_class_schedule">جدول الحصص</string>
     <string name="md_record_attendance">تسجيل الحضور</string>
+    <string name="md_gradesheet_label">كشف الدرجات</string>
     <string name="md_lesson_prep_label">التحضير الذكي</string>
     <string name="md_enrichment_label">نشاط إثرائي</string>
     <string name="md_results_analysis_label">تحليل نتائج الطلاب</string>
@@ -349,6 +362,7 @@
     <string name="tab_roster">👥 الطلاب</string>
     <string name="tab_performance">📊 الأداء</string>
     <string name="tab_schedule">🗓️ جدولي</string>
+    <string name="tab_gradesheet">📋 كشف الدرجات</string>
     <string name="admin_staff_heading">🧑‍💼 إداريو المدرسة</string>
     <string name="btn_start_live_class">🖍️ ابدأ درس مباشر</string>
     <string name="btn_reset_password">🔑 كلمة سر جديدة</string>
