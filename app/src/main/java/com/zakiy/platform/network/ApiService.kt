@@ -371,6 +371,65 @@ interface ApiService {
 
     @POST("api/subscription/cancel")
     suspend fun subscriptionCancel()
+
+    // ---- مدرستي: التحضير الذكي (معلم - أي حساب مسجّل دخول) ----
+    @POST("api/lesson-prep/generate")
+    suspend fun generateLessonPrep(@Body body: GenerateLessonPrepRequest): GenerateContentRawResponse
+
+    @POST("api/lesson-prep")
+    suspend fun createLessonPrep(@Body body: SaveLessonPrepRequest): SavedRecordResponse
+
+    @GET("api/lesson-prep")
+    suspend fun lessonPreps(): LessonPrepListResponse
+
+    @GET("api/lesson-prep/{id}")
+    suspend fun lessonPrepDetail(@Path("id") id: String): LessonPrepDetail
+
+    @PATCH("api/lesson-prep/{id}")
+    suspend fun updateLessonPrep(@Path("id") id: String, @Body body: UpdateLessonPrepRequest)
+
+    @DELETE("api/lesson-prep/{id}")
+    suspend fun deleteLessonPrep(@Path("id") id: String)
+
+    // ---- مدرستي: نشاط إثرائي (معلم - بدون حفظ) ----
+    @POST("api/enrichment/generate")
+    suspend fun generateEnrichment(@Body body: GenerateEnrichmentRequest): GenerateContentRawResponse
+
+    // ---- مدرستي: تحليل نتائج الطلاب (معلم - بدون حفظ) ----
+    @POST("api/results-analysis/generate")
+    suspend fun generateResultsAnalysis(@Body body: GenerateResultsAnalysisRequest): GenerateContentRawResponse
+
+    // ---- مدرستي: مساعد الواجب الذكي (طالب) - ما فيه PATCH لهذا المسار ----
+    @POST("api/homework-help/generate")
+    suspend fun generateHomeworkHelp(@Body body: GenerateHomeworkHelpRequest): GenerateContentRawResponse
+
+    @POST("api/homework-help")
+    suspend fun createHomeworkHelp(@Body body: SaveHomeworkHelpRequest): SavedRecordResponse
+
+    @GET("api/homework-help")
+    suspend fun homeworkHelpSessions(): HomeworkHelpListResponse
+
+    @GET("api/homework-help/{id}")
+    suspend fun homeworkHelpDetail(@Path("id") id: String): HomeworkHelpDetail
+
+    @DELETE("api/homework-help/{id}")
+    suspend fun deleteHomeworkHelp(@Path("id") id: String)
+
+    // ---- مدرستي: خطة مذاكرة ذكية (طالب) - ما فيه PATCH لهذا المسار ----
+    @POST("api/study-plan/generate")
+    suspend fun generateStudyPlan(@Body body: GenerateStudyPlanRequest): GenerateContentRawResponse
+
+    @POST("api/study-plan")
+    suspend fun createStudyPlan(@Body body: SaveStudyPlanRequest): SavedRecordResponse
+
+    @GET("api/study-plan")
+    suspend fun studyPlans(): StudyPlanListResponse
+
+    @GET("api/study-plan/{id}")
+    suspend fun studyPlanDetail(@Path("id") id: String): StudyPlanDetail
+
+    @DELETE("api/study-plan/{id}")
+    suspend fun deleteStudyPlan(@Path("id") id: String)
 }
 
 @kotlinx.serialization.Serializable

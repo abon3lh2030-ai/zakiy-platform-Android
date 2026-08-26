@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -45,7 +46,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminDashboardScreen(authManager: AuthManager, onOpenAiAssistant: () -> Unit) {
+fun AdminDashboardScreen(authManager: AuthManager, onOpenAiAssistant: () -> Unit, onOpenMadrasati: () -> Unit) {
     var schools by remember { mutableStateOf<List<School>>(emptyList()) }
     var name by remember { mutableStateOf("") }
     var adminEmail by remember { mutableStateOf("") }
@@ -61,6 +62,7 @@ fun AdminDashboardScreen(authManager: AuthManager, onOpenAiAssistant: () -> Unit
     Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.admin_dash_heading)) }) }) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF2E8B77), stringResource(R.string.ai_assistant), onOpenAiAssistant)
+            DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF6D4AFF), stringResource(R.string.madrasati_heading), onOpenMadrasati)
             Column(modifier = Modifier.padding(16.dp)) {
                 OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("اسم المدرسة") }, modifier = Modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.size(8.dp))

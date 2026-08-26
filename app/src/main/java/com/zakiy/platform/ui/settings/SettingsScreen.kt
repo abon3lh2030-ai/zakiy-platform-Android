@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Star
@@ -51,6 +52,7 @@ fun SettingsScreen(
     onOpenAssignments: () -> Unit,
     onOpenQuizzes: () -> Unit,
     onOpenAiAssistant: () -> Unit,
+    onOpenMadrasati: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val isAuthenticated by authManager.isAuthenticated.collectAsStateWithLifecycle()
@@ -70,6 +72,9 @@ fun SettingsScreen(
                 // المساعد الذكي متاح لأي حساب مسجّل دخول - فردي أو مؤسسي، بدون
                 // أي تقييد دور (نفس سلوك زر السايد بار بالموقع)
                 SettingsRow(Icons.Filled.SmartToy, stringResource(R.string.ai_assistant), onOpenAiAssistant)
+                // مدرستي وأدوات ذكيّ - نفس مبدأ المساعد الذكي بالضبط: متاحة لأي
+                // حساب مسجّل دخول بدون أي تقييد دور
+                SettingsRow(Icons.Filled.OpenInBrowser, stringResource(R.string.madrasati_heading), onOpenMadrasati)
 
                 // حساب مؤسسي (role موجود) وصوله محكوم بعضوية مدرسته لا باشتراك
                 // شخصي - ما نعرض له زر الاشتراك إطلاقًا (نفس قاعدة iOS/الموقع)

@@ -91,4 +91,18 @@ object Screen {
     const val QuizDetailPattern = "quizzes/{quizId}"
     fun quizTake(id: String) = "quizzes/$id/take"
     const val QuizTakePattern = "quizzes/{quizId}/take"
+
+    // مدرستي وأدوات ذكيّ (معلم/طالب) - متاح لأي حساب مسجّل دخول بدون تقييد دور
+    const val MadrasatiHub = "madrasati"
+    const val LessonPrepCreate = "madrasati/lesson_prep/create"
+    fun lessonPrepView(id: String) = "madrasati/lesson_prep/$id"
+    const val LessonPrepViewPattern = "madrasati/lesson_prep/{prepId}"
+    const val Enrichment = "madrasati/enrichment"
+    const val ResultsAnalysis = "madrasati/results_analysis"
+    const val HomeworkHelpCreate = "madrasati/homework_help/create"
+    fun homeworkHelpView(id: String) = "madrasati/homework_help/$id"
+    const val HomeworkHelpViewPattern = "madrasati/homework_help/{sessionId}"
+    const val StudyPlanCreate = "madrasati/study_plan/create"
+    fun studyPlanView(id: String) = "madrasati/study_plan/$id"
+    const val StudyPlanViewPattern = "madrasati/study_plan/{planId}"
 }

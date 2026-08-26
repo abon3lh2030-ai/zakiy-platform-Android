@@ -194,6 +194,89 @@
     <string name="quiz_result_graded">Your grade: %1$s</string>
     <string name="quiz_result_awaiting">Quiz submitted — awaiting grading</string>
     <string name="quiz_auto_submitted_notice">Time ran out, so your answers were submitted automatically</string>
+
+    <!-- Madrasati & Zakiy tools (available to any signed-in account, no role restriction) -->
+    <string name="madrasati_heading">Madrasati &amp; Zakiy tools</string>
+    <string name="madrasati_desc">A quick shortcut to the official Madrasati site, plus Zakiy\'s own AI tools for teachers and students - fully independent of Madrasati, sharing no data with it whatsoever.</string>
+    <string name="madrasati_link_desc">Opens the official Madrasati site in a new tab - you sign in there directly, and Zakiy never sees or touches your account data there.</string>
+    <string name="btn_open_madrasati">🔗 Open official Madrasati</string>
+    <string name="teacher_tools_heading">👨‍🏫 Zakiy tools for teachers</string>
+    <string name="btn_new_lesson_prep">➕ New AI lesson preparation</string>
+    <string name="btn_open_enrichment">🌟 Enrichment activity</string>
+    <string name="btn_open_results_analysis">📊 Analyze student results</string>
+    <string name="saved_lesson_preps_heading">📁 My saved preparations</string>
+    <string name="lesson_prep_empty">No saved preparations yet.</string>
+    <string name="student_tools_heading">🎒 Zakiy tools for students</string>
+    <string name="btn_new_homework_help">➕ New homework helper</string>
+    <string name="btn_new_study_plan">🗓️ New study plan</string>
+    <string name="saved_homework_help_heading">📁 Saved homework helper sessions</string>
+    <string name="homework_help_empty">No saved sessions yet.</string>
+    <string name="saved_study_plans_heading">📁 Saved study plans</string>
+    <string name="study_plan_empty">No saved plans yet.</string>
+
+    <string name="lesson_prep_create_heading">New lesson preparation</string>
+    <string name="lesson_prep_view_heading">Lesson preparation</string>
+    <string name="ph_lesson_prep_subject">Subject</string>
+    <string name="ph_lesson_prep_grade">Grade level</string>
+    <string name="ph_lesson_prep_unit">Unit (optional)</string>
+    <string name="ph_lesson_prep_title">Lesson title</string>
+    <string name="btn_generate_lesson_prep">✨ Generate preparation</string>
+    <string name="err_lesson_prep_fields_required">You need the subject, grade level, and lesson title</string>
+    <string name="err_lesson_prep_gen_failed">Could not generate the preparation, try again</string>
+    <string name="lp_objectives_label">🎯 Learning objectives</string>
+    <string name="lp_intro_label">🚪 Introduction</string>
+    <string name="lp_steps_label">📋 Lesson steps</string>
+    <string name="lp_activities_label">🎲 Classroom activities</string>
+    <string name="lp_assessment_label">📊 Assessment</string>
+    <string name="lp_homework_label">📝 Homework</string>
+    <string name="lp_enrichment_label">🌟 Enrichment</string>
+    <string name="btn_copy_lesson_prep">📋 Copy preparation</string>
+    <string name="btn_regenerate_lesson_prep">🔄 Regenerate</string>
+    <string name="btn_save_lesson_prep">💾 Save preparation</string>
+    <string name="btn_delete_lesson_prep">🗑️ Delete</string>
+    <string name="copied_label">✅ Copied</string>
+    <string name="saved_label">✅ Saved</string>
+    <string name="confirm_delete_lesson_prep">Delete this preparation permanently?</string>
+
+    <string name="enrichment_heading">Enrichment activity generator</string>
+    <string name="enrichment_desc">Enter the subject, grade, and topic - Zakiy suggests a ready enrichment activity for advanced students.</string>
+    <string name="ph_topic">Topic</string>
+    <string name="btn_generate_enrichment">✨ Generate activity</string>
+
+    <string name="results_analysis_heading">Student results analyzer</string>
+    <string name="results_analysis_desc">Paste your students\' scores/results in any format (names and grades), and Zakiy analyzes them to surface strengths, weaknesses, and students who need follow-up.</string>
+    <string name="ph_raw_results">Example:\nAhmed: 18/20\nSara: 12/20</string>
+    <string name="err_raw_results_required">You need to paste the student results</string>
+    <string name="btn_generate_results_analysis">✨ Analyze results</string>
+    <string name="ra_summary_label">📝 Overall summary</string>
+    <string name="ra_strengths_label">💪 Strengths</string>
+    <string name="ra_weaknesses_label">⚠️ Weaknesses</string>
+    <string name="ra_at_risk_label">🚨 Need follow-up</string>
+    <string name="ra_recommendations_label">✅ Recommendations</string>
+
+    <string name="homework_help_create_heading">New homework helper</string>
+    <string name="homework_help_view_heading">Homework helper</string>
+    <string name="ph_homework_topic">Topic or homework question</string>
+    <string name="btn_generate_homework_help">✨ Help me</string>
+    <string name="confirm_delete_homework_help">Delete this homework helper session permanently?</string>
+    <string name="hh_explanation_label">💡 Explanation</string>
+    <string name="hh_example_label">📐 Worked example</string>
+    <string name="hh_practice_label">✏️ Practice questions</string>
+    <string name="hh_tips_label">💡 Tip</string>
+    <string name="btn_save_homework_help">💾 Save</string>
+
+    <string name="study_plan_create_heading">New study plan</string>
+    <string name="study_plan_view_heading">Study plan</string>
+    <string name="ph_study_plan_subjects">Subjects (comma-separated)</string>
+    <string name="ph_study_plan_hours">Study hours per day (optional)</string>
+    <string name="study_plan_exam_date_placeholder">Exam date (optional)</string>
+    <string name="study_plan_clear_date">Clear date</string>
+    <string name="err_study_plan_subjects_required">You need to enter the subjects you want to study</string>
+    <string name="confirm_delete_study_plan">Delete this study plan permanently?</string>
+    <string name="sp_tips_label">💡 General tips</string>
+    <string name="btn_generate_study_plan">✨ Generate plan</string>
+    <string name="btn_save_study_plan">💾 Save</string>
+
     <string name="ai_assistant">AI Assistant</string>
     <string name="ai_new_conversation">New conversation</string>
     <string name="ai_new_conversation_title">New conversation</string>

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Message
+import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.Quiz
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Book
@@ -57,6 +58,7 @@ fun TeacherDashboardScreen(
     onOpenAssignments: () -> Unit,
     onOpenQuizzes: () -> Unit,
     onOpenAiAssistant: () -> Unit,
+    onOpenMadrasati: () -> Unit,
     onEnterRoom: (String) -> Unit,
 ) {
     var classes by remember { mutableStateOf<List<SchoolClassSummary>>(emptyList()) }
@@ -112,6 +114,7 @@ fun TeacherDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Quiz, Color(0xFF00897B), stringResource(R.string.quizzes), onOpenQuizzes) }
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
                 item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
+                item { DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF00897B), stringResource(R.string.madrasati_heading), onOpenMadrasati) }
             }
         }
     }

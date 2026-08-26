@@ -203,6 +203,89 @@
     <string name="quiz_result_graded">درجتك: %1$s</string>
     <string name="quiz_result_awaiting">تم تسليم الاختبار - بانتظار التصحيح</string>
     <string name="quiz_auto_submitted_notice">انتهى الوقت وتم تسليم إجاباتك تلقائيًا</string>
+
+    <!-- مدرستي وأدوات ذكيّ (متاح لأي حساب مسجّل دخول، بدون تقييد دور) -->
+    <string name="madrasati_heading">مدرستي وأدوات ذكيّ</string>
+    <string name="madrasati_desc">اختصار سريع لموقع مدرستي الرسمي، بالإضافة لأدوات ذكيّ الذكية للمعلمين والطلاب - مستقلة تمامًا عن مدرستي وما تشارك أي بيانات وياها.</string>
+    <string name="madrasati_link_desc">يفتح موقع مدرستي الرسمي بتبويب جديد - تسجّل دخولك مباشرة عندهم، وذكيّ ما يشوف ولا يلمس بيانات حسابك هناك إطلاقًا.</string>
+    <string name="btn_open_madrasati">🔗 افتح مدرستي الرسمي</string>
+    <string name="teacher_tools_heading">👨‍🏫 أدوات ذكيّ للمعلم</string>
+    <string name="btn_new_lesson_prep">➕ تحضير جديد بالذكاء الاصطناعي</string>
+    <string name="btn_open_enrichment">🌟 نشاط إثرائي</string>
+    <string name="btn_open_results_analysis">📊 تحليل نتائج الطلاب</string>
+    <string name="saved_lesson_preps_heading">📁 تحضيراتي المحفوظة</string>
+    <string name="lesson_prep_empty">ما فيه تحضيرات محفوظة بعد.</string>
+    <string name="student_tools_heading">🎒 أدوات ذكيّ للطالب</string>
+    <string name="btn_new_homework_help">➕ مساعد واجب جديد</string>
+    <string name="btn_new_study_plan">🗓️ خطة مذاكرة جديدة</string>
+    <string name="saved_homework_help_heading">📁 جلسات مساعد الواجب المحفوظة</string>
+    <string name="homework_help_empty">ما فيه جلسات محفوظة بعد.</string>
+    <string name="saved_study_plans_heading">📁 خطط المذاكرة المحفوظة</string>
+    <string name="study_plan_empty">ما فيه خطط محفوظة بعد.</string>
+
+    <string name="lesson_prep_create_heading">تحضير درس جديد</string>
+    <string name="lesson_prep_view_heading">تحضير الدرس</string>
+    <string name="ph_lesson_prep_subject">اسم المادة</string>
+    <string name="ph_lesson_prep_grade">الصف</string>
+    <string name="ph_lesson_prep_unit">الوحدة (اختياري)</string>
+    <string name="ph_lesson_prep_title">عنوان الدرس</string>
+    <string name="btn_generate_lesson_prep">✨ ولّد التحضير</string>
+    <string name="err_lesson_prep_fields_required">لازم المادة والصف وعنوان الدرس</string>
+    <string name="err_lesson_prep_gen_failed">تعذّر توليد التحضير، حاول مرة ثانية</string>
+    <string name="lp_objectives_label">🎯 الأهداف التعلّمية</string>
+    <string name="lp_intro_label">🚪 التمهيد</string>
+    <string name="lp_steps_label">📋 خطوات التنفيذ</string>
+    <string name="lp_activities_label">🎲 الأنشطة الصفية</string>
+    <string name="lp_assessment_label">📊 التقويم</string>
+    <string name="lp_homework_label">📝 الواجب</string>
+    <string name="lp_enrichment_label">🌟 الإثراء</string>
+    <string name="btn_copy_lesson_prep">📋 نسخ التحضير</string>
+    <string name="btn_regenerate_lesson_prep">🔄 توليد من جديد</string>
+    <string name="btn_save_lesson_prep">💾 حفظ التحضير</string>
+    <string name="btn_delete_lesson_prep">🗑️ حذف</string>
+    <string name="copied_label">✅ تم النسخ</string>
+    <string name="saved_label">✅ تم الحفظ</string>
+    <string name="confirm_delete_lesson_prep">تحذف هذا التحضير نهائيًا؟</string>
+
+    <string name="enrichment_heading">مولّد نشاط إثرائي</string>
+    <string name="enrichment_desc">اكتب المادة والصف والموضوع، وذكيّ يقترح نشاط إثرائي جاهز للطلاب المتفوقين.</string>
+    <string name="ph_topic">الموضوع</string>
+    <string name="btn_generate_enrichment">✨ ولّد النشاط</string>
+
+    <string name="results_analysis_heading">محلّل نتائج الطلاب</string>
+    <string name="results_analysis_desc">الصق درجات/نتائج طلابك بأي صيغة (أسماء ودرجات)، وذكيّ يحلّلها ويطلّع لك نقاط القوة والضعف والطلاب المحتاجين متابعة.</string>
+    <string name="ph_raw_results">مثال:\nأحمد: 18/20\nسارة: 12/20</string>
+    <string name="err_raw_results_required">لازم تلصق نتائج الطلاب</string>
+    <string name="btn_generate_results_analysis">✨ حلّل النتائج</string>
+    <string name="ra_summary_label">📝 ملخص عام</string>
+    <string name="ra_strengths_label">💪 نقاط القوة</string>
+    <string name="ra_weaknesses_label">⚠️ نقاط الضعف</string>
+    <string name="ra_at_risk_label">🚨 يحتاجون متابعة</string>
+    <string name="ra_recommendations_label">✅ توصيات</string>
+
+    <string name="homework_help_create_heading">مساعد واجب جديد</string>
+    <string name="homework_help_view_heading">مساعد الواجب</string>
+    <string name="ph_homework_topic">الموضوع أو سؤال الواجب</string>
+    <string name="btn_generate_homework_help">✨ ساعدني</string>
+    <string name="confirm_delete_homework_help">تحذف جلسة مساعد الواجب هذي نهائيًا؟</string>
+    <string name="hh_explanation_label">💡 الشرح</string>
+    <string name="hh_example_label">📐 مثال محلول</string>
+    <string name="hh_practice_label">✏️ أسئلة تدريبية</string>
+    <string name="hh_tips_label">💡 نصيحة</string>
+    <string name="btn_save_homework_help">💾 حفظ</string>
+
+    <string name="study_plan_create_heading">خطة مذاكرة جديدة</string>
+    <string name="study_plan_view_heading">خطة المذاكرة</string>
+    <string name="ph_study_plan_subjects">المواد (افصل بينها بفاصلة)</string>
+    <string name="ph_study_plan_hours">ساعات المذاكرة يوميًا (اختياري)</string>
+    <string name="study_plan_exam_date_placeholder">تاريخ الاختبار (اختياري)</string>
+    <string name="study_plan_clear_date">مسح التاريخ</string>
+    <string name="err_study_plan_subjects_required">لازم تكتب المواد اللي تبي تذاكرها</string>
+    <string name="confirm_delete_study_plan">تحذف خطة المذاكرة هذي نهائيًا؟</string>
+    <string name="sp_tips_label">💡 نصائح عامة</string>
+    <string name="btn_generate_study_plan">✨ ولّد الخطة</string>
+    <string name="btn_save_study_plan">💾 حفظ</string>
+
     <string name="ai_assistant">المساعد الذكي</string>
     <string name="ai_new_conversation">محادثة جديدة</string>
     <string name="ai_new_conversation_title">محادثة جديدة</string>

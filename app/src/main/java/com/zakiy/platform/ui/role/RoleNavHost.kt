@@ -16,6 +16,12 @@ import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
 import com.zakiy.platform.ui.library.LibraryDetailScreen
 import com.zakiy.platform.ui.library.LibraryScreen
+import com.zakiy.platform.ui.madrasati.EnrichmentScreen
+import com.zakiy.platform.ui.madrasati.HomeworkHelpScreen
+import com.zakiy.platform.ui.madrasati.LessonPrepScreen
+import com.zakiy.platform.ui.madrasati.MadrasatiHubScreen
+import com.zakiy.platform.ui.madrasati.ResultsAnalysisScreen
+import com.zakiy.platform.ui.madrasati.StudyPlanScreen
 import com.zakiy.platform.ui.messages.MessagesScreen
 import com.zakiy.platform.ui.messages.NotificationsScreen
 import com.zakiy.platform.ui.messages.ThreadScreen
@@ -55,6 +61,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
             AdminDashboardScreen(
                 authManager = authManager,
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
+                onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
             )
         }
 
@@ -69,6 +76,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenLibrary = { navController.navigate(Screen.SchoolLibrary) },
                 onOpenMessages = { navController.navigate(Screen.Messages) },
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
+                onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
             )
         }
         composable(Screen.SchoolTeachers) { SchoolStaffScreen(isTeachers = true, authManager = authManager) }
@@ -91,6 +99,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenAssignments = { navController.navigate(Screen.Assignments) },
                 onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
+                onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
             )
         }
@@ -192,6 +201,39 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 },
                 onBack = { navController.popBackStack() },
             )
+        }
+
+        // مدرستي وأدوات ذكيّ - متاحة لكل الأدوار المؤسسية (نفس تسجيل مسارات
+        // المساعد الذكي أعلاه بالضبط، الطالب يستخدم نسخة MainNavHost)
+        composable(Screen.MadrasatiHub) {
+            MadrasatiHubScreen(
+                onBack = { navController.popBackStack() },
+                onNewLessonPrep = { navController.navigate(Screen.LessonPrepCreate) },
+                onOpenLessonPrep = { id -> navController.navigate(Screen.lessonPrepView(id)) },
+                onOpenEnrichment = { navController.navigate(Screen.Enrichment) },
+                onOpenResultsAnalysis = { navController.navigate(Screen.ResultsAnalysis) },
+                onNewHomeworkHelp = { navController.navigate(Screen.HomeworkHelpCreate) },
+                onOpenHomeworkHelp = { id -> navController.navigate(Screen.homeworkHelpView(id)) },
+                onNewStudyPlan = { navController.navigate(Screen.StudyPlanCreate) },
+                onOpenStudyPlan = { id -> navController.navigate(Screen.studyPlanView(id)) },
+            )
+        }
+        composable(Screen.LessonPrepCreate) { LessonPrepScreen(prepId = null, onBack = { navController.popBackStack() }) }
+        composable(Screen.LessonPrepViewPattern) { backStackEntry ->
+            val prepId = backStackEntry.arguments?.getString("prepId")
+            LessonPrepScreen(prepId = prepId, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.Enrichment) { EnrichmentScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.ResultsAnalysis) { ResultsAnalysisScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.HomeworkHelpCreate) { HomeworkHelpScreen(sessionId = null, onBack = { navController.popBackStack() }) }
+        composable(Screen.HomeworkHelpViewPattern) { backStackEntry ->
+            val sessionId = backStackEntry.arguments?.getString("sessionId")
+            HomeworkHelpScreen(sessionId = sessionId, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.StudyPlanCreate) { StudyPlanScreen(planId = null, onBack = { navController.popBackStack() }) }
+        composable(Screen.StudyPlanViewPattern) { backStackEntry ->
+            val planId = backStackEntry.arguments?.getString("planId")
+            StudyPlanScreen(planId = planId, onBack = { navController.popBackStack() })
         }
 
         composable(Screen.RoomPattern) { backStackEntry ->
