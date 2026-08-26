@@ -47,6 +47,12 @@ class AuthManager private constructor(private val appContext: Context) {
     private val _isGuest = MutableStateFlow(false)
     val isGuest: StateFlow<Boolean> = _isGuest.asStateFlow()
 
+    // مستوى التعليم من بيانات حساب Supabase الوصفية (user_metadata.education_level) -
+    // يهمنا بس القيمة الحرفية "معلم" (تحدد فرضية معلم لحساب فردي بلا role
+    // مؤسسي بشاشة "مدرستي" - نفس منطق 03-auth.js بالضبط)
+    private val _educationLevel = MutableStateFlow<String?>(null)
+    val educationLevel: StateFlow<String?> = _educationLevel.asStateFlow()
+
     /** تُستدعى مرة وحدة عند إقلاع التطبيق - تجرّب تسترجع جلسة محفوظة */
     suspend fun bootstrap() {
         _isBootstrapping.value = true
@@ -126,6 +132,7 @@ class AuthManager private constructor(private val appContext: Context) {
         _email.value = null
         _userId.value = null
         _didLoadRole.value = false
+        _educationLevel.value = null
     }
 
     private suspend fun applySession(session: GoTrueSession) {
@@ -137,6 +144,7 @@ class AuthManager private constructor(private val appContext: Context) {
             _username.value = it
             sessionStore.saveUsername(it)
         }
+        _educationLevel.value = session.user.userMetadata["education_level"]
         _isAuthenticated.value = true
     }
 

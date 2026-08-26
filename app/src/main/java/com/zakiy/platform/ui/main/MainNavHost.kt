@@ -146,7 +146,13 @@ fun MainNavHost(authManager: AuthManager) {
             }
             composable(Screen.MadrasatiHub) {
                 MadrasatiHubScreen(
+                    authManager = authManager,
                     onBack = { navController.popBackStack() },
+                    onOpenAssignments = { navController.navigate(Screen.Assignments) },
+                    onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
+                    onOpenStudentSchedule = { navController.navigate(Screen.StudentSchedule) },
+                    onOpenLibrary = { navController.navigate(Screen.Library) },
+                    onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                     onNewLessonPrep = { navController.navigate(Screen.LessonPrepCreate) },
                     onOpenLessonPrep = { id -> navController.navigate(Screen.lessonPrepView(id)) },
                     onOpenEnrichment = { navController.navigate(Screen.Enrichment) },

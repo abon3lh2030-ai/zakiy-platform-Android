@@ -207,7 +207,17 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
         // المساعد الذكي أعلاه بالضبط، الطالب يستخدم نسخة MainNavHost)
         composable(Screen.MadrasatiHub) {
             MadrasatiHubScreen(
+                authManager = authManager,
                 onBack = { navController.popBackStack() },
+                onOpenAssignments = { navController.navigate(Screen.Assignments) },
+                onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
+                // جدولي (جدول الطالب الشخصي) غير قابل للوصول إطلاقًا من هذا
+                // الـ NavHost - الطالب (الدور الوحيد اللي يفعّل هذي البطاقة)
+                // يكمل بـ MainNavHost دايمًا (RootApp)، فما يوصل
+                // MadrasatiHubScreen من هنا أبدًا
+                onOpenStudentSchedule = {},
+                onOpenLibrary = { navController.navigate(Screen.TeacherLibrary) },
+                onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onNewLessonPrep = { navController.navigate(Screen.LessonPrepCreate) },
                 onOpenLessonPrep = { id -> navController.navigate(Screen.lessonPrepView(id)) },
                 onOpenEnrichment = { navController.navigate(Screen.Enrichment) },
