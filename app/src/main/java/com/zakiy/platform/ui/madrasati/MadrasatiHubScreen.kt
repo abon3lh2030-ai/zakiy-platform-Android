@@ -58,7 +58,10 @@ import com.zakiy.platform.network.dto.LessonPrepSummary
 import com.zakiy.platform.network.dto.StudyPlanSummary
 import kotlinx.coroutines.launch
 
-private const val MADRASATI_URL = "https://schools.madrasati.sa"
+// /Auth/SignIn يحوّل مباشرة لتسجيل الدخول الحقيقي (Microsoft Entra ID) بدل
+// الصفحة الرئيسية التسويقية العامة - تأكدنا إن الموقع العام ما فيه صفحات
+// فرعية عامة (الصفحات الفعلية داخل Microsoft Teams بعد الدخول، خاصة بكل مدرسة)
+private const val MADRASATI_URL = "https://schools.madrasati.sa/Auth/SignIn"
 
 /** بطاقة واحدة بشبكة "مدرستي" - أيقونة إيموجي + تسمية + شارة زاوية (مدرستي
  * الرمادية أو ذكيّ التيل). نفس بيانات madrasati-link-card بالموقع بالضبط. */
