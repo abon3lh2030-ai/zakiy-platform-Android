@@ -22,8 +22,10 @@ data class CreateQuizRequest(
     @SerialName("class_id") val classId: String,
     val subject: String,
     val title: String,
-    @SerialName("time_limit_minutes") val timeLimitMinutes: Int,
-    val questions: List<QuizQuestionInput>,
+    @SerialName("time_limit_minutes") val timeLimitMinutes: Int? = null,
+    val questions: List<QuizQuestionInput>? = null,
+    val platform: String = "zakiy",
+    @SerialName("external_link") val externalLink: String? = null,
 )
 
 @Serializable
@@ -32,6 +34,7 @@ data class UpdateQuizRequest(
     val title: String? = null,
     @SerialName("time_limit_minutes") val timeLimitMinutes: Int? = null,
     val questions: List<QuizQuestionInput>? = null,
+    @SerialName("external_link") val externalLink: String? = null,
 )
 
 @Serializable
@@ -41,7 +44,7 @@ data class QuizSummary(
     @SerialName("class_id") val classId: String? = null,
     val subject: String,
     val title: String,
-    @SerialName("time_limit_minutes") val timeLimitMinutes: Int,
+    @SerialName("time_limit_minutes") val timeLimitMinutes: Int? = null,
     @SerialName("is_published") val isPublished: Boolean = false,
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("updated_at") val updatedAt: String? = null,
@@ -53,6 +56,8 @@ data class QuizSummary(
     val score: Int? = null,
     @SerialName("total_questions") val totalQuestions: Int? = null,
     val grade: String? = null,
+    val platform: String = "zakiy",
+    @SerialName("external_link") val externalLink: String? = null,
 )
 
 @Serializable
@@ -96,12 +101,14 @@ data class TeacherQuizDetail(
     @SerialName("class_id") val classId: String? = null,
     val subject: String,
     val title: String,
-    @SerialName("time_limit_minutes") val timeLimitMinutes: Int,
+    @SerialName("time_limit_minutes") val timeLimitMinutes: Int? = null,
     @SerialName("is_published") val isPublished: Boolean = false,
     @SerialName("created_at") val createdAt: String? = null,
     @SerialName("updated_at") val updatedAt: String? = null,
     val questions: List<QuizQuestionDetail> = emptyList(),
     val students: List<QuizStudentStatus> = emptyList(),
+    val platform: String = "zakiy",
+    @SerialName("external_link") val externalLink: String? = null,
 )
 
 /** سؤال بصيغة الطالب - بدون correct_answer، الباك إند ما يعرضه إطلاقًا لهذا
@@ -139,11 +146,13 @@ data class StudentQuizDetail(
     @SerialName("class_id") val classId: String? = null,
     val subject: String,
     val title: String,
-    @SerialName("time_limit_minutes") val timeLimitMinutes: Int,
+    @SerialName("time_limit_minutes") val timeLimitMinutes: Int? = null,
     @SerialName("is_published") val isPublished: Boolean = false,
     @SerialName("created_at") val createdAt: String? = null,
     val questions: List<StudentQuizQuestion> = emptyList(),
     val attempt: QuizAttemptDto? = null,
+    val platform: String = "zakiy",
+    @SerialName("external_link") val externalLink: String? = null,
 )
 
 @Serializable

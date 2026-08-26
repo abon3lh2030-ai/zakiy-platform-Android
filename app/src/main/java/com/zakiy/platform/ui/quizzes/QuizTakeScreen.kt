@@ -2,26 +2,21 @@ package com.zakiy.platform.ui.quizzes
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -35,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
@@ -42,12 +38,12 @@ import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.QuizAttemptDto
 import com.zakiy.platform.network.dto.StudentQuizDetail
 import com.zakiy.platform.network.dto.SubmitQuizRequest
+import com.zakiy.platform.ui.common.PLATFORM_MADRASATI
+import com.zakiy.platform.ui.common.QuestionAnswerCard
+import com.zakiy.platform.ui.common.openMadrasatiLink
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Instant
-
-private const val TYPE_MCQ = "mcq"
-private const val TYPE_TRUE_FALSE = "true_false"
 
 /** يحوّل توقيت ISO من الباك إند إلى epoch millis - لو ما فيه معلومة منطقة
  * زمنية (Python isoformat() الافتراضي) نفترض UTC بإضافة Z. */
@@ -65,7 +61,9 @@ private fun formatRemaining(totalSeconds: Long): String {
 
 /** شاشة أداء الاختبار من جهة الطالب - تستدعي /start عند الفتح (idempotent)،
  * تحسب مهلة العد التنازلي من started_at + المدة، وتسلّم تلقائيًا لو خلص
- * الوقت. لو الاختبار متسلّم أصلًا تعرض شاشة النتيجة على طول بدون /start. */
+ * الوقت. لو الاختبار متسلّم أصلًا تعرض شاشة النتيجة على طول بدون /start.
+ * لو platform="madrasati" يُحل بالكامل هناك - نعرض زر فتح مدرستي بس، بدون
+ * أي استدعاء /start أو /submit (الباك إند أصلًا يرفضهم بـ 400). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
@@ -77,6 +75,7 @@ fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
     var isSubmitting by remember { mutableStateOf(false) }
     val answers = remember { mutableStateMapOf<String, String>() }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     suspend fun submit(auto: Boolean) {
         if (isSubmitting || result != null) return
@@ -97,7 +96,7 @@ fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
             null
         }
         detail = d
-        if (d != null) {
+        if (d != null && d.platform != PLATFORM_MADRASATI) {
             val existing = d.attempt
             if (existing != null && existing.submittedAt != null) {
                 result = existing
@@ -116,10 +115,10 @@ fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
     val currentAttempt = attempt
     val currentDetail = detail
     var remainingSeconds by remember { mutableStateOf<Long?>(null) }
-    if (currentAttempt != null && result == null && currentDetail != null) {
+    if (currentAttempt != null && result == null && currentDetail != null && currentDetail.platform != PLATFORM_MADRASATI) {
         LaunchedEffect(currentAttempt.id) {
             val startedMillis = currentAttempt.startedAt?.let { parseIsoToEpochMillis(it) } ?: System.currentTimeMillis()
-            val deadline = startedMillis + currentDetail.timeLimitMinutes * 60_000L
+            val deadline = startedMillis + (currentDetail.timeLimitMinutes ?: 0) * 60_000L
             while (true) {
                 val remaining = deadline - System.currentTimeMillis()
                 remainingSeconds = (remaining / 1000).coerceAtLeast(0)
@@ -145,6 +144,7 @@ fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
             currentDetail == null -> Box(modifier = Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
                 Text(errorMessage ?: stringResource(R.string.error_generic))
             }
+            currentDetail.platform == PLATFORM_MADRASATI -> MadrasatiQuizView(padding = padding, externalLink = currentDetail.externalLink)
             result != null -> QuizResultView(padding = padding, result = result!!)
             else -> Column(modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp).verticalScroll(rememberScrollState())) {
                 remainingSeconds?.let { seconds ->
@@ -157,47 +157,13 @@ fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
                 }
 
                 currentDetail.questions.sortedBy { it.orderIndex }.forEach { question ->
-                    Card(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-                        Column(modifier = Modifier.padding(14.dp)) {
-                            Text(question.questionText, style = MaterialTheme.typography.titleSmall)
-                            Spacer(modifier = Modifier.size(8.dp))
-                            when (question.questionType) {
-                                TYPE_MCQ -> question.choices.orEmpty().forEach { choice ->
-                                    val selected = answers[question.id] == choice
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth().selectable(selected = selected, onClick = { answers[question.id] = choice }),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        RadioButton(selected = selected, onClick = null)
-                                        Text(choice)
-                                    }
-                                }
-                                TYPE_TRUE_FALSE -> {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth().selectable(selected = answers[question.id] == "true", onClick = { answers[question.id] = "true" }),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        RadioButton(selected = answers[question.id] == "true", onClick = null)
-                                        Text(stringResource(R.string.quiz_true_label))
-                                    }
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth().selectable(selected = answers[question.id] == "false", onClick = { answers[question.id] = "false" }),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        RadioButton(selected = answers[question.id] == "false", onClick = null)
-                                        Text(stringResource(R.string.quiz_false_label))
-                                    }
-                                }
-                                else -> OutlinedTextField(
-                                    value = answers[question.id] ?: "",
-                                    onValueChange = { answers[question.id] = it },
-                                    label = { Text(stringResource(R.string.quiz_essay_answer_placeholder)) },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    minLines = 3,
-                                )
-                            }
-                        }
-                    }
+                    QuestionAnswerCard(
+                        questionText = question.questionText,
+                        questionType = question.questionType,
+                        choices = question.choices,
+                        currentAnswer = answers[question.id],
+                        onAnswerChange = { answers[question.id] = it },
+                    )
                 }
 
                 if (errorMessage != null) {
@@ -213,6 +179,31 @@ fun QuizTakeScreen(quizId: String, onBack: () -> Unit) {
                     if (isSubmitting) CircularProgressIndicator(modifier = Modifier.size(20.dp)) else Text(stringResource(R.string.btn_submit_quiz))
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun MadrasatiQuizView(padding: androidx.compose.foundation.layout.PaddingValues, externalLink: String?) {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier.fillMaxSize().padding(padding).padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(modifier = Modifier.size(40.dp))
+        Text(stringResource(R.string.madrasati_platform_notice), style = MaterialTheme.typography.titleMedium, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+        if (externalLink.isNullOrBlank()) {
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(
+                stringResource(R.string.madrasati_no_link_notice),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
+        }
+        Spacer(modifier = Modifier.size(20.dp))
+        Button(onClick = { openMadrasatiLink(context, externalLink) }, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.btn_open_madrasati))
         }
     }
 }

@@ -40,6 +40,7 @@ import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.QuizSummary
+import com.zakiy.platform.ui.common.PLATFORM_MADRASATI
 import kotlinx.coroutines.launch
 
 /** قائمة الاختبارات - نفس هيكلة AssignmentsScreen بالضبط: عنصر واحد بالقائمة
@@ -110,7 +111,13 @@ private fun QuizCard(quiz: QuizSummary, isTeacher: Boolean, onClick: () -> Unit)
                 Text(quiz.title, style = MaterialTheme.typography.titleSmall)
                 Text(quiz.subject, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            if (isTeacher) {
+            if (quiz.platform == PLATFORM_MADRASATI) {
+                Text(
+                    stringResource(R.string.md_badge_madrasati),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            } else if (isTeacher) {
                 if (quiz.isPublished == true) {
                     val done = quiz.submittedCount ?: 0
                     val total = quiz.totalCount ?: 0

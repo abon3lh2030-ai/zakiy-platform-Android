@@ -35,6 +35,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
@@ -43,6 +44,9 @@ import com.zakiy.platform.network.dto.GradeAttemptRequest
 import com.zakiy.platform.network.dto.QuizQuestionDetail
 import com.zakiy.platform.network.dto.QuizStudentStatus
 import com.zakiy.platform.network.dto.TeacherQuizDetail
+import com.zakiy.platform.network.dto.UpdateQuizRequest
+import com.zakiy.platform.ui.common.PLATFORM_MADRASATI
+import com.zakiy.platform.ui.common.openMadrasatiLink
 import kotlinx.coroutines.launch
 
 /** تفاصيل اختبار من جهة المعلم - مسودة: أزرار تعديل/نشر/حذف. منشور: قائمة
@@ -88,15 +92,22 @@ fun QuizDetailScreen(quizId: String, onBack: () -> Unit, onEdit: (String) -> Uni
             else -> Column(modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp).verticalScroll(rememberScrollState())) {
                 Text(current.subject, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text(current.title, style = MaterialTheme.typography.headlineSmall)
-                Text(
-                    stringResource(R.string.quiz_time_limit_value, current.timeLimitMinutes),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                if (current.platform != PLATFORM_MADRASATI && current.timeLimitMinutes != null) {
+                    Text(
+                        stringResource(R.string.quiz_time_limit_value, current.timeLimitMinutes),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
                 Spacer(modifier = Modifier.size(16.dp))
 
                 if (errorMessage != null) {
                     Text(errorMessage!!, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(bottom = 8.dp))
+                }
+
+                if (current.platform == PLATFORM_MADRASATI) {
+                    MadrasatiQuizLinkEditor(quizId = quizId, externalLink = current.externalLink, onSaved = { scope.launch { load() } })
+                    Spacer(modifier = Modifier.size(16.dp))
                 }
 
                 if (!current.isPublished) {
@@ -120,7 +131,7 @@ fun QuizDetailScreen(quizId: String, onBack: () -> Unit, onEdit: (String) -> Uni
                     ) {
                         if (isBusy) CircularProgressIndicator(modifier = Modifier.size(20.dp)) else Text(stringResource(R.string.btn_publish_quiz))
                     }
-                } else {
+                } else if (current.platform != PLATFORM_MADRASATI) {
                     Text(stringResource(R.string.quiz_students_heading), style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.size(8.dp))
                     if (current.students.isEmpty()) {
@@ -131,6 +142,8 @@ fun QuizDetailScreen(quizId: String, onBack: () -> Unit, onEdit: (String) -> Uni
                             Spacer(modifier = Modifier.size(8.dp))
                         }
                     }
+                } else {
+                    Text(stringResource(R.string.madrasati_solved_there_notice), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -243,6 +256,47 @@ private fun StudentAttemptRow(
                         enabled = !isSaving,
                     ) { Text(stringResource(R.string.btn_save_grade)) }
                 }
+            }
+        }
+    }
+}
+
+/** رابط مدرستي - قابل للإضافة/التعديل بأي وقت حتى بعد النشر (الباك إند
+ * يستثني external_link من قيد "ما تقدر تعدّل اختبار منشور" خصيصًا). */
+@Composable
+private fun MadrasatiQuizLinkEditor(quizId: String, externalLink: String?, onSaved: () -> Unit) {
+    var linkText by remember(externalLink) { mutableStateOf(externalLink ?: "") }
+    var isSaving by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    Column {
+        OutlinedTextField(
+            value = linkText,
+            onValueChange = { linkText = it },
+            label = { Text(stringResource(R.string.madrasati_link_placeholder)) },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Row(modifier = Modifier.fillMaxWidth()) {
+            OutlinedButton(onClick = { com.zakiy.platform.ui.common.openMadrasatiLink(context, linkText) }, modifier = Modifier.weight(1f)) {
+                Text(stringResource(R.string.btn_open_madrasati))
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Button(
+                onClick = {
+                    isSaving = true
+                    scope.launch {
+                        runCatching { NetworkModule.backendApi.updateQuiz(quizId, UpdateQuizRequest(externalLink = linkText.trim().ifBlank { null })) }
+                        isSaving = false
+                        onSaved()
+                    }
+                },
+                enabled = !isSaving,
+                modifier = Modifier.weight(1f),
+            ) {
+                if (isSaving) CircularProgressIndicator(modifier = Modifier.size(18.dp)) else Text(stringResource(R.string.save))
             }
         }
     }

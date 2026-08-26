@@ -1,5 +1,8 @@
 package com.zakiy.platform.ui.gradesheet
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,6 +21,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,6 +36,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
@@ -39,6 +46,7 @@ import com.zakiy.platform.network.dto.GradesheetStudentRow
 import com.zakiy.platform.network.dto.SchoolClassSummary
 import com.zakiy.platform.network.dto.UpdateGradesheetRowRequest
 import com.zakiy.platform.network.dto.toApiErrorMessage
+import com.zakiy.platform.util.generateQrBitmap
 import kotlinx.coroutines.launch
 
 /** كشف الدرجات (معلم بس) - نفس /api/teacher/gradesheet بالموقع بالضبط:
@@ -57,7 +65,20 @@ fun GradesheetScreen() {
     var isLoadingClasses by remember { mutableStateOf(true) }
     var isLoadingTable by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isExporting by remember { mutableStateOf(false) }
+    var exportedUrl by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    suspend fun export(format: String) {
+        val classId = selectedClassId ?: return
+        isExporting = true
+        errorMessage = null
+        runCatching { NetworkModule.backendApi.exportGradesheet(classId, format).url }
+            .onSuccess { exportedUrl = it }
+            .onFailure { errorMessage = it.toApiErrorMessage("") }
+        isExporting = false
+    }
 
     suspend fun reloadTable(classId: String) {
         isLoadingTable = true
@@ -107,6 +128,25 @@ fun GradesheetScreen() {
                     }
                 }
                 Spacer(modifier = Modifier.size(4.dp))
+
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedButton(
+                        onClick = { scope.launch { export("pdf") } },
+                        enabled = !isExporting && selectedClassId != null,
+                        modifier = Modifier.weight(1f),
+                    ) { Text(stringResource(R.string.btn_export_gradesheet_pdf)) }
+                    Spacer(modifier = Modifier.size(8.dp))
+                    OutlinedButton(
+                        onClick = { scope.launch { export("csv") } },
+                        enabled = !isExporting && selectedClassId != null,
+                        modifier = Modifier.weight(1f),
+                    ) { Text(stringResource(R.string.btn_export_gradesheet_csv)) }
+                }
+                if (isExporting) {
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { CircularProgressIndicator(modifier = Modifier.size(20.dp)) }
+                }
+                Spacer(modifier = Modifier.size(8.dp))
             }
 
             if (errorMessage != null) {
@@ -131,6 +171,45 @@ fun GradesheetScreen() {
                 }
             }
         }
+    }
+
+    val urlForDialog = exportedUrl
+    if (urlForDialog != null) {
+        val qrBitmap = remember(urlForDialog) { runCatching { generateQrBitmap(urlForDialog) }.getOrNull() }
+        AlertDialog(
+            onDismissRequest = { exportedUrl = null },
+            title = { Text(stringResource(R.string.gradesheet_export_ready_heading)) },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        stringResource(R.string.gradesheet_export_scan_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    Spacer(modifier = Modifier.size(12.dp))
+                    if (qrBitmap != null) {
+                        Image(bitmap = qrBitmap.asImageBitmap(), contentDescription = null, modifier = Modifier.size(220.dp))
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(urlForDialog)))
+                }) { Text(stringResource(R.string.btn_open_link)) }
+            },
+            dismissButton = {
+                Row {
+                    TextButton(onClick = {
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, urlForDialog)
+                        }
+                        context.startActivity(Intent.createChooser(shareIntent, null))
+                    }) { Text(stringResource(R.string.btn_share_link)) }
+                    TextButton(onClick = { exportedUrl = null }) { Text(stringResource(R.string.cancel)) }
+                }
+            },
+        )
     }
 }
 

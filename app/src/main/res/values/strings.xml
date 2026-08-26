@@ -150,6 +150,9 @@
     <string name="assignment_grade_shown">الدرجة: %1$s</string>
     <string name="assignment_not_graded_yet">لسا ما تصحح</string>
     <string name="err_assignment_need_class">لازم تختار الفصل</string>
+    <string name="assignment_submission_type_label">طريقة التسليم</string>
+    <string name="assignment_submission_type_file">ملف</string>
+    <string name="assignment_submission_type_questions">أسئلة</string>
     <string name="quizzes">الاختبارات</string>
     <string name="quizzes_heading">الاختبارات</string>
     <string name="quizzes_empty">ما فيه اختبارات لحد الحين</string>
@@ -203,6 +206,17 @@
     <string name="quiz_result_graded">درجتك: %1$s</string>
     <string name="quiz_result_awaiting">تم تسليم الاختبار - بانتظار التصحيح</string>
     <string name="quiz_auto_submitted_notice">انتهى الوقت وتم تسليم إجاباتك تلقائيًا</string>
+    <string name="quiz_auto_graded_score">الدرجة التلقائية: %1$d من %2$d</string>
+
+    <!-- منصة الحل (ذكيّ/مدرستي) - مشتركة بين الواجبات والاختبارات -->
+    <string name="platform_label">منصة الحل</string>
+    <string name="platform_zakiy">ذكيّ</string>
+    <string name="platform_madrasati">مدرستي</string>
+    <string name="madrasati_link_placeholder">رابط مدرستي (اختياري)</string>
+    <string name="madrasati_teacher_link_heading">رابط مدرستي</string>
+    <string name="madrasati_platform_notice">هذا يُحل بالكامل على مدرستي، مو داخل ذكيّ</string>
+    <string name="madrasati_no_link_notice">معلمك لسا ما أضاف رابط مباشر - هذا اختصار لصفحة الدخول العامة بمدرستي</string>
+    <string name="madrasati_solved_there_notice">يُحل بالكامل على مدرستي - ما فيه حالة تسليم أو درجات هنا</string>
 
     <!-- كشف الدرجات (معلم بس) -->
     <string name="gradesheet_heading">كشف درجات الطلاب</string>
@@ -215,6 +229,12 @@
     <string name="gradesheet_quizzes_avg_label">الاختبارات</string>
     <string name="gradesheet_total_label">المجموع</string>
     <string name="btn_save_gradesheet_row">💾 حفظ</string>
+    <string name="btn_export_gradesheet_pdf">تصدير PDF</string>
+    <string name="btn_export_gradesheet_csv">تصدير CSV</string>
+    <string name="gradesheet_export_ready_heading">جاهز للتنزيل</string>
+    <string name="gradesheet_export_scan_hint">امسح رمز QR بجوال ثاني لفتح الملف، أو افتحه/شاركه من هذا الجهاز مباشرة</string>
+    <string name="btn_open_link">فتح الرابط</string>
+    <string name="btn_share_link">مشاركة الرابط</string>
 
     <!-- مدرستي وأدوات ذكيّ (متاح لأي حساب مسجّل دخول، بدون تقييد دور) -->
     <string name="madrasati_heading">مدرستي وأدوات ذكيّ</string>

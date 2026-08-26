@@ -43,3 +43,8 @@ data class GradesheetRowUpdateResponse(
     @SerialName("updated_at") val updatedAt: String? = null,
     val id: String? = null,
 )
+
+/** رد تصدير كشف الدرجات - رابط موقّع من Supabase صالح لمدة ساعة، لملف
+ * PDF/CSV جاهز يُنزَّل مباشرة (نعرضه كـ QR كمان عشان مسح الجوال الثاني). */
+@Serializable
+data class GradesheetExportResponse(val url: String)

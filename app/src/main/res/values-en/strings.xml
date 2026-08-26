@@ -141,6 +141,9 @@
     <string name="assignment_grade_shown">Grade: %1$s</string>
     <string name="assignment_not_graded_yet">Not graded yet</string>
     <string name="err_assignment_need_class">You need to pick a class</string>
+    <string name="assignment_submission_type_label">Submission type</string>
+    <string name="assignment_submission_type_file">File</string>
+    <string name="assignment_submission_type_questions">Questions</string>
     <string name="quizzes">Quizzes</string>
     <string name="quizzes_heading">Quizzes</string>
     <string name="quizzes_empty">No quizzes yet</string>
@@ -194,6 +197,17 @@
     <string name="quiz_result_graded">Your grade: %1$s</string>
     <string name="quiz_result_awaiting">Quiz submitted — awaiting grading</string>
     <string name="quiz_auto_submitted_notice">Time ran out, so your answers were submitted automatically</string>
+    <string name="quiz_auto_graded_score">Auto-graded score: %1$d out of %2$d</string>
+
+    <!-- Solving platform (Zakiy/Madrasati) - shared between assignments and quizzes -->
+    <string name="platform_label">Solving platform</string>
+    <string name="platform_zakiy">Zakiy</string>
+    <string name="platform_madrasati">Madrasati</string>
+    <string name="madrasati_link_placeholder">Madrasati link (optional)</string>
+    <string name="madrasati_teacher_link_heading">Madrasati link</string>
+    <string name="madrasati_platform_notice">This is solved entirely on Madrasati, not inside Zakiy</string>
+    <string name="madrasati_no_link_notice">Your teacher hasn\'t added a specific link yet - this is a shortcut to Madrasati\'s general sign-in page</string>
+    <string name="madrasati_solved_there_notice">Solved entirely on Madrasati - no submission status or grades here</string>
 
     <!-- Gradesheet (teacher only) -->
     <string name="gradesheet_heading">Students\' gradesheet</string>
@@ -206,6 +220,12 @@
     <string name="gradesheet_quizzes_avg_label">Quizzes</string>
     <string name="gradesheet_total_label">Total</string>
     <string name="btn_save_gradesheet_row">💾 Save</string>
+    <string name="btn_export_gradesheet_pdf">Export PDF</string>
+    <string name="btn_export_gradesheet_csv">Export CSV</string>
+    <string name="gradesheet_export_ready_heading">Ready to download</string>
+    <string name="gradesheet_export_scan_hint">Scan the QR code with another device to open the file, or open/share it directly from this device</string>
+    <string name="btn_open_link">Open link</string>
+    <string name="btn_share_link">Share link</string>
 
     <!-- Madrasati & Zakiy tools (available to any signed-in account, no role restriction) -->
     <string name="madrasati_heading">Madrasati &amp; Zakiy tools</string>

@@ -276,6 +276,9 @@ interface ApiService {
     @GET("api/teacher/assignments/{id}/submissions/{studentId}/file")
     suspend fun teacherSubmissionFileUrl(@Path("id") id: String, @Path("studentId") studentId: String): FileUrlResponse
 
+    @PATCH("api/teacher/assignments/{id}")
+    suspend fun updateAssignmentLink(@Path("id") id: String, @Body body: UpdateAssignmentLinkRequest)
+
     @DELETE("api/teacher/assignments/{id}")
     suspend fun deleteAssignment(@Path("id") id: String)
 
@@ -315,6 +318,9 @@ interface ApiService {
         @Body body: UpdateGradesheetRowRequest,
     ): GradesheetRowUpdateResponse
 
+    @GET("api/teacher/gradesheet/export")
+    suspend fun exportGradesheet(@Query("class_id") classId: String, @Query("format") format: String): GradesheetExportResponse
+
     // ---- Student ----
     @GET("api/student/schedule")
     suspend fun studentSchedule(): ScheduleResponse
@@ -333,6 +339,9 @@ interface ApiService {
         @Part file: MultipartBody.Part,
         @Part("note") note: RequestBody? = null,
     ): AssignmentSubmission
+
+    @POST("api/student/assignments/{id}/submit")
+    suspend fun submitAssignmentAnswers(@Path("id") id: String, @Body body: SubmitAssignmentAnswersRequest): AssignmentSubmission
 
     @GET("api/student/assignments/{id}/file")
     suspend fun studentSubmissionFileUrl(@Path("id") id: String): FileUrlResponse

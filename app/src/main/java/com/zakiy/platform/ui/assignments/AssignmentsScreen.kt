@@ -36,6 +36,7 @@ import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.AssignmentSummary
+import com.zakiy.platform.ui.common.PLATFORM_MADRASATI
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,23 +103,31 @@ private fun AssignmentCard(assignment: AssignmentSummary, isTeacher: Boolean, on
                 Text(assignment.title, style = MaterialTheme.typography.titleSmall)
                 Text(assignment.subject, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            val statusText = if (isTeacher) {
-                val done = assignment.submittedCount ?: 0
-                val total = assignment.totalCount ?: 0
-                stringResource(R.string.assignment_submitted_count, done, total)
+            if (assignment.platform == PLATFORM_MADRASATI) {
+                Text(
+                    stringResource(R.string.md_badge_madrasati),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             } else {
-                stringResource(if (assignment.submitted == true) R.string.assignment_status_done else R.string.assignment_status_pending)
+                val statusText = if (isTeacher) {
+                    val done = assignment.submittedCount ?: 0
+                    val total = assignment.totalCount ?: 0
+                    stringResource(R.string.assignment_submitted_count, done, total)
+                } else {
+                    stringResource(if (assignment.submitted == true) R.string.assignment_status_done else R.string.assignment_status_pending)
+                }
+                val isDone = if (isTeacher) {
+                    (assignment.submittedCount ?: 0) >= (assignment.totalCount ?: 0) && (assignment.totalCount ?: 0) > 0
+                } else {
+                    assignment.submitted == true
+                }
+                Text(
+                    statusText,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = if (isDone) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                )
             }
-            val isDone = if (isTeacher) {
-                (assignment.submittedCount ?: 0) >= (assignment.totalCount ?: 0) && (assignment.totalCount ?: 0) > 0
-            } else {
-                assignment.submitted == true
-            }
-            Text(
-                statusText,
-                style = MaterialTheme.typography.labelMedium,
-                color = if (isDone) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-            )
         }
     }
 }
