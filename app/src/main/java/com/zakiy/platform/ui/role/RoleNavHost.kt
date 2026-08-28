@@ -87,13 +87,21 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
             )
         }
-        composable(Screen.SchoolTeachers) { SchoolStaffScreen(isTeachers = true, authManager = authManager) }
-        composable(Screen.SchoolAdministration) { SchoolStaffScreen(isTeachers = false, authManager = authManager) }
-        composable(Screen.SchoolStudents) { SchoolStudentsScreen() }
-        composable(Screen.SchoolClasses) { SchoolClassesScreen() }
-        composable(Screen.SchoolAttendance) { SchoolAttendanceScreen() }
+        composable(Screen.SchoolTeachers) {
+            SchoolStaffScreen(isTeachers = true, authManager = authManager, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.SchoolAdministration) {
+            SchoolStaffScreen(isTeachers = false, authManager = authManager, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.SchoolStudents) { SchoolStudentsScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.SchoolClasses) { SchoolClassesScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.SchoolAttendance) { SchoolAttendanceScreen(onBack = { navController.popBackStack() }) }
         composable(Screen.SchoolLibrary) {
-            LibraryScreen(authManager = authManager, onOpenBook = { navController.navigate(Screen.libraryDetail(it)) })
+            LibraryScreen(
+                authManager = authManager,
+                onOpenBook = { navController.navigate(Screen.libraryDetail(it)) },
+                onBack = { navController.popBackStack() },
+            )
         }
 
         composable(Screen.TeacherDashboard) {
@@ -114,13 +122,17 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
             )
         }
-        composable(Screen.TeacherRoster) { TeacherRosterScreen() }
-        composable(Screen.TeacherPerformance) { TeacherPerformanceScreen() }
-        composable(Screen.TeacherSchedule) { TeacherScheduleScreen() }
-        composable(Screen.TeacherAttendance) { TeacherAttendanceScreen() }
-        composable(Screen.Gradesheet) { GradesheetScreen() }
+        composable(Screen.TeacherRoster) { TeacherRosterScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.TeacherPerformance) { TeacherPerformanceScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.TeacherSchedule) { TeacherScheduleScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.TeacherAttendance) { TeacherAttendanceScreen(onBack = { navController.popBackStack() }) }
+        composable(Screen.Gradesheet) { GradesheetScreen(onBack = { navController.popBackStack() }) }
         composable(Screen.TeacherLibrary) {
-            LibraryScreen(authManager = authManager, onOpenBook = { navController.navigate(Screen.libraryDetail(it)) })
+            LibraryScreen(
+                authManager = authManager,
+                onOpenBook = { navController.navigate(Screen.libraryDetail(it)) },
+                onBack = { navController.popBackStack() },
+            )
         }
         composable(Screen.LibraryDetailPattern) { backStackEntry ->
             val bookId = backStackEntry.arguments?.getString("bookId").orEmpty()
@@ -132,6 +144,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
             AssignmentsScreen(
                 authManager = authManager,
                 onOpenAssignment = { id -> navController.navigate(Screen.assignmentDetail(id)) },
+                onBack = { navController.popBackStack() },
             )
         }
         composable(Screen.AssignmentDetailPattern) { backStackEntry ->
@@ -145,6 +158,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 authManager = authManager,
                 onOpenQuiz = { id, _ -> navController.navigate(Screen.quizDetail(id)) },
                 onCreateQuiz = { navController.navigate(Screen.QuizCreate) },
+                onBack = { navController.popBackStack() },
             )
         }
         composable(Screen.QuizCreate) {
@@ -186,7 +200,10 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
         // المساعد الذكي - متاح لكل الأدوار المؤسسية (نفس تسجيل المسارات
         // بـ MainNavHost بالضبط، الطالب يستخدم تلك النسخة بدل هذي)
         composable(Screen.AiConversations) {
-            AiConversationsScreen(onOpenConversation = { id -> navController.navigate(Screen.aiConversation(id)) })
+            AiConversationsScreen(
+                onOpenConversation = { id -> navController.navigate(Screen.aiConversation(id)) },
+                onBack = { navController.popBackStack() },
+            )
         }
         composable(Screen.AiConversationPattern) { backStackEntry ->
             val conversationId = backStackEntry.arguments?.getString("conversationId").orEmpty()

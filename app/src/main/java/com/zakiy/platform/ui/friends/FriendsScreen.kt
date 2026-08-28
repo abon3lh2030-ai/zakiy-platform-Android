@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -31,7 +35,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FriendsScreen(onOpenProfile: (String) -> Unit) {
+fun FriendsScreen(onOpenProfile: (String) -> Unit, onBack: () -> Unit) {
     var friends by remember { mutableStateOf<List<FriendSummary>>(emptyList()) }
     var query by remember { mutableStateOf("") }
     var searchResults by remember { mutableStateOf<List<UserSearchResult>>(emptyList()) }
@@ -41,7 +45,14 @@ fun FriendsScreen(onOpenProfile: (String) -> Unit) {
         friends = runCatching { NetworkModule.backendApi.friends().friends }.getOrDefault(emptyList())
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.friends_heading)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.friends_heading)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding).padding(12.dp)) {
             OutlinedTextField(
                 value = query,

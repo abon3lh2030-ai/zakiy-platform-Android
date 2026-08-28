@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.PanTool
@@ -111,6 +112,7 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
         topBar = {
             TopAppBar(
                 title = { Text(roomCode) },
+                navigationIcon = { IconButton(onClick = onLeave) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
                 actions = {
                     IconButton(onClick = { micOn = !micOn }) {
                         Icon(if (micOn) Icons.Filled.Mic else Icons.Filled.MicOff, contentDescription = null)

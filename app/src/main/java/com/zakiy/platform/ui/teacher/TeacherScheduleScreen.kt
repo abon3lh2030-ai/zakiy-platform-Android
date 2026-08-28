@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,11 +31,18 @@ import com.zakiy.platform.network.dto.ClassScheduleEntry
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TeacherScheduleScreen() {
+fun TeacherScheduleScreen(onBack: () -> Unit) {
     var schedule by remember { mutableStateOf<List<ClassScheduleEntry>>(emptyList()) }
     LaunchedEffect(Unit) { schedule = runCatching { NetworkModule.backendApi.teacherSchedule().schedule }.getOrDefault(emptyList()) }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_schedule)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.tab_schedule)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         LazyColumn(modifier = Modifier.fillMaxSize().padding(padding).padding(12.dp)) {
             items(schedule) { entry ->
                 Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {

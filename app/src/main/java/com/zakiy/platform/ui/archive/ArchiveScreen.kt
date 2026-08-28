@@ -7,9 +7,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,7 +34,7 @@ import com.zakiy.platform.network.dto.SessionArchiveItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ArchiveScreen() {
+fun ArchiveScreen(onBack: () -> Unit) {
     var sessions by remember { mutableStateOf<List<SessionArchiveItem>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
 
@@ -39,7 +43,14 @@ fun ArchiveScreen() {
         isLoading = false
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.nav_archive)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.nav_archive)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         Box(modifier = Modifier.fillMaxSize().padding(padding)) {
             when {
                 isLoading -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }

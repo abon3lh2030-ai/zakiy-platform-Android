@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -39,7 +43,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchoolStudentsScreen() {
+fun SchoolStudentsScreen(onBack: () -> Unit) {
     var students by remember { mutableStateOf<List<SchoolStudent>>(emptyList()) }
     var classes by remember { mutableStateOf<List<SchoolClass>>(emptyList()) }
     var selectedClassId by remember { mutableStateOf<String?>(null) }
@@ -56,7 +60,14 @@ fun SchoolStudentsScreen() {
     LaunchedEffect(Unit) { load() }
     val className = { id: String? -> classes.firstOrNull { it.id == id }?.name ?: "—" }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_students)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.tab_students)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp)) {
             Row {
                 Text(stringResource(R.string.tab_classes) + ": " + className(selectedClassId), modifier = Modifier.weight(1f))

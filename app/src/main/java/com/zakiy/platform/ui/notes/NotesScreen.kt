@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.AlertDialog
@@ -22,6 +23,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -55,7 +57,7 @@ private sealed class FolderFilter {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotesScreen(onOpenNote: (String) -> Unit) {
+fun NotesScreen(onOpenNote: (String) -> Unit, onBack: () -> Unit) {
     var folders by remember { mutableStateOf<List<NoteFolder>>(emptyList()) }
     var notes by remember { mutableStateOf<List<NoteSummary>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
@@ -87,7 +89,12 @@ fun NotesScreen(onOpenNote: (String) -> Unit) {
     LaunchedEffect(query, activeFilter) { reloadNotes() }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.notes_heading)) }) },
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.notes_heading)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = {
                 scope.launch {

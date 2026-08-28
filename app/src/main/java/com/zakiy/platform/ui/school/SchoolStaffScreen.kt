@@ -9,8 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -40,7 +44,7 @@ import kotlinx.coroutines.launch
  * نفسه بس - نفس القيد المطبّق بالباك إند. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SchoolStaffScreen(isTeachers: Boolean, authManager: AuthManager) {
+fun SchoolStaffScreen(isTeachers: Boolean, authManager: AuthManager, onBack: () -> Unit) {
     val role by authManager.role.collectAsStateWithLifecycle()
     val canManage = isTeachers || role == "school_admin"
     var name by remember { mutableStateOf("") }
@@ -61,7 +65,10 @@ fun SchoolStaffScreen(isTeachers: Boolean, authManager: AuthManager) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(stringResource(if (isTeachers) R.string.tab_teachers else R.string.admin_staff_heading)) })
+            TopAppBar(
+                title = { Text(stringResource(if (isTeachers) R.string.tab_teachers else R.string.admin_staff_heading)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
         },
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp)) {

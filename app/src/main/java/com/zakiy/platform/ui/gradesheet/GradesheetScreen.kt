@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -20,6 +22,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -57,7 +61,7 @@ import kotlinx.coroutines.launch
  * يعدّل المجموع أبدًا. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GradesheetScreen() {
+fun GradesheetScreen(onBack: () -> Unit) {
     var classes by remember { mutableStateOf<List<SchoolClassSummary>>(emptyList()) }
     var selectedClassId by remember { mutableStateOf<String?>(null) }
     var classMenuExpanded by remember { mutableStateOf(false) }
@@ -100,7 +104,14 @@ fun GradesheetScreen() {
         selectedClassId?.let { reloadTable(it) }
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.gradesheet_heading)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.gradesheet_heading)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 12.dp)) {
             Text(
                 stringResource(R.string.gradesheet_desc),

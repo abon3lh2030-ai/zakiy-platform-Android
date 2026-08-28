@@ -54,6 +54,7 @@ fun HomeNavHost(authManager: AuthManager) {
                 roomType = "quiz",
                 authManager = authManager,
                 onEnterRoom = { code, isCreator -> navController.navigate(Screen.room(code, "quiz", isCreator)) },
+                onBack = { navController.popBackStack() },
             )
         }
         composable(Screen.RoomLobbyClassroom) {
@@ -61,6 +62,7 @@ fun HomeNavHost(authManager: AuthManager) {
                 roomType = "classroom",
                 authManager = authManager,
                 onEnterRoom = { code, isCreator -> navController.navigate(Screen.room(code, "classroom", isCreator)) },
+                onBack = { navController.popBackStack() },
             )
         }
         composable(Screen.RoomPattern) { backStackEntry ->

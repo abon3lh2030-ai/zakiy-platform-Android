@@ -13,12 +13,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -45,7 +47,7 @@ import kotlinx.coroutines.launch
  * سابقة وتقدر تبدأ وحدة جديدة عبر زر +. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AiConversationsScreen(onOpenConversation: (String) -> Unit) {
+fun AiConversationsScreen(onOpenConversation: (String) -> Unit, onBack: () -> Unit) {
     var conversations by remember { mutableStateOf<List<AiConversationSummary>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isCreating by remember { mutableStateOf(false) }
@@ -63,7 +65,12 @@ fun AiConversationsScreen(onOpenConversation: (String) -> Unit) {
     LaunchedEffect(Unit) { load() }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.ai_assistant)) }) },
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.ai_assistant)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {

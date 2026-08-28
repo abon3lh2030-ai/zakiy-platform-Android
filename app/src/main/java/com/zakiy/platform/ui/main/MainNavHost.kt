@@ -202,14 +202,20 @@ fun MainNavHost(authManager: AuthManager) {
                 StudyPlanScreen(planId = planId, onBack = { navController.popBackStack() })
             }
             composable(Screen.Notes) {
-                NotesScreen(onOpenNote = { noteId -> navController.navigate(Screen.noteEditor(noteId)) })
+                NotesScreen(
+                    onOpenNote = { noteId -> navController.navigate(Screen.noteEditor(noteId)) },
+                    onBack = { navController.popBackStack() },
+                )
             }
             composable(Screen.NoteEditorPattern) { backStackEntry ->
                 val noteId = backStackEntry.arguments?.getString("noteId").orEmpty()
                 NoteEditorScreen(noteId = noteId, onBack = { navController.popBackStack() })
             }
             composable(Screen.AiConversations) {
-                AiConversationsScreen(onOpenConversation = { id -> navController.navigate(Screen.aiConversation(id)) })
+                AiConversationsScreen(
+                    onOpenConversation = { id -> navController.navigate(Screen.aiConversation(id)) },
+                    onBack = { navController.popBackStack() },
+                )
             }
             composable(Screen.AiConversationPattern) { backStackEntry ->
                 val conversationId = backStackEntry.arguments?.getString("conversationId").orEmpty()
@@ -243,6 +249,7 @@ fun MainNavHost(authManager: AuthManager) {
                 AssignmentsScreen(
                     authManager = authManager,
                     onOpenAssignment = { id -> navController.navigate(Screen.assignmentDetail(id)) },
+                    onBack = { navController.popBackStack() },
                 )
             }
             composable(Screen.AssignmentDetailPattern) { backStackEntry ->
@@ -256,6 +263,7 @@ fun MainNavHost(authManager: AuthManager) {
                     authManager = authManager,
                     onOpenQuiz = { id, _ -> navController.navigate(Screen.quizTake(id)) },
                     onCreateQuiz = {},
+                    onBack = { navController.popBackStack() },
                 )
             }
             composable(Screen.QuizTakePattern) { backStackEntry ->
@@ -265,7 +273,7 @@ fun MainNavHost(authManager: AuthManager) {
             // كشف الدرجات - معلم بس (نفس منطق تسجيل Assignments/Quizzes هنا: مسجّل
             // بكل الـ NavHost عشان بطاقة "مدرستي" تلقاه، لكن ما يوصله فعليًا إلا
             // حساب معلم - isMadrasatiTeacher بـ MadrasatiHubScreen)
-            composable(Screen.Gradesheet) { GradesheetScreen() }
+            composable(Screen.Gradesheet) { GradesheetScreen(onBack = { navController.popBackStack() }) }
             composable(Screen.StudentSchedule) { StudentScheduleScreen(authManager = authManager, onBack = { navController.popBackStack() }) }
             composable(Screen.MyProfile) { ProfileScreen(userId = null, authManager = authManager, onBack = { navController.popBackStack() }) }
             composable(Screen.ProfilePattern) { backStackEntry ->
@@ -273,9 +281,14 @@ fun MainNavHost(authManager: AuthManager) {
                 ProfileScreen(userId = userId, authManager = authManager, onBack = { navController.popBackStack() })
             }
             composable(Screen.EditProfile) { EditProfileScreen(authManager = authManager, onBack = { navController.popBackStack() }) }
-            composable(Screen.Friends) { FriendsScreen(onOpenProfile = { navController.navigate(Screen.profile(it)) }) }
-            composable(Screen.Archive) { ArchiveScreen() }
-            composable(Screen.Subscription) { SubscriptionScreen() }
+            composable(Screen.Friends) {
+                FriendsScreen(
+                    onOpenProfile = { navController.navigate(Screen.profile(it)) },
+                    onBack = { navController.popBackStack() },
+                )
+            }
+            composable(Screen.Archive) { ArchiveScreen(onBack = { navController.popBackStack() }) }
+            composable(Screen.Subscription) { SubscriptionScreen(onBack = { navController.popBackStack() }) }
         }
     }
 }

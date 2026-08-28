@@ -8,14 +8,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,12 +36,14 @@ import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.CreateRoomRequest
+import com.zakiy.platform.network.dto.toApiErrorMessage
 import kotlinx.coroutines.launch
 
 /** لازم حساب مسجّل عشان تدخل أي درس مباشر أو جلسة جماعية - ما فيه دخول
  * كضيف إطلاقًا (نفس القيد اللي الباك إند يفرضه). */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoomLobbyScreen(roomType: String, authManager: AuthManager, onEnterRoom: (String, Boolean) -> Unit) {
+fun RoomLobbyScreen(roomType: String, authManager: AuthManager, onEnterRoom: (String, Boolean) -> Unit, onBack: () -> Unit) {
     val isAuthenticated by authManager.isAuthenticated.collectAsStateWithLifecycle()
     var joinCode by remember { mutableStateOf("") }
     var isCreating by remember { mutableStateOf(false) }
@@ -45,73 +52,79 @@ fun RoomLobbyScreen(roomType: String, authManager: AuthManager, onEnterRoom: (St
     val genericError = stringResource(R.string.error_generic)
     val title = if (roomType == "classroom") stringResource(R.string.room_type_classroom) else stringResource(R.string.group_room)
 
-    if (!isAuthenticated) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(title) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
+        if (!isAuthenticated) {
+            Column(
+                modifier = Modifier.fillMaxSize().padding(padding).padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Icon(Icons.Filled.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(modifier = Modifier.size(12.dp))
+                Text(
+                    stringResource(R.string.login_required_for_rooms),
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            return@Scaffold
+        }
+
         Column(
-            modifier = Modifier.fillMaxSize().padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize().padding(padding).padding(20.dp),
             verticalArrangement = Arrangement.Center,
         ) {
-            Icon(Icons.Filled.Lock, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            Spacer(modifier = Modifier.size(12.dp))
-            Text(
-                stringResource(R.string.login_required_for_rooms),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        return
-    }
+            if (errorMessage != null) {
+                Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
+                Spacer(modifier = Modifier.size(8.dp))
+            }
 
-    Column(
-        modifier = Modifier.fillMaxSize().padding(20.dp),
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(title, style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.size(20.dp))
-
-        if (errorMessage != null) {
-            Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
-            Spacer(modifier = Modifier.size(8.dp))
-        }
-
-        Button(
-            onClick = {
-                isCreating = true
-                errorMessage = null
-                scope.launch {
-                    try {
-                        val result = NetworkModule.backendApi.createRoom(CreateRoomRequest(roomType = roomType))
-                        onEnterRoom(result.roomCode, true)
-                    } catch (e: Exception) {
-                        errorMessage = genericError
-                    } finally {
-                        isCreating = false
+            Button(
+                onClick = {
+                    isCreating = true
+                    errorMessage = null
+                    scope.launch {
+                        try {
+                            val result = NetworkModule.backendApi.createRoom(CreateRoomRequest(roomType = roomType))
+                            onEnterRoom(result.roomCode, true)
+                        } catch (e: Exception) {
+                            errorMessage = e.toApiErrorMessage(genericError)
+                        } finally {
+                            isCreating = false
+                        }
                     }
-                }
-            },
-            enabled = !isCreating,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            if (isCreating) CircularProgressIndicator(modifier = Modifier.size(20.dp)) else Text(stringResource(R.string.create_room))
+                },
+                enabled = !isCreating,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                if (isCreating) CircularProgressIndicator(modifier = Modifier.size(20.dp)) else Text(stringResource(R.string.create_room))
+            }
+
+            Spacer(modifier = Modifier.size(24.dp))
+            HorizontalDivider()
+            Spacer(modifier = Modifier.size(24.dp))
+
+            Text(stringResource(R.string.join_by_code), style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.size(10.dp))
+            OutlinedTextField(
+                value = joinCode,
+                onValueChange = { joinCode = it.uppercase() },
+                label = { Text(stringResource(R.string.room_code_placeholder)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(modifier = Modifier.size(12.dp))
+            Button(
+                onClick = { if (joinCode.isNotBlank()) onEnterRoom(joinCode.trim(), false) },
+                modifier = Modifier.fillMaxWidth(),
+            ) { Text(stringResource(R.string.btn_join_room)) }
         }
-
-        Spacer(modifier = Modifier.size(24.dp))
-        HorizontalDivider()
-        Spacer(modifier = Modifier.size(24.dp))
-
-        Text(stringResource(R.string.join_by_code), style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.size(10.dp))
-        OutlinedTextField(
-            value = joinCode,
-            onValueChange = { joinCode = it.uppercase() },
-            label = { Text(stringResource(R.string.room_code_placeholder)) },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Spacer(modifier = Modifier.size(12.dp))
-        Button(
-            onClick = { if (joinCode.isNotBlank()) onEnterRoom(joinCode.trim(), false) },
-            modifier = Modifier.fillMaxWidth(),
-        ) { Text(stringResource(R.string.btn_join_room)) }
     }
 }

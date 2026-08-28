@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,11 +31,18 @@ import com.zakiy.platform.network.dto.SchoolStudent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TeacherRosterScreen() {
+fun TeacherRosterScreen(onBack: () -> Unit) {
     var students by remember { mutableStateOf<List<SchoolStudent>>(emptyList()) }
     LaunchedEffect(Unit) { students = runCatching { NetworkModule.backendApi.teacherRoster().students }.getOrDefault(emptyList()) }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_roster)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.tab_roster)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         LazyColumn(modifier = Modifier.fillMaxSize().padding(padding).padding(12.dp)) {
             items(students, key = { it.userId }) { student ->
                 Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {

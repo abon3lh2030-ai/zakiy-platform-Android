@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -53,7 +54,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryScreen(authManager: AuthManager, onOpenBook: (String) -> Unit) {
+fun LibraryScreen(authManager: AuthManager, onOpenBook: (String) -> Unit, onBack: (() -> Unit)? = null) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var books by remember { mutableStateOf<List<LibraryBook>>(emptyList()) }
@@ -93,7 +94,16 @@ fun LibraryScreen(authManager: AuthManager, onOpenBook: (String) -> Unit) {
     }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.nav_library)) }) },
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.nav_library)) },
+                navigationIcon = {
+                    if (onBack != null) {
+                        IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) }
+                    }
+                },
+            )
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { filePicker.launch("application/pdf") }) {
                 Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_book))

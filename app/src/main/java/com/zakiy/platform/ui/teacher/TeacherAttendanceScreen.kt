@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -39,7 +43,7 @@ private val statusLabels = mapOf("present" to "حاضر", "late" to "متأخر"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TeacherAttendanceScreen() {
+fun TeacherAttendanceScreen(onBack: () -> Unit) {
     var students by remember { mutableStateOf<List<SchoolStudent>>(emptyList()) }
     var statusByStudent by remember { mutableStateOf<Map<String, String>>(emptyMap()) }
     var classId by remember { mutableStateOf<String?>(null) }
@@ -52,7 +56,14 @@ fun TeacherAttendanceScreen() {
         classId = roster?.classes?.firstOrNull()?.id
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_attendance)) }) }) { padding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.tab_attendance)) },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+            )
+        },
+    ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding).padding(12.dp)) {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(students, key = { it.userId }) { student ->

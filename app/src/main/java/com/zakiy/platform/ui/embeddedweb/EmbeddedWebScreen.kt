@@ -91,6 +91,12 @@ fun EmbeddedWebView(
                     WebView(ctx).apply {
                         settings.javaScriptEnabled = true
                         settings.domStorageEnabled = true
+                        // بدونها الـ WebView يعرض الصفحة بعرض ديسكتوب افتراضي (980px)
+                        // ويتجاهل وسم viewport اللي الموقع نفسه يعتمد عليه للتصميم
+                        // المتجاوب - يطلع سايدبار الديسكتوب مضغوط بدل التخطيط المتنقل
+                        // الصحيح، ومحتوى مقصوص يحتاج تمرير أفقي
+                        settings.useWideViewPort = true
+                        settings.loadWithOverviewMode = true
                         webViewClient = object : WebViewClient() {
                             private var injectedOnStart = false
 
@@ -122,10 +128,22 @@ fun EmbeddedWebView(
                                 injectSession(view)
                                 val fn = navigateJsFunction
                                 if (!fn.isNullOrBlank()) {
-                                    view.evaluateJavascript(
-                                        "(function(){try{if(typeof $fn === 'function'){$fn();}}catch(e){}})();",
-                                        null,
-                                    )
+                                    // الموقع نفسه، بعد onAuthSuccess، يسوّي fetch شبكي غير
+                                    // متزامن لـ /api/me (ممكن ياخذ ثواني لو سيرفر Render
+                                    // كان نايم) وبعدها يوجّه الشاشة تلقائيًا. لحساب فردي
+                                    // (role فاضي) هذا يعني proceedToApp()، اللي يسوّي
+                                    // show('mode-select') بس بدون ما يخفي أي شاشة حساب
+                                    // ثانية (بعكس routeByRole) - فتطلع شاشة مختبر العلوم/
+                                    // الروبوتات وشاشة "وش تبي تسوي اليوم" الرئيسية مع بعض
+                                    // بنفس الصفحة. نعيد نداء دالة التنقّل + نخفي mode-select
+                                    // يدويًا كذا مرة على فترات عشان نضمن نربح هذا السباق
+                                    // بغض النظر عن مدة استجابة الباك إند
+                                    val js = "(function(){try{if(typeof $fn === 'function'){$fn();}" +
+                                        "if(typeof hide === 'function'){hide('mode-select');}}catch(e){}})();"
+                                    val handler = android.os.Handler(android.os.Looper.getMainLooper())
+                                    for (attempt in 0..24) {
+                                        handler.postDelayed({ view.evaluateJavascript(js, null) }, attempt * 800L)
+                                    }
                                 }
                             }
 
