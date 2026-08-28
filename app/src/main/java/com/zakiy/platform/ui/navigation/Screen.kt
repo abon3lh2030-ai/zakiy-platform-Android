@@ -106,4 +106,11 @@ object Screen {
     const val StudyPlanCreate = "madrasati/study_plan/create"
     fun studyPlanView(id: String) = "madrasati/study_plan/$id"
     const val StudyPlanViewPattern = "madrasati/study_plan/{planId}"
+
+    // مختبر العلوم (مستكشف الأحياء Native + الكيمياء والفيزياء مدمج
+    // بالمتصفح) ومعمل الروبوتات (مدمج بالمتصفح بالكامل، مسار مستقل تمامًا
+    // زي السايد بار بالموقع - roboticsLabBtn/scienceLabBtn مو تبويب تحت
+    // مدرستي) - متاحين لأي حساب مسجّل دخول بدون تقييد دور
+    const val ScienceLab = "science_lab"
+    const val RoboticsLab = "robotics_lab"
 }

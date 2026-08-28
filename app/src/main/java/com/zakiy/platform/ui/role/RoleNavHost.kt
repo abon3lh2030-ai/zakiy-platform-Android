@@ -6,6 +6,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.zakiy.platform.R
 import com.zakiy.platform.network.AccountRole
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.ui.admin.AdminDashboardScreen
@@ -14,6 +15,7 @@ import com.zakiy.platform.ui.ai.AiConversationScreen
 import com.zakiy.platform.ui.ai.AiConversationsScreen
 import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
+import com.zakiy.platform.ui.embeddedweb.EmbeddedWebScreen
 import com.zakiy.platform.ui.gradesheet.GradesheetScreen
 import com.zakiy.platform.ui.library.LibraryDetailScreen
 import com.zakiy.platform.ui.library.LibraryScreen
@@ -32,6 +34,7 @@ import com.zakiy.platform.ui.quizzes.QuizEditScreen
 import com.zakiy.platform.ui.quizzes.QuizzesScreen
 import com.zakiy.platform.ui.rooms.RoomLobbyScreen
 import com.zakiy.platform.ui.rooms.RoomScreen
+import com.zakiy.platform.ui.sciencelab.ScienceLabScreen
 import com.zakiy.platform.ui.school.SchoolAttendanceScreen
 import com.zakiy.platform.ui.school.SchoolClassesScreen
 import com.zakiy.platform.ui.school.SchoolDashboardScreen
@@ -63,6 +66,8 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 authManager = authManager,
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
+                onOpenScienceLab = { navController.navigate(Screen.ScienceLab) },
+                onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
             )
         }
 
@@ -78,6 +83,8 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenMessages = { navController.navigate(Screen.Messages) },
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
+                onOpenScienceLab = { navController.navigate(Screen.ScienceLab) },
+                onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
             )
         }
         composable(Screen.SchoolTeachers) { SchoolStaffScreen(isTeachers = true, authManager = authManager) }
@@ -102,6 +109,8 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenGradesheet = { navController.navigate(Screen.Gradesheet) },
                 onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                 onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
+                onOpenScienceLab = { navController.navigate(Screen.ScienceLab) },
+                onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
                 onEnterRoom = { code -> navController.navigate(Screen.room(code, "classroom", true)) },
             )
         }
@@ -248,6 +257,20 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
         composable(Screen.StudyPlanViewPattern) { backStackEntry ->
             val planId = backStackEntry.arguments?.getString("planId")
             StudyPlanScreen(planId = planId, onBack = { navController.popBackStack() })
+        }
+
+        // مختبر العلوم ومعمل الروبوتات - متاحة لكل الأدوار المؤسسية، نفس
+        // مبدأ تسجيل المسارات أعلاه بالضبط (بدون أي تقييد دور)
+        composable(Screen.ScienceLab) {
+            ScienceLabScreen(authManager = authManager, onBack = { navController.popBackStack() })
+        }
+        composable(Screen.RoboticsLab) {
+            EmbeddedWebScreen(
+                titleRes = R.string.nav_robotics_lab,
+                authManager = authManager,
+                onBack = { navController.popBackStack() },
+                navigateJsFunction = "showRoboticsLabScreen",
+            )
         }
 
         composable(Screen.RoomPattern) { backStackEntry ->

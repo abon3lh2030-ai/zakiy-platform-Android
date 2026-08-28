@@ -17,7 +17,9 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.PrecisionManufacturing
 import androidx.compose.material.icons.filled.Quiz
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material3.Button
@@ -61,6 +63,8 @@ fun TeacherDashboardScreen(
     onOpenGradesheet: () -> Unit,
     onOpenAiAssistant: () -> Unit,
     onOpenMadrasati: () -> Unit,
+    onOpenScienceLab: () -> Unit,
+    onOpenRoboticsLab: () -> Unit,
     onEnterRoom: (String) -> Unit,
 ) {
     var classes by remember { mutableStateOf<List<SchoolClassSummary>>(emptyList()) }
@@ -118,6 +122,8 @@ fun TeacherDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
                 item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
                 item { DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF00897B), stringResource(R.string.madrasati_heading), onOpenMadrasati) }
+                item { DashboardMenuRow(Icons.Filled.Science, Color(0xFF00897B), stringResource(R.string.nav_science_lab), onOpenScienceLab) }
+                item { DashboardMenuRow(Icons.Filled.PrecisionManufacturing, Color(0xFF546E7A), stringResource(R.string.nav_robotics_lab), onOpenRoboticsLab) }
             }
         }
     }

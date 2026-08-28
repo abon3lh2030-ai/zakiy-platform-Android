@@ -388,4 +388,143 @@
     <string name="btn_reset_password">🔑 كلمة سر جديدة</string>
     <string name="btn_add_teacher">إضافة معلم</string>
     <string name="btn_add_admin_staff">إضافة إداري</string>
+
+    <!-- مختبر العلوم - عام -->
+    <string name="sl_heading">مختبر العلوم</string>
+    <string name="sl_desc">جرّب تفاعلات كيميائية وفيزيائية بمختبر ثلاثي الأبعاد، واستكشف عالم الأحياء - مع مساعد ذكيّ يرافقك طول الجلسة.</string>
+    <string name="sl_tab_chemistry">🧪 الكيمياء والفيزياء</string>
+    <string name="sl_tab_biology">🧬 الأحياء</string>
+    <string name="sl_show_summary">📋 عرض تلخيص جلستي</string>
+    <string name="sl_summary_title">📋 تلخيص جلستك</string>
+    <string name="sl_summary_empty">لسا ما سويت أي نشاط بهذي الجلسة - جرّب تفاعل أو استكشف حيوان أول.</string>
+    <string name="sl_chat_heading">🤖 مساعد ذكيّ</string>
+    <string name="sl_chat_placeholder">اسأل عن أي شي بالمختبر...</string>
+
+    <!-- مختبر العلوم - الأحياء: تنقّل -->
+    <string name="sl_bio_pick_category">اختر تصنيف عشان تستكشفه</string>
+    <string name="sl_back_to_categories">⬅ رجوع للتصنيفات</string>
+    <string name="sl_cat_mammals">🦁 ثدييات</string>
+    <string name="sl_cat_reptiles">🐊 زواحف</string>
+    <string name="sl_cat_amphibians">🐸 برمائيات</string>
+    <string name="sl_cat_birds">🦅 طيور</string>
+    <string name="sl_cat_fish">🦈 أسماك</string>
+    <string name="sl_cat_human">🧍 جسم الإنسان</string>
+
+    <!-- مختبر العلوم - صورة الجسم وأعضاؤه -->
+    <string name="sl_body_hint">اضغط على أي عضو بالجسم مباشرة عشان تعرف وظيفته.</string>
+    <string name="sl_body_img_error">تعذّر تحميل صورة الجسم - تأكد من اتصالك بالإنترنت.</string>
+    <string name="sl_part_heart_name">القلب</string>
+    <string name="sl_part_heart_desc">عضو عضلي يضخ الدم لكل أجزاء الجسم، يمده بالأكسجين والغذاء.</string>
+    <string name="sl_part_lungs_name">الرئتان</string>
+    <string name="sl_part_lungs_desc">مسؤولتان عن التنفس - تاخذ الأكسجين من الهواء وتطرد ثاني أكسيد الكربون.</string>
+    <string name="sl_part_brain_name">الدماغ</string>
+    <string name="sl_part_brain_desc">مركز التحكم بالجسم كامل - يتحكم بالتفكير والحركة والحواس.</string>
+    <string name="sl_part_stomach_name">المعدة</string>
+    <string name="sl_part_stomach_desc">عضو يهضم الطعام باستخدام أحماض وعصارات هضمية قوية.</string>
+    <string name="sl_part_kidneys_name">الكليتان</string>
+    <string name="sl_part_kidneys_desc">تنقّيان الدم من الفضلات وتنظّمان كمية الماء بالجسم عن طريق البول.</string>
+    <string name="sl_part_skin_name">الجلد</string>
+    <string name="sl_part_skin_desc">أكبر عضو بالجسم - يحمي من الجراثيم وينظّم درجة الحرارة.</string>
+    <string name="sl_part_liver_name">الكبد</string>
+    <string name="sl_part_liver_desc">أكبر غدة بالجسم - ينقّي الدم من السموم ويخزّن الطاقة.</string>
+    <string name="sl_part_intestines_name">الأمعاء</string>
+    <string name="sl_part_intestines_desc">أنبوب طويل يكمل هضم الطعام ويمتص العناصر الغذائية المفيدة للدم.</string>
+
+    <!-- مختبر العلوم - حقوق صور تشريح الجسم -->
+    <string name="sl_body_credit_dog">صورة تشريح كلب حقيقية - ويكيميديا كومنز، رخصة CC BY-SA 4.0</string>
+    <string name="sl_body_credit_cat">صورة تشريح قطة (أقرب قريب حقيقي متوفر - نفس فصيلة السنوريات) - ويكيميديا كومنز، رخصة CC BY-SA 3.0</string>
+    <string name="sl_body_credit_reptile">صورة تشريح أفعى (مرجع عام للزواحف) - ويكيميديا كومنز، رخصة CC BY-SA 3.0</string>
+    <string name="sl_body_credit_fish">صورة تشريح سمكة عظمية - ويكيميديا كومنز، رخصة CC BY-SA 3.0</string>
+    <string name="sl_body_credit_whale">صورة تشريح حوت أوركا حقيقية - ويكيميديا كومنز، رخصة CC BY-SA 3.0</string>
+    <string name="sl_body_credit_turtle">صورة تشريح سلحفاة حقيقية - ويكيميديا كومنز</string>
+    <string name="sl_body_credit_frog">رسم تشريحي حقيقي لضفدع من كتاب علمي قديم (1907) - ملكية عامة</string>
+    <string name="sl_body_credit_bird">صورة الجهاز الهضمي لبطة برية حقيقية (أقرب مرجع حر متاح للطيور) - ويكيميديا كومنز، رخصة CC BY-SA 3.0</string>
+
+    <!-- مختبر العلوم - الحيوانات (اسم + حقيقة سريعة + ٣ حقائق لكل حيوان) -->
+    <string name="sl_animal_lion_name">أسد</string>
+    <string name="sl_animal_lion_quick">الأسد الوحيد بين القطط اللي يعيش بمجموعات (زُمَر).</string>
+    <string name="sl_animal_lion_fact1">الأسد يسمى \"ملك الغابة\" رغم إنه يعيش بالسهول أكثر من الغابات.</string>
+    <string name="sl_animal_lion_fact2">زئير الأسد يُسمع من مسافة تصل لـ٨ كيلومتر.</string>
+    <string name="sl_animal_lion_fact3">اللبؤات هن اللي يصطدن أغلب الوقت، مو الذكور.</string>
+    <string name="sl_animal_elephant_name">فيل</string>
+    <string name="sl_animal_elephant_quick">أكبر حيوان بري بالعالم.</string>
+    <string name="sl_animal_elephant_fact1">خرطوم الفيل فيه أكثر من ٤٠ ألف عضلة.</string>
+    <string name="sl_animal_elephant_fact2">الفيلة تتذكر لسنوات طويلة - ذاكرتها قوية جدًا.</string>
+    <string name="sl_animal_elephant_fact3">الفيلة تتواصل بأصوات منخفضة جدًا ما يسمعها الإنسان.</string>
+    <string name="sl_animal_cat_name">قط</string>
+    <string name="sl_animal_cat_quick">القطط تنام أغلب حياتها - حوالي ١٣-١٦ ساعة باليوم.</string>
+    <string name="sl_animal_cat_fact1">القطط تقدر تدور أذنها ١٨٠ درجة.</string>
+    <string name="sl_animal_cat_fact2">كل قطة لها بصمة أنف فريدة زي بصمة إصبع الإنسان.</string>
+    <string name="sl_animal_cat_fact3">القطط ما تقدر تتذوق الحلاوة.</string>
+    <string name="sl_animal_dog_name">كلب</string>
+    <string name="sl_animal_dog_quick">الكلاب من أقدم الحيوانات الأليفة اللي رافقت الإنسان.</string>
+    <string name="sl_animal_dog_fact1">حاسة شم الكلب أقوى من الإنسان بآلاف المرات.</string>
+    <string name="sl_animal_dog_fact2">بصمة أنف الكلب فريدة زي بصمة إصبع الإنسان.</string>
+    <string name="sl_animal_dog_fact3">الكلاب تتعرق بس من وسادات كفوفها، وتلهث عشان تبرّد جسمها.</string>
+    <string name="sl_animal_whale_name">حوت</string>
+    <string name="sl_animal_whale_quick">الحوت الأزرق أكبر حيوان عاش على الأرض على الإطلاق.</string>
+    <string name="sl_animal_whale_fact1">قلب الحوت الأزرق بحجم سيارة صغيرة تقريبًا.</string>
+    <string name="sl_animal_whale_fact2">الحيتان تتنفس هواء زي الإنسان بالضبط (ثدييات).</string>
+    <string name="sl_animal_whale_fact3">بعض الحيتان تهاجر آلاف الكيلومترات كل سنة.</string>
+    <string name="sl_animal_crocodile_name">تمساح</string>
+    <string name="sl_animal_crocodile_quick">التماسيح من أقدم الزواحف اللي بقيت شبه ثابتة من عصر الديناصورات.</string>
+    <string name="sl_animal_crocodile_fact1">قوة عضّة التمساح من أقوى العضّات بمملكة الحيوان.</string>
+    <string name="sl_animal_crocodile_fact2">التماسيح تقدر تعيش أكثر من ٧٠ سنة.</string>
+    <string name="sl_animal_crocodile_fact3">التماسيح حيوانات ذوات دم بارد، تعتمد على الشمس لتنظيم حرارتها.</string>
+    <string name="sl_animal_turtle_name">سلحفاة</string>
+    <string name="sl_animal_turtle_quick">بعض أنواع السلاحف تعيش أكثر من ١٠٠ سنة.</string>
+    <string name="sl_animal_turtle_fact1">قوقعة السلحفاة جزء من هيكلها العظمي، ما تقدر تخلعها.</string>
+    <string name="sl_animal_turtle_fact2">سلاحف البحر تسافر آلاف الكيلومترات عشان تضع بيضها بنفس الشاطئ اللي ولدت فيه.</string>
+    <string name="sl_animal_turtle_fact3">السلاحف من الزواحف، تتنفس هواء رغم إن بعضها يعيش بالماء.</string>
+    <string name="sl_animal_snake_name">ثعبان</string>
+    <string name="sl_animal_snake_quick">الثعابين تشم الروائح بلسانها المتشعّب.</string>
+    <string name="sl_animal_snake_fact1">الثعابين ما عندها جفون - عيونها مغطاة بطبقة شفافة ثابتة.</string>
+    <string name="sl_animal_snake_fact2">بعض الثعابين تسلخ جلدها عدة مرات بالسنة عشان تكبر.</string>
+    <string name="sl_animal_snake_fact3">مو كل الثعابين سامة - أغلبها آمن تمامًا.</string>
+    <string name="sl_animal_frog_name">ضفدع</string>
+    <string name="sl_animal_frog_quick">الضفادع تتنفس عن طريق جلدها بالإضافة لرئتيها.</string>
+    <string name="sl_animal_frog_fact1">الضفدع يبدأ حياته كشرغوف (يرقة) يعيش بالماء بس.</string>
+    <string name="sl_animal_frog_fact2">جلد الضفدع لازم يبقى رطب عشان يتنفس صح.</string>
+    <string name="sl_animal_frog_fact3">بعض الضفادع سامة جدًا رغم صغر حجمها.</string>
+    <string name="sl_animal_salamander_name">سمندل</string>
+    <string name="sl_animal_salamander_quick">السمندل يقدر يعيد نمو ذيله أو أطرافه لو انقطعت.</string>
+    <string name="sl_animal_salamander_fact1">السمندل برمائي زي الضفدع - يعيش جزء من حياته بالماء وجزء باليابسة.</string>
+    <string name="sl_animal_salamander_fact2">جلد السمندل رطب ونحتاج بيئة رطبة عشان يعيش.</string>
+    <string name="sl_animal_salamander_fact3">بعض أنواع السمندل تتنفس بجلدها بس بدون رئتين.</string>
+    <string name="sl_animal_eagle_name">نسر</string>
+    <string name="sl_animal_eagle_quick">بصر النسر أقوى من بصر الإنسان بعدة مرات.</string>
+    <string name="sl_animal_eagle_fact1">النسر يقدر يشوف فريسته من ارتفاع كيلومتر تقريبًا.</string>
+    <string name="sl_animal_eagle_fact2">مخالب النسر قوية جدًا وتستخدم للصيد.</string>
+    <string name="sl_animal_eagle_fact3">بعض النسور تبني نفس العش وتستخدمه لسنوات.</string>
+    <string name="sl_animal_penguin_name">بطريق</string>
+    <string name="sl_animal_penguin_quick">البطريق طائر ما يطير، لكنه سبّاح ماهر جدًا.</string>
+    <string name="sl_animal_penguin_fact1">ريش البطريق كثيف ومقاوم للماء عشان يحميه من البرد.</string>
+    <string name="sl_animal_penguin_fact2">بعض أنواع البطريق تعيش بمناطق باردة جدًا زي القارة القطبية الجنوبية.</string>
+    <string name="sl_animal_penguin_fact3">البطريق يقدر يغطس لعمق كبير بحثًا عن الطعام.</string>
+    <string name="sl_animal_parrot_name">ببغاء</string>
+    <string name="sl_animal_parrot_quick">الببغاوات من أذكى الطيور وتقدر تقلّد الأصوات.</string>
+    <string name="sl_animal_parrot_fact1">بعض الببغاوات تعيش أكثر من ٦٠ سنة.</string>
+    <string name="sl_animal_parrot_fact2">الببغاوات تستخدم منقارها ومخالبها معًا للتسلّق.</string>
+    <string name="sl_animal_parrot_fact3">ألوان ريش الببغاء الزاهية تساعدها تتعرف على بعضها.</string>
+    <string name="sl_animal_shark_name">قرش</string>
+    <string name="sl_animal_shark_quick">القرش موجود على الأرض من قبل الديناصورات بملايين السنين.</string>
+    <string name="sl_animal_shark_fact1">أسنان القرش تتجدد باستمرار طول حياته.</string>
+    <string name="sl_animal_shark_fact2">حاسة الشم عند القرش قوية جدًا - يشم دم بتركيز ضئيل جدًا بالماء.</string>
+    <string name="sl_animal_shark_fact3">أغلب أنواع القروش ما تشكّل خطر على الإنسان إطلاقًا.</string>
+    <string name="sl_animal_goldfish_name">سمكة ذهبية</string>
+    <string name="sl_animal_goldfish_quick">ذاكرة السمكة الذهبية أطول بكثير من الاعتقاد الشائع (ثواني بس).</string>
+    <string name="sl_animal_goldfish_fact1">السمكة الذهبية تقدر تتذكر أشياء لأشهر.</string>
+    <string name="sl_animal_goldfish_fact2">تتنفس عن طريق الخياشيم اللي تستخرج الأكسجين من الماء.</string>
+    <string name="sl_animal_goldfish_fact3">حجم حوضها يؤثر بشكل كبير على حجم نموها.</string>
+
+    <!-- مختبر العلوم - سجل الجلسة (لملخص الذكاء الاصطناعي) -->
+    <string name="sl_log_category_prefix">اختار تصنيف</string>
+    <string name="sl_log_animal_prefix">استكشف حيوان</string>
+    <string name="sl_log_part_prefix">استكشف عضو</string>
+    <string name="sl_log_question_prefix">سأل الذكاء الاصطناعي</string>
+
+    <!-- مختبر العلوم / معمل الروبوتات - عناصر تنقّل + مختبر مدمج بالمتصفح -->
+    <string name="nav_science_lab">🧪 مختبر العلوم</string>
+    <string name="nav_robotics_lab">🦾 معمل الروبوتات</string>
+    <string name="embedded_web_load_error">تعذّر تحميل الصفحة - تأكد من اتصالك بالإنترنت.</string>
 </resources>

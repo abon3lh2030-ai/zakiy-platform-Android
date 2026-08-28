@@ -16,7 +16,9 @@ import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.PrecisionManufacturing
 import androidx.compose.material.icons.filled.Quiz
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,6 +55,8 @@ fun SettingsScreen(
     onOpenQuizzes: () -> Unit,
     onOpenAiAssistant: () -> Unit,
     onOpenMadrasati: () -> Unit,
+    onOpenScienceLab: () -> Unit,
+    onOpenRoboticsLab: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val isAuthenticated by authManager.isAuthenticated.collectAsStateWithLifecycle()
@@ -75,6 +79,12 @@ fun SettingsScreen(
                 // مدرستي وأدوات ذكيّ - نفس مبدأ المساعد الذكي بالضبط: متاحة لأي
                 // حساب مسجّل دخول بدون أي تقييد دور
                 SettingsRow(Icons.Filled.OpenInBrowser, stringResource(R.string.madrasati_heading), onOpenMadrasati)
+                // مختبر العلوم ومعمل الروبوتات - نفس مبدأ زري السايد بار
+                // بالموقع بالضبط: متاحين لأي حساب مسجّل دخول بدون أي تقييد دور
+                // (roboticsLabBtn/scienceLabBtn دايمًا ظاهرين، requireAuthOrPrompt
+                // بس هو الحارس - ما فيه شرط دور إطلاقًا)
+                SettingsRow(Icons.Filled.Science, stringResource(R.string.nav_science_lab), onOpenScienceLab)
+                SettingsRow(Icons.Filled.PrecisionManufacturing, stringResource(R.string.nav_robotics_lab), onOpenRoboticsLab)
 
                 // حساب مؤسسي (role موجود) وصوله محكوم بعضوية مدرسته لا باشتراك
                 // شخصي - ما نعرض له زر الاشتراك إطلاقًا (نفس قاعدة iOS/الموقع)

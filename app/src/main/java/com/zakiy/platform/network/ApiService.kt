@@ -449,6 +449,13 @@ interface ApiService {
 
     @DELETE("api/study-plan/{id}")
     suspend fun deleteStudyPlan(@Path("id") id: String)
+
+    // ---- مختبر العلوم (مستكشف الأحياء - متاح لأي حساب مسجّل دخول) ----
+    @POST("api/science-lab/chat")
+    suspend fun scienceLabChat(@Body body: ScienceLabChatRequest): ScienceLabChatResponse
+
+    @POST("api/science-lab/summary")
+    suspend fun scienceLabSummary(@Body body: ScienceLabSummaryRequest): ScienceLabSummaryResponse
 }
 
 @kotlinx.serialization.Serializable

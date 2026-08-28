@@ -31,6 +31,7 @@ import com.zakiy.platform.ui.ai.AiConversationsScreen
 import com.zakiy.platform.ui.archive.ArchiveScreen
 import com.zakiy.platform.ui.assignments.AssignmentDetailScreen
 import com.zakiy.platform.ui.assignments.AssignmentsScreen
+import com.zakiy.platform.ui.embeddedweb.EmbeddedWebScreen
 import com.zakiy.platform.ui.friends.FriendsScreen
 import com.zakiy.platform.ui.gradesheet.GradesheetScreen
 import com.zakiy.platform.ui.home.HomeNavHost
@@ -53,6 +54,7 @@ import com.zakiy.platform.ui.profile.EditProfileScreen
 import com.zakiy.platform.ui.profile.ProfileScreen
 import com.zakiy.platform.ui.quizzes.QuizTakeScreen
 import com.zakiy.platform.ui.quizzes.QuizzesScreen
+import com.zakiy.platform.ui.sciencelab.ScienceLabScreen
 import com.zakiy.platform.ui.settings.SettingsScreen
 import com.zakiy.platform.ui.settings.SubscriptionScreen
 import com.zakiy.platform.ui.student.StudentScheduleScreen
@@ -143,6 +145,23 @@ fun MainNavHost(authManager: AuthManager) {
                     onOpenQuizzes = { navController.navigate(Screen.Quizzes) },
                     onOpenAiAssistant = { navController.navigate(Screen.AiConversations) },
                     onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
+                    onOpenScienceLab = { navController.navigate(Screen.ScienceLab) },
+                    onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
+                )
+            }
+            // مختبر العلوم (مستكشف الأحياء Native + الكيمياء والفيزياء مدمج
+            // بالمتصفح) ومعمل الروبوتات (مدمج بالمتصفح بالكامل) - مسجّلين
+            // بكل الـ NavHost عشان أي حساب يوصلهم، بدون أي تقييد دور (نفس
+            // مبدأ تسجيل Gradesheet/Madrasati هنا)
+            composable(Screen.ScienceLab) {
+                ScienceLabScreen(authManager = authManager, onBack = { navController.popBackStack() })
+            }
+            composable(Screen.RoboticsLab) {
+                EmbeddedWebScreen(
+                    titleRes = R.string.nav_robotics_lab,
+                    authManager = authManager,
+                    onBack = { navController.popBackStack() },
+                    navigateJsFunction = "showRoboticsLabScreen",
                 )
             }
             composable(Screen.MadrasatiHub) {

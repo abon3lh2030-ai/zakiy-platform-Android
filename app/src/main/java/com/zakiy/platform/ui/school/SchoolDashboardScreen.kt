@@ -14,6 +14,8 @@ import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.PersonAddAlt
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Label
+import androidx.compose.material.icons.filled.PrecisionManufacturing
+import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,6 +52,8 @@ fun SchoolDashboardScreen(
     onOpenMessages: () -> Unit,
     onOpenAiAssistant: () -> Unit,
     onOpenMadrasati: () -> Unit,
+    onOpenScienceLab: () -> Unit,
+    onOpenRoboticsLab: () -> Unit,
 ) {
     var info by remember { mutableStateOf<SchoolInfo?>(null) }
     LaunchedEffect(Unit) { info = runCatching { NetworkModule.backendApi.schoolInfo() }.getOrNull() }
@@ -73,6 +77,8 @@ fun SchoolDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
                 item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
                 item { DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF00897B), stringResource(R.string.madrasati_heading), onOpenMadrasati) }
+                item { DashboardMenuRow(Icons.Filled.Science, Color(0xFF00897B), stringResource(R.string.nav_science_lab), onOpenScienceLab) }
+                item { DashboardMenuRow(Icons.Filled.PrecisionManufacturing, Color(0xFF546E7A), stringResource(R.string.nav_robotics_lab), onOpenRoboticsLab) }
             }
         }
     }
