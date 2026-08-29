@@ -72,7 +72,7 @@ fun SchoolClassesScreen(onBack: () -> Unit) {
                         newClassName = ""
                         load()
                     }
-                }) { Text(stringResource(R.string.add_book)) }
+                }) { Text(stringResource(R.string.btn_add_class)) }
             }
             Spacer(modifier = Modifier.size(12.dp))
             LazyColumn {

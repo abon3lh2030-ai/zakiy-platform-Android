@@ -376,6 +376,7 @@
     <string name="btn_reset_password">🔑 New Password</string>
     <string name="btn_add_teacher">Add Teacher</string>
     <string name="btn_add_admin_staff">Add Staff Member</string>
+    <string name="btn_add_class">Add Class</string>
 
     <!-- مختبر العلوم - عام -->
     <string name="sl_heading">Science Lab</string>

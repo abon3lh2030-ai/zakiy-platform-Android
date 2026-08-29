@@ -388,6 +388,7 @@
     <string name="btn_reset_password">🔑 كلمة سر جديدة</string>
     <string name="btn_add_teacher">إضافة معلم</string>
     <string name="btn_add_admin_staff">إضافة إداري</string>
+    <string name="btn_add_class">إضافة فصل</string>
 
     <!-- مختبر العلوم - عام -->
     <string name="sl_heading">مختبر العلوم</string>

@@ -1,10 +1,12 @@
 package com.zakiy.platform.network
 
 import android.content.Context
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
 
 /** حالة الحساب الكاملة - نفس دور SupabaseAuthManager بتطبيق iOS بالضبط:
  * الجلسة (Supabase Auth مباشرة بمفتاح anon)، الدور المؤسسي (عبر /api/me)،
@@ -149,8 +151,16 @@ class AuthManager private constructor(private val appContext: Context) {
     }
 
     /** يجيب دور الحساب من الباك إند (/api/me) - يحدد التوجيه (حساب فردي/دور
-     * مؤسسي/بوابة تغيير كلمة سر إجبارية) - نفس منطق RootView بـ iOS بالضبط */
-    suspend fun loadRole() {
+     * مؤسسي/بوابة تغيير كلمة سر إجبارية) - نفس منطق RootView بـ iOS بالضبط.
+     *
+     * ملاحظة مهمة: signIn/loadRole تُستدعى غالبًا من scope مربوط بشاشة تسجيل
+     * الدخول (rememberCoroutineScope) - واللحظة اللي isAuthenticated تصير true،
+     * RootApp يستبدل الشجرة بـ SplashScreen فيتفكك LoginScreen ويُلغى الـscope
+     * بتاعه، ويلغي معه طلب /api/me نصّه (IOException: Canceled) قبل ما يوصل -
+     * فيضل role=null للأبد بنفس الجلسة والمستخدم يطيح بتجربة حساب فردي/ضيف
+     * غلط بدل لوحته المؤسسية. withContext(NonCancellable) يخلي هذا الجزء
+     * يكمل لآخره حتى لو الـscope اللي نادى عليه انلغى. */
+    suspend fun loadRole() = withContext(NonCancellable) {
         runCatching {
             val me = backend.me()
             _role.value = me.role
