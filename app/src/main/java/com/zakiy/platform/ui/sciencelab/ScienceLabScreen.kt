@@ -95,7 +95,9 @@ fun ScienceLabScreen(authManager: AuthManager, onBack: () -> Unit) {
     val lang = remember { java.util.Locale.getDefault().language.let { if (it == "ar") "ar" else "en" } }
     val genericError = stringResource(R.string.error_generic)
 
-    var tab by remember { mutableStateOf(SlTab.Biology) }
+    // يفتح المختبر الأصلي أولًا، ومن داخله يختار المستخدم «التعلم الذكي»
+    // (كيمياء أو فيزياء أو أحياء) من مصدر الويب نفسه لضمان تطابق المنصات.
+    var tab by remember { mutableStateOf(SlTab.Chemistry) }
     var bioView by remember { mutableStateOf<SlBioView>(SlBioView.Categories) }
     var currentAnimalId by remember { mutableStateOf<String?>(null) }
 

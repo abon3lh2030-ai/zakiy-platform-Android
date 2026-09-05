@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Box
@@ -91,6 +92,9 @@ fun EmbeddedWebView(
                     WebView(ctx).apply {
                         settings.javaScriptEnabled = true
                         settings.domStorageEnabled = true
+                        // مختبر التعلم الذكي يعتمد أحدث منطق للخادم والويب؛ لا
+                        // نعرض نسخة قديمة مخزنة قد تعيد سؤالًا أو زرًا منتهيًا.
+                        settings.cacheMode = WebSettings.LOAD_NO_CACHE
                         // بدونها الـ WebView يعرض الصفحة بعرض ديسكتوب افتراضي (980px)
                         // ويتجاهل وسم viewport اللي الموقع نفسه يعتمد عليه للتصميم
                         // المتجاوب - يطلع سايدبار الديسكتوب مضغوط بدل التخطيط المتنقل
