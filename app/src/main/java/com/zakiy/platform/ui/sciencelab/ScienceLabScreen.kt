@@ -23,8 +23,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Summarize
 import androidx.compose.material3.AlertDialog
@@ -155,7 +155,7 @@ fun ScienceLabScreen(authManager: AuthManager, onBack: () -> Unit) {
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.sl_heading)) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null) } },
                 actions = {
                     IconButton(onClick = { openSummary() }) {
                         Icon(Icons.Filled.Summarize, contentDescription = stringResource(R.string.sl_show_summary))
@@ -481,7 +481,7 @@ private fun SlChatSheetContent(
             )
             Spacer(modifier = Modifier.size(4.dp))
             IconButton(onClick = onSend, enabled = input.isNotBlank() && !sending) {
-                Icon(Icons.Filled.Send, contentDescription = stringResource(R.string.ai_send))
+                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = stringResource(R.string.ai_send))
             }
         }
     }

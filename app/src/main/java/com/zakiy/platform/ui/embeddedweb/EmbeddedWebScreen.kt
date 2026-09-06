@@ -8,11 +8,14 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,7 +25,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -62,14 +67,15 @@ private const val SUPABASE_STORAGE_KEY = "sb-$SUPABASE_PROJECT_REF-auth-token"
 @Composable
 fun EmbeddedWebView(
     authManager: AuthManager,
-    navigateJsFunction: String? = null,
     modifier: Modifier = Modifier,
+    navigateJsFunction: String? = null,
 ) {
     val context = LocalContext.current
     var isLoading by remember { mutableStateOf(true) }
     var loadError by remember { mutableStateOf(false) }
     var sessionReady by remember { mutableStateOf(false) }
     var sessionJson by remember { mutableStateOf<String?>(null) }
+    var reloadToken by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(Unit) {
         val accessToken = TokenHolder.accessToken
@@ -86,10 +92,11 @@ fun EmbeddedWebView(
 
     Box(modifier = modifier.fillMaxSize()) {
         if (sessionReady) {
-            AndroidView(
-                modifier = Modifier.fillMaxSize(),
-                factory = { ctx ->
-                    WebView(ctx).apply {
+            key(reloadToken) {
+                AndroidView(
+                    modifier = Modifier.fillMaxSize(),
+                    factory = { ctx ->
+                        WebView(ctx).apply {
                         settings.javaScriptEnabled = true
                         settings.domStorageEnabled = true
                         // مختبر التعلم الذكي يعتمد أحدث منطق للخادم والويب؛ لا
@@ -142,8 +149,16 @@ fun EmbeddedWebView(
                                     // بنفس الصفحة. نعيد نداء دالة التنقّل + نخفي mode-select
                                     // يدويًا كذا مرة على فترات عشان نضمن نربح هذا السباق
                                     // بغض النظر عن مدة استجابة الباك إند
+                                    val targetId = when (fn) {
+                                        "showScienceLabScreen" -> "step-science-lab"
+                                        "showRoboticsLabScreen" -> "step-robotics-lab"
+                                        else -> null
+                                    }
+                                    val scrollTarget = targetId?.let(JSONObject::quote) ?: "null"
                                     val js = "(function(){try{if(typeof $fn === 'function'){$fn();}" +
-                                        "if(typeof hide === 'function'){hide('mode-select');}}catch(e){}})();"
+                                        "if(typeof hide === 'function'){hide('mode-select');}" +
+                                        "var id=$scrollTarget;if(id){var el=document.getElementById(id);" +
+                                        "if(el){el.scrollIntoView({block:'start'});}}}catch(e){}})();"
                                     val handler = android.os.Handler(android.os.Looper.getMainLooper())
                                     for (attempt in 0..24) {
                                         handler.postDelayed({ view.evaluateJavascript(js, null) }, attempt * 800L)
@@ -161,19 +176,32 @@ fun EmbeddedWebView(
                             }
                         }
                         loadUrl(ApiConfig.WEB_BASE)
-                    }
-                },
-            )
+                        }
+                    },
+                )
+            }
         }
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
         if (loadError) {
-            Text(
-                stringResource(R.string.embedded_web_load_error),
+            Column(
                 modifier = Modifier.align(Alignment.Center).padding(24.dp),
-                color = MaterialTheme.colorScheme.error,
-            )
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                Text(
+                    stringResource(R.string.embedded_web_load_error),
+                    color = MaterialTheme.colorScheme.error,
+                )
+                Button(onClick = {
+                    loadError = false
+                    isLoading = true
+                    reloadToken += 1
+                }) {
+                    Text(stringResource(R.string.retry))
+                }
+            }
         }
     }
 }
@@ -193,7 +221,7 @@ fun EmbeddedWebScreen(
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(titleRes)) },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null) } },
             )
         },
     ) { padding ->

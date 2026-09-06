@@ -9,14 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Assignment
+import androidx.compose.material.icons.automirrored.filled.Label
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Archive
-import androidx.compose.material.icons.filled.Assignment
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Label
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.OpenInBrowser
 import androidx.compose.material.icons.filled.PrecisionManufacturing
 import androidx.compose.material.icons.filled.Quiz
@@ -24,10 +24,10 @@ import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -85,7 +85,6 @@ fun SettingsScreen(
                 // بالموقع بالضبط: متاحين لأي حساب مسجّل دخول بدون أي تقييد دور
                 // (roboticsLabBtn/scienceLabBtn دايمًا ظاهرين، requireAuthOrPrompt
                 // بس هو الحارس - ما فيه شرط دور إطلاقًا)
-                SettingsRow(Icons.Filled.Science, stringResource(R.string.nav_science_lab), onOpenScienceLab)
                 SettingsRow(Icons.Filled.PrecisionManufacturing, stringResource(R.string.nav_robotics_lab), onOpenRoboticsLab)
 
                 // حساب مؤسسي (role موجود) وصوله محكوم بعضوية مدرسته لا باشتراك
@@ -94,7 +93,7 @@ fun SettingsScreen(
                     SettingsRow(Icons.Filled.Star, stringResource(R.string.subscription), onOpenSubscription)
                     // دفتر الملاحظات ميزة حساب فردي بس - نفس شرط الاشتراك، أي
                     // حساب مؤسسي (role موجود) ما يشوفه إطلاقًا
-                    SettingsRow(Icons.Filled.Label, stringResource(R.string.notes), onOpenNotes)
+                    SettingsRow(Icons.AutoMirrored.Filled.Label, stringResource(R.string.notes), onOpenNotes)
                 }
                 SettingsRow(Icons.Filled.Group, stringResource(R.string.nav_friends), onOpenFriends)
                 SettingsRow(Icons.Filled.Archive, stringResource(R.string.nav_archive), onOpenArchive)
@@ -103,20 +102,23 @@ fun SettingsScreen(
                 // (المعلم يشوف الواجبات من لوحته الخاصة TeacherDashboardScreen)
                 if (role == "student") {
                     SettingsRow(Icons.Filled.CalendarMonth, stringResource(R.string.nav_my_schedule), onOpenStudentSchedule)
-                    SettingsRow(Icons.Filled.Assignment, stringResource(R.string.assignments), onOpenAssignments)
+                    SettingsRow(Icons.AutoMirrored.Filled.Assignment, stringResource(R.string.assignments), onOpenAssignments)
                     SettingsRow(Icons.Filled.Quiz, stringResource(R.string.quizzes), onOpenQuizzes)
                 }
                 HorizontalDivider()
-                SettingsRow(Icons.Filled.Logout, stringResource(R.string.logout)) {
+                SettingsRow(Icons.AutoMirrored.Filled.Logout, stringResource(R.string.logout)) {
                     scope.launch { authManager.signOut() }
                 }
             } else {
-                Text(
-                    stringResource(R.string.login),
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.titleMedium,
-                )
+                Button(
+                    onClick = { scope.launch { authManager.exitGuestMode() } },
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) { Text(stringResource(R.string.login)) }
             }
+
+            // مطابق للموقع وiOS: المختبر التقليدي متاح للضيف، بينما المسار
+            // الذكي نفسه يعرض رسالة تسجيل الدخول قبل أي معاملة AI.
+            SettingsRow(Icons.Filled.Science, stringResource(R.string.nav_science_lab), onOpenScienceLab)
         }
     }
 }

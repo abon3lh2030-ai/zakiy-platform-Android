@@ -114,6 +114,14 @@ class AuthManager private constructor(private val appContext: Context) {
         sessionStore.setGuestMode(true)
     }
 
+    /** يخرج من وضع الضيف ويرجع شجرة التطبيق إلى شاشة الدخول. بدون هذه
+     * الخطوة كان الضيف يرى كلمة "تسجيل الدخول" كنص غير تفاعلي ويبقى عالقًا
+     * داخل MainNavHost حتى يمسح بيانات التطبيق. */
+    suspend fun exitGuestMode() {
+        _isGuest.value = false
+        sessionStore.setGuestMode(false)
+    }
+
     suspend fun signOut() {
         val token = TokenHolder.accessToken
         if (token != null) {
