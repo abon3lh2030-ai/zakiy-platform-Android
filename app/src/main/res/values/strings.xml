@@ -528,4 +528,5 @@
     <string name="nav_science_lab">🧪 مختبر العلوم</string>
     <string name="nav_robotics_lab">🦾 معمل الروبوتات</string>
     <string name="embedded_web_load_error">تعذّر تحميل الصفحة - تأكد من اتصالك بالإنترنت.</string>
+    <string name="sl_zoom_out">تصغير الصورة</string>
 </resources>

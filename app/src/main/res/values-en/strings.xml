@@ -516,4 +516,5 @@
     <string name="nav_science_lab">🧪 Science Lab</string>
     <string name="nav_robotics_lab">🦾 Robotics Lab</string>
     <string name="embedded_web_load_error">Couldn\'t load the page - check your internet connection.</string>
+    <string name="sl_zoom_out">Zoom out</string>
 </resources>

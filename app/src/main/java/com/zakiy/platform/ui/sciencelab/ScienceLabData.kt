@@ -33,14 +33,32 @@ enum class SlBodyPart(val id: String, val nameRes: Int, val descRes: Int) {
  * الحقيقية، ما نعيد حسابها). */
 data class SlHotspot(val part: SlBodyPart, val x: Float, val y: Float)
 
-/** صورة تشريح جسم/حيوان - imageModel إما رابط ويكيميديا خارجي (String) أو
- * drawable محلي (Int، للفيل والتمساح بس - رسومات المستخدم المرفقة بالمشروع). */
+/** صورة تشريح جسم/حيوان من نفس صور الموقع، مرفقة محليًا بالتطبيق حتى تعمل
+ * فورًا بدون اعتماد على الشبكة أو دعم SVG وقت التشغيل. */
 data class SlBodyImage(
     val key: String,
     val imageModel: Any,
     val creditRes: Int? = null,
     val hotspots: List<SlHotspot>,
-)
+) {
+    /** أبعاد الصورة الأصلية نفسها في الموقع؛ تستخدمها الواجهة حتى تبقى
+     * النقاط فوق العضو الصحيح مهما اختلف عرض شاشة الجوال. */
+    val aspectRatio: Float
+        get() = when (key) {
+            "human" -> 1280f / 1139f
+            "dog" -> 1280f / 807f
+            "elephant" -> 1264f / 844f
+            "crocodile" -> 957f / 463f
+            "cat" -> 1280f / 532f
+            "reptile" -> 1f
+            "fish" -> 1280f / 668f
+            "whale" -> 1280f / 531f
+            "turtle" -> 1280f / 557f
+            "frog" -> 2115f / 3276f
+            "bird" -> 1280f / 979f
+            else -> 4f / 3f
+        }
+}
 
 data class SlAnimal(
     val id: String,
@@ -64,7 +82,7 @@ object ScienceLabData {
     val bodyImages: Map<String, SlBodyImage> = listOf(
         SlBodyImage(
             key = "human",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Internal_organs.svg",
+            imageModel = R.drawable.sl_body_human,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Brain, 48.6f, 16.4f),
                 SlHotspot(SlBodyPart.Heart, 44.3f, 52.4f),
@@ -80,7 +98,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "dog",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/c/c5/Dog_Internal_Anatomy.svg",
+            imageModel = R.drawable.sl_body_dog,
             creditRes = R.string.sl_body_credit_dog,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Brain, 16.7f, 9.2f),
@@ -122,7 +140,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "cat",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/5/5a/Scheme_cat_anatomy.svg",
+            imageModel = R.drawable.sl_body_cat,
             creditRes = R.string.sl_body_credit_cat,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Brain, 27.9f, 25.5f),
@@ -137,7 +155,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "reptile",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/4/4d/Snake-anatomy.svg",
+            imageModel = R.drawable.sl_body_reptile,
             creditRes = R.string.sl_body_credit_reptile,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Heart, 50f, 15f),
@@ -151,7 +169,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "fish",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/b/b0/Fish-anatomy.svg",
+            imageModel = R.drawable.sl_body_fish,
             creditRes = R.string.sl_body_credit_fish,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Heart, 28.9f, 58.8f),
@@ -164,7 +182,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "whale",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/8/88/Orca_internal_anatomy.svg",
+            imageModel = R.drawable.sl_body_whale,
             creditRes = R.string.sl_body_credit_whale,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Brain, 14f, 51.7f),
@@ -179,7 +197,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "turtle",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/c/cb/Scheme_turtle_anatomy-numbers.svg",
+            imageModel = R.drawable.sl_body_turtle,
             creditRes = R.string.sl_body_credit_turtle,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Lungs, 74f, 37.9f),
@@ -192,7 +210,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "frog",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/0/0e/The_biology_of_the_frog_%28Page_75%2C_Fig._10%29_BHL7720765.jpg",
+            imageModel = R.drawable.sl_body_frog,
             creditRes = R.string.sl_body_credit_frog,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Heart, 44.9f, 6.7f),
@@ -204,7 +222,7 @@ object ScienceLabData {
         ),
         SlBodyImage(
             key = "bird",
-            imageModel = "https://upload.wikimedia.org/wikipedia/commons/1/1c/Gastrointestinal_track_of_the_Mallard-Uklad_pokarmowy_krzyzowki.svg",
+            imageModel = R.drawable.sl_body_bird,
             creditRes = R.string.sl_body_credit_bird,
             hotspots = listOf(
                 SlHotspot(SlBodyPart.Stomach, 48.5f, 75f),

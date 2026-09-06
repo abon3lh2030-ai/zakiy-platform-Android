@@ -1,15 +1,18 @@
 package com.zakiy.platform.ui.sciencelab
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -54,13 +57,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -401,26 +403,44 @@ private fun SlAnimalDetail(animalId: String?, onBack: () -> Unit, onLog: (String
 @Composable
 private fun SlBodyImageWithHotspots(bodyImage: SlBodyImage, onLog: (String) -> Unit) {
     val context = LocalContext.current
-    val density = LocalDensity.current
-    var imageSize by remember(bodyImage.key) { mutableStateOf(IntSize.Zero) }
-    var selectedPart by remember(bodyImage.key) { mutableStateOf<SlBodyPart?>(null) }
+    var selectedHotspot by remember(bodyImage.key) { mutableStateOf<SlHotspot?>(null) }
+    val zoomScale by animateFloatAsState(
+        targetValue = if (selectedHotspot == null) 1f else 2.4f,
+        label = "biology image zoom",
+    )
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(bodyImage.aspectRatio)
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant),
+    ) {
+        val active = selectedHotspot
         AsyncImage(
             model = bodyImage.imageModel,
             contentDescription = null,
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier.fillMaxWidth().onSizeChanged { imageSize = it },
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    scaleX = zoomScale
+                    scaleY = zoomScale
+                    transformOrigin = active?.let {
+                        TransformOrigin(it.x / 100f, it.y / 100f)
+                    } ?: TransformOrigin.Center
+                },
         )
-        if (imageSize.width > 0) {
-            bodyImage.hotspots.forEach { hotspot ->
-                val cx = with(density) { (imageSize.width * hotspot.x / 100f).toDp() }
-                val cy = with(density) { (imageSize.height * hotspot.y / 100f).toDp() }
-                val isSelected = selectedPart == hotspot.part
+        bodyImage.hotspots.forEach { hotspot ->
+            if (active == null || active == hotspot) {
+                val cx = maxWidth * (hotspot.x / 100f)
+                val cy = maxHeight * (hotspot.y / 100f)
+                val isSelected = active == hotspot
                 Box(
                     modifier = Modifier
-                        .offset(x = cx - 13.dp, y = cy - 13.dp)
-                        .size(26.dp)
+                        .offset(x = cx - 17.dp, y = cy - 17.dp)
+                        .size(34.dp)
+                        .padding(4.dp)
                         .clip(CircleShape)
                         .background(
                             if (isSelected) MaterialTheme.colorScheme.primary
@@ -428,16 +448,25 @@ private fun SlBodyImageWithHotspots(bodyImage: SlBodyImage, onLog: (String) -> U
                         )
                         .border(2.dp, MaterialTheme.colorScheme.surface, CircleShape)
                         .clickable {
-                            selectedPart = hotspot.part
+                            selectedHotspot = hotspot
                             val prefix = context.getString(R.string.sl_log_part_prefix)
                             onLog("$prefix: ${context.getString(hotspot.part.nameRes)}")
                         },
                 )
             }
         }
+        if (active != null) {
+            TextButton(
+                onClick = { selectedHotspot = null },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(6.dp)
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f), RoundedCornerShape(10.dp)),
+            ) { Text(stringResource(R.string.sl_zoom_out)) }
+        }
     }
 
-    selectedPart?.let { part ->
+    selectedHotspot?.part?.let { part ->
         Spacer(modifier = Modifier.size(10.dp))
         Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(14.dp)) {
