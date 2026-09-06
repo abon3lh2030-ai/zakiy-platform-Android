@@ -33,6 +33,13 @@ data class AdminUpdateSchoolRequest(
 )
 
 @Serializable
+data class UpdatePlatformAccessRequest(
+    @SerialName("free_access_enabled") val freeAccessEnabled: Boolean,
+    @SerialName("free_access_starts_at") val freeAccessStartsAt: String? = null,
+    @SerialName("free_access_ends_at") val freeAccessEndsAt: String? = null,
+)
+
+@Serializable
 data class ReassignTeacherRequest(@SerialName("teacher_id") val teacherId: String? = null)
 
 @Serializable

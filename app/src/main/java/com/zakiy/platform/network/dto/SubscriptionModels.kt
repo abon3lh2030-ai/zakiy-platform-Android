@@ -30,6 +30,14 @@ data class SubscriptionMeResponse(
 )
 
 @Serializable
+data class PlatformAccessState(
+    @SerialName("free_access_enabled") val freeAccessEnabled: Boolean? = null,
+    @SerialName("free_access_active") val freeAccessActive: Boolean,
+    @SerialName("free_access_starts_at") val freeAccessStartsAt: String? = null,
+    @SerialName("free_access_ends_at") val freeAccessEndsAt: String? = null,
+)
+
+@Serializable
 data class CheckoutRequest(val plan: String, val period: String)
 
 @Serializable

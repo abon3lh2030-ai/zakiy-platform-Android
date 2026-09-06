@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.SmartToy
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -42,6 +43,7 @@ import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.AdminUpdateSchoolRequest
 import com.zakiy.platform.network.dto.CreateSchoolRequest
 import com.zakiy.platform.network.dto.School
+import com.zakiy.platform.network.dto.UpdatePlatformAccessRequest
 import com.zakiy.platform.ui.components.CredentialBox
 import com.zakiy.platform.ui.components.DashboardMenuRow
 import kotlinx.coroutines.launch
@@ -60,20 +62,77 @@ fun AdminDashboardScreen(
     var adminEmail by remember { mutableStateOf("") }
     var maxAccounts by remember { mutableStateOf("50") }
     var credential by remember { mutableStateOf<Pair<String, String>?>(null) }
+    var freeAccessEnabled by remember { mutableStateOf(false) }
+    var freeAccessActive by remember { mutableStateOf(false) }
+    var freeAccessStart by remember { mutableStateOf("") }
+    var freeAccessEnd by remember { mutableStateOf("") }
+    var accessMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
     suspend fun load() {
         schools = runCatching { NetworkModule.backendApi.adminSchools().schools }.getOrDefault(emptyList())
+        runCatching { NetworkModule.backendApi.adminPlatformAccess() }.getOrNull()?.let {
+            freeAccessEnabled = it.freeAccessEnabled ?: false
+            freeAccessActive = it.freeAccessActive
+            freeAccessStart = it.freeAccessStartsAt.orEmpty()
+            freeAccessEnd = it.freeAccessEndsAt.orEmpty()
+        }
     }
     LaunchedEffect(Unit) { load() }
 
     Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.admin_dash_heading)) }) }) { padding ->
-        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF2E8B77), stringResource(R.string.ai_assistant), onOpenAiAssistant)
-            DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF6D4AFF), stringResource(R.string.madrasati_heading), onOpenMadrasati)
-            DashboardMenuRow(Icons.Filled.Science, Color(0xFF00897B), stringResource(R.string.nav_science_lab), onOpenScienceLab)
-            DashboardMenuRow(Icons.Filled.PrecisionManufacturing, Color(0xFF546E7A), stringResource(R.string.nav_robotics_lab), onOpenRoboticsLab)
-            Column(modifier = Modifier.padding(16.dp)) {
+        LazyColumn(modifier = Modifier.fillMaxSize().padding(padding)) {
+            item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF2E8B77), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
+            item { DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF6D4AFF), stringResource(R.string.madrasati_heading), onOpenMadrasati) }
+            item { DashboardMenuRow(Icons.Filled.Science, Color(0xFF00897B), stringResource(R.string.nav_science_lab), onOpenScienceLab) }
+            item { DashboardMenuRow(Icons.Filled.PrecisionManufacturing, Color(0xFF546E7A), stringResource(R.string.nav_robotics_lab), onOpenRoboticsLab) }
+            item {
+              Column(modifier = Modifier.padding(16.dp)) {
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(14.dp)) {
+                        Text("المجانية العامة للمنصة", style = MaterialTheme.typography.titleMedium)
+                        Row {
+                            Checkbox(checked = freeAccessEnabled, onCheckedChange = { freeAccessEnabled = it })
+                            Text("تفعيل المجانية لكل المستخدمين", modifier = Modifier.padding(top = 12.dp))
+                        }
+                        Text(
+                            if (freeAccessActive) "● مفعّلة الآن — الجميع بلا حدود" else "غير مفعّلة الآن",
+                            color = if (freeAccessActive) Color(0xFF16866F) else MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Spacer(modifier = Modifier.size(8.dp))
+                        OutlinedTextField(
+                            value = freeAccessStart,
+                            onValueChange = { freeAccessStart = it },
+                            label = { Text("البداية الاختيارية (مثال 2026-09-10T00:00:00Z)") },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        OutlinedTextField(
+                            value = freeAccessEnd,
+                            onValueChange = { freeAccessEnd = it },
+                            label = { Text("النهاية الاختيارية (مثال 2026-09-20T00:00:00Z)") },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                        Button(onClick = {
+                            scope.launch {
+                                accessMessage = null
+                                runCatching {
+                                    NetworkModule.backendApi.adminUpdatePlatformAccess(
+                                        UpdatePlatformAccessRequest(
+                                            freeAccessEnabled,
+                                            freeAccessStart.trim().ifEmpty { null },
+                                            freeAccessEnd.trim().ifEmpty { null },
+                                        ),
+                                    )
+                                }.onSuccess {
+                                    freeAccessActive = it.freeAccessActive
+                                    accessMessage = "تم حفظ الإعداد"
+                                }.onFailure { accessMessage = it.message ?: "تعذّر حفظ الإعداد" }
+                            }
+                        }, modifier = Modifier.fillMaxWidth()) { Text("حفظ إعداد المجانية") }
+                        accessMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+                    }
+                }
+                Spacer(modifier = Modifier.size(12.dp))
                 OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("اسم المدرسة") }, modifier = Modifier.fillMaxWidth())
                 Spacer(modifier = Modifier.size(8.dp))
                 OutlinedTextField(
@@ -106,41 +165,39 @@ fun AdminDashboardScreen(
 
                 credential?.let { CredentialBox("✅ بيانات دخول مدير المدرسة (تظهر مرة وحدة بس)", it.first, it.second) }
                 Spacer(modifier = Modifier.size(12.dp))
-
-                LazyColumn {
-                    items(schools, key = { it.id }) { school ->
-                        Card(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-                            Column(modifier = Modifier.padding(14.dp)) {
-                                Text(school.name, style = MaterialTheme.typography.titleMedium)
-                                Text(
-                                    "${school.accountsUsed ?: 0} / ${school.maxAccounts} · ${if (school.isActive) "مفعّلة" else "موقوفة"}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                )
-                                Row {
-                                    OutlinedButton(onClick = {
-                                        scope.launch {
-                                            runCatching {
-                                                NetworkModule.backendApi.adminUpdateSchool(school.id, AdminUpdateSchoolRequest(isActive = !school.isActive))
-                                            }
-                                            load()
-                                        }
-                                    }) { Text(if (school.isActive) "إيقاف" else "تفعيل") }
-                                    Spacer(modifier = Modifier.size(8.dp))
-                                    OutlinedButton(onClick = {
-                                        scope.launch {
-                                            val reset = runCatching { NetworkModule.backendApi.adminResetSchoolAdminPassword(school.id) }.getOrNull()
-                                            if (reset != null) credential = reset.email to reset.password
-                                        }
-                                    }) { Text(stringResource(R.string.btn_reset_password)) }
-                                    Spacer(modifier = Modifier.size(8.dp))
-                                    OutlinedButton(onClick = {
-                                        scope.launch {
-                                            runCatching { NetworkModule.backendApi.adminDeleteSchool(school.id) }
-                                            load()
-                                        }
-                                    }) { Text(stringResource(R.string.delete)) }
+              }
+            }
+            items(schools, key = { it.id }) { school ->
+                Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp)) {
+                    Column(modifier = Modifier.padding(14.dp)) {
+                        Text(school.name, style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            "${school.accountsUsed ?: 0} / ${school.maxAccounts} · ${if (school.isActive) "مفعّلة" else "موقوفة"}",
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                        Row {
+                            OutlinedButton(onClick = {
+                                scope.launch {
+                                    runCatching {
+                                        NetworkModule.backendApi.adminUpdateSchool(school.id, AdminUpdateSchoolRequest(isActive = !school.isActive))
+                                    }
+                                    load()
                                 }
-                            }
+                            }) { Text(if (school.isActive) "إيقاف" else "تفعيل") }
+                            Spacer(modifier = Modifier.size(8.dp))
+                            OutlinedButton(onClick = {
+                                scope.launch {
+                                    val reset = runCatching { NetworkModule.backendApi.adminResetSchoolAdminPassword(school.id) }.getOrNull()
+                                    if (reset != null) credential = reset.email to reset.password
+                                }
+                            }) { Text(stringResource(R.string.btn_reset_password)) }
+                            Spacer(modifier = Modifier.size(8.dp))
+                            OutlinedButton(onClick = {
+                                scope.launch {
+                                    runCatching { NetworkModule.backendApi.adminDeleteSchool(school.id) }
+                                    load()
+                                }
+                            }) { Text(stringResource(R.string.delete)) }
                         }
                     }
                 }
