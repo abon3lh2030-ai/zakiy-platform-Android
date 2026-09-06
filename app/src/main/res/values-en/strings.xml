@@ -55,6 +55,10 @@
     <string name="btn_save_to_library">💾 Save to your library</string>
     <string name="extracted_text_label">Extracted text</string>
     <string name="summary_label">Summary</string>
+    <string name="shared_summary_label">📚 Room Summary</string>
+    <string name="prepare_room_summary">Prepare Room Summary</string>
+    <string name="room_summary_source_hint">Paste the lesson or study text here</string>
+    <string name="generate_and_share_summary">Generate and Share Summary</string>
     <string name="num_questions_label">Number of questions</string>
     <string name="quiz_submit">Submit answers</string>
     <string name="quiz_score_label">Your score</string>

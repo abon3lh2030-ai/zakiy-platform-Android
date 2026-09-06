@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.MicOff
 import androidx.compose.material.icons.filled.PanTool
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -21,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -28,6 +33,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -35,10 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
+import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.SocketManager
 import com.zakiy.platform.network.TokenHolder
 import org.json.JSONObject
 import java.util.UUID
+import kotlinx.coroutines.launch
 
 /** غرفة دراسة لحظية (جماعية أو درس مباشر) - نفس بروتوكول Socket.IO
  * بالباك إند بالضبط (join_room/room_state/chat_message/leaderboard_update).
@@ -59,6 +67,14 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
     var leaderboard by remember { mutableStateOf<List<Pair<String, Int>>>(emptyList()) }
     var micOn by remember { mutableStateOf(false) }
     var joinError by remember { mutableStateOf<String?>(null) }
+    var sharedSummary by remember { mutableStateOf("") }
+    var showSummaryDialog by remember { mutableStateOf(false) }
+    var summarySourceText by remember { mutableStateOf("") }
+    var isGeneratingSummary by remember { mutableStateOf(false) }
+    var summaryError by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+    val genericError = stringResource(R.string.error_generic)
+    val language = java.util.Locale.getDefault().language.let { if (it == "ar") "ar" else "en" }
 
     DisposableEffect(roomCode) {
         SocketManager.connectIfNeeded()
@@ -66,6 +82,7 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
         val onRoomState = io.socket.emitter.Emitter.Listener { args ->
             val data = args.getOrNull(0) as? JSONObject ?: return@Listener
             isHost = data.optBoolean("is_host", false)
+            sharedSummary = data.optString("shared_summary").takeUnless { it == "null" }.orEmpty()
         }
         val onJoinError = io.socket.emitter.Emitter.Listener { args ->
             joinError = (args.getOrNull(0) as? JSONObject)?.optString("error")
@@ -86,11 +103,16 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
             }
             leaderboard = list
         }
+        val onSummaryShared = io.socket.emitter.Emitter.Listener { args ->
+            val data = args.getOrNull(0) as? JSONObject ?: return@Listener
+            sharedSummary = data.optString("summary")
+        }
 
         SocketManager.on("room_state", onRoomState)
         SocketManager.on("join_error", onJoinError)
         SocketManager.on("chat_message", onChatMessage)
         SocketManager.on("leaderboard_update", onLeaderboard)
+        SocketManager.on("summary_shared", onSummaryShared)
 
         val payload = JSONObject().apply {
             put("room_code", roomCode)
@@ -105,6 +127,7 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
             SocketManager.off("join_error")
             SocketManager.off("chat_message")
             SocketManager.off("leaderboard_update")
+            SocketManager.off("summary_shared")
         }
     }
 
@@ -112,7 +135,7 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
         topBar = {
             TopAppBar(
                 title = { Text(roomCode) },
-                navigationIcon = { IconButton(onClick = onLeave) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+                navigationIcon = { IconButton(onClick = onLeave) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null) } },
                 actions = {
                     IconButton(onClick = { micOn = !micOn }) {
                         Icon(if (micOn) Icons.Filled.Mic else Icons.Filled.MicOff, contentDescription = null)
@@ -128,7 +151,19 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
             if (joinError != null) {
                 Text(joinError!!, color = MaterialTheme.colorScheme.error)
             }
+            if (sharedSummary.isNotBlank()) {
+                Card(modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)) {
+                    Column(modifier = Modifier.padding(14.dp)) {
+                        Text(stringResource(R.string.shared_summary_label), style = MaterialTheme.typography.titleMedium)
+                        Text(sharedSummary, modifier = Modifier.padding(top = 6.dp))
+                    }
+                }
+            }
             if (isHost && roomType in listOf("quiz", "classroom")) {
+                Button(
+                    onClick = { showSummaryDialog = true },
+                    modifier = Modifier.fillMaxWidth(),
+                ) { Text(stringResource(R.string.prepare_room_summary)) }
                 Button(
                     onClick = { SocketManager.emit("start_quiz", JSONObject().put("room_code", roomCode)) },
                     modifier = Modifier.fillMaxWidth(),
@@ -168,5 +203,63 @@ fun RoomScreen(roomCode: String, roomType: String, isCreator: Boolean, authManag
                 }) { Text("→") }
             }
         }
+    }
+
+    if (showSummaryDialog) {
+        AlertDialog(
+            onDismissRequest = { if (!isGeneratingSummary) showSummaryDialog = false },
+            title = { Text(stringResource(R.string.prepare_room_summary)) },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = summarySourceText,
+                        onValueChange = { summarySourceText = it },
+                        label = { Text(stringResource(R.string.room_summary_source_hint)) },
+                        minLines = 5,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    summaryError?.let {
+                        Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(top = 8.dp))
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    enabled = summarySourceText.isNotBlank() && !isGeneratingSummary,
+                    onClick = {
+                        isGeneratingSummary = true
+                        summaryError = null
+                        scope.launch {
+                            try {
+                                val result = NetworkModule.backendApi.summarize(
+                                    mapOf("text" to summarySourceText.trim(), "lang" to language),
+                                )
+                                sharedSummary = result.summary
+                                SocketManager.emit(
+                                    "share_summary",
+                                    JSONObject().put("room_code", roomCode).put("summary", result.summary),
+                                )
+                                showSummaryDialog = false
+                            } catch (_: Exception) {
+                                summaryError = genericError
+                            } finally {
+                                isGeneratingSummary = false
+                            }
+                        }
+                    },
+                ) {
+                    if (isGeneratingSummary) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp))
+                    } else {
+                        Text(stringResource(R.string.generate_and_share_summary))
+                    }
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSummaryDialog = false }, enabled = !isGeneratingSummary) {
+                    Text(stringResource(R.string.cancel))
+                }
+            },
+        )
     }
 }

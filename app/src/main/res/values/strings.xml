@@ -60,6 +60,10 @@
     <string name="btn_save_to_library">💾 احفظ بمكتبتك</string>
     <string name="extracted_text_label">النص المستخرج</string>
     <string name="summary_label">الملخص</string>
+    <string name="shared_summary_label">📚 ملخص الغرفة</string>
+    <string name="prepare_room_summary">تحضير ملخص الغرفة</string>
+    <string name="room_summary_source_hint">الصق نص الدرس أو المحتوى هنا</string>
+    <string name="generate_and_share_summary">توليد ومشاركة الملخص</string>
     <string name="num_questions_label">عدد الأسئلة</string>
     <string name="quiz_submit">سلّم الإجابات</string>
     <string name="quiz_score_label">درجتك</string>
