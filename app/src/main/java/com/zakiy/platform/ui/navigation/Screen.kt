@@ -61,6 +61,7 @@ object Screen {
 
     // الأدوار المؤسسية
     const val AdminDashboard = "admin_dashboard"
+    const val AdminCurriculum = "admin_curriculum"
     const val SchoolDashboard = "school_dashboard"
     const val SchoolTeachers = "school_teachers"
     const val SchoolAdministration = "school_administration"
@@ -69,6 +70,7 @@ object Screen {
     const val SchoolBulkAdd = "school_bulk_add"
     const val SchoolAttendance = "school_attendance"
     const val SchoolLibrary = "school_library"
+    const val SchoolCurriculum = "school_curriculum"
     const val TeacherDashboard = "teacher_dashboard"
     const val TeacherRoster = "teacher_roster"
     const val TeacherPerformance = "teacher_performance"

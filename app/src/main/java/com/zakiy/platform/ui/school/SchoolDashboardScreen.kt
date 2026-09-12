@@ -54,6 +54,7 @@ fun SchoolDashboardScreen(
     onOpenMadrasati: () -> Unit,
     onOpenScienceLab: () -> Unit,
     onOpenRoboticsLab: () -> Unit,
+    onOpenCurriculum: () -> Unit,
 ) {
     var info by remember { mutableStateOf<SchoolInfo?>(null) }
     LaunchedEffect(Unit) { info = runCatching { NetworkModule.backendApi.schoolInfo() }.getOrNull() }
@@ -73,6 +74,7 @@ fun SchoolDashboardScreen(
                 item { DashboardMenuRow(Icons.Filled.Group, Color(0xFF009688), stringResource(R.string.tab_students), onOpenStudents) }
                 item { DashboardMenuRow(Icons.Filled.Label, Color(0xFFFF9800), stringResource(R.string.tab_classes), onOpenClasses) }
                 item { DashboardMenuRow(Icons.Filled.Assignment, Color(0xFF9C27B0), stringResource(R.string.tab_attendance), onOpenAttendance) }
+                item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF00ACC1), "مسار كتب المدرسة", onOpenCurriculum) }
                 item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF3949AB), stringResource(R.string.tab_library), onOpenLibrary) }
                 item { DashboardMenuRow(Icons.Filled.Message, Color(0xFF2E8B77), stringResource(R.string.nav_messages), onOpenMessages) }
                 item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF6D4AFF), stringResource(R.string.ai_assistant), onOpenAiAssistant) }

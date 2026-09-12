@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.OpenInBrowser
+import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.PrecisionManufacturing
 import androidx.compose.material.icons.filled.Science
 import androidx.compose.material.icons.filled.SmartToy
@@ -56,6 +57,7 @@ fun AdminDashboardScreen(
     onOpenMadrasati: () -> Unit,
     onOpenScienceLab: () -> Unit,
     onOpenRoboticsLab: () -> Unit,
+    onOpenCurriculum: () -> Unit,
 ) {
     var schools by remember { mutableStateOf<List<School>>(emptyList()) }
     var name by remember { mutableStateOf("") }
@@ -82,6 +84,7 @@ fun AdminDashboardScreen(
 
     Scaffold(topBar = { TopAppBar(title = { Text(stringResource(R.string.admin_dash_heading)) }) }) { padding ->
         LazyColumn(modifier = Modifier.fillMaxSize().padding(padding)) {
+            item { DashboardMenuRow(Icons.Filled.Book, Color(0xFF3949AB), "مسارات الكتب المدرسية", onOpenCurriculum) }
             item { DashboardMenuRow(Icons.Filled.SmartToy, Color(0xFF2E8B77), stringResource(R.string.ai_assistant), onOpenAiAssistant) }
             item { DashboardMenuRow(Icons.Filled.OpenInBrowser, Color(0xFF6D4AFF), stringResource(R.string.madrasati_heading), onOpenMadrasati) }
             item { DashboardMenuRow(Icons.Filled.Science, Color(0xFF00897B), stringResource(R.string.nav_science_lab), onOpenScienceLab) }

@@ -55,6 +55,12 @@ interface ApiService {
     @DELETE("api/library/{id}")
     suspend fun deleteLibraryBook(@Path("id") id: String)
 
+    @POST("api/school/library")
+    suspend fun createSchoolLibraryBook(@Body body: CurriculumBookRequest)
+
+    @DELETE("api/school/library/{id}")
+    suspend fun deleteSchoolLibraryBook(@Path("id") id: String)
+
     // ---- دفتر الملاحظات (حساب فردي بس - الباك إند يرفض أي حساب مؤسسي) ----
     @GET("api/notes/folders")
     suspend fun noteFolders(): NoteFoldersResponse
@@ -177,9 +183,30 @@ interface ApiService {
     @POST("api/admin/schools/{id}/reset-admin-password")
     suspend fun adminResetSchoolAdminPassword(@Path("id") id: String): GeneratedCredentials
 
+    @GET("api/admin/curriculum-paths")
+    suspend fun adminCurriculumPaths(): CurriculumPathsResponse
+
+    @POST("api/admin/curriculum-paths")
+    suspend fun adminCreateCurriculumPath(@Body body: CurriculumPathRequest)
+
+    @DELETE("api/admin/curriculum-paths/{id}")
+    suspend fun adminDeleteCurriculumPath(@Path("id") id: String)
+
+    @POST("api/admin/curriculum-paths/{id}/books")
+    suspend fun adminAddCurriculumBook(@Path("id") id: String, @Body body: CurriculumBookRequest)
+
+    @DELETE("api/admin/curriculum-books/{id}")
+    suspend fun adminDeleteCurriculumBook(@Path("id") id: String)
+
     // ---- School Admin / School Administration ----
     @GET("api/school/info")
     suspend fun schoolInfo(): SchoolInfo
+
+    @GET("api/school/curriculum-path")
+    suspend fun schoolCurriculumState(): SchoolCurriculumState
+
+    @PUT("api/school/curriculum-path")
+    suspend fun schoolSetCurriculumPath(@Body body: SchoolCurriculumRequest)
 
     @POST("api/school/teachers")
     suspend fun schoolAddTeacher(@Body body: AddStaffRequest): GeneratedCredentials

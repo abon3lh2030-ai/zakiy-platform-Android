@@ -10,6 +10,7 @@ import com.zakiy.platform.R
 import com.zakiy.platform.network.AccountRole
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.ui.admin.AdminDashboardScreen
+import com.zakiy.platform.ui.admin.AdminCurriculumScreen
 import com.zakiy.platform.ui.ai.AiBookPickerScreen
 import com.zakiy.platform.ui.ai.AiConversationScreen
 import com.zakiy.platform.ui.ai.AiConversationsScreen
@@ -38,6 +39,7 @@ import com.zakiy.platform.ui.sciencelab.ScienceLabScreen
 import com.zakiy.platform.ui.school.SchoolAttendanceScreen
 import com.zakiy.platform.ui.school.SchoolClassesScreen
 import com.zakiy.platform.ui.school.SchoolDashboardScreen
+import com.zakiy.platform.ui.school.SchoolCurriculumScreen
 import com.zakiy.platform.ui.school.SchoolStaffScreen
 import com.zakiy.platform.ui.school.SchoolStudentsScreen
 import com.zakiy.platform.ui.teacher.TeacherAttendanceScreen
@@ -68,6 +70,7 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
                 onOpenScienceLab = { navController.navigate(Screen.ScienceLab) },
                 onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
+                onOpenCurriculum = { navController.navigate(Screen.AdminCurriculum) },
             )
         }
 
@@ -85,11 +88,14 @@ fun RoleNavHost(role: AccountRole, authManager: AuthManager) {
                 onOpenMadrasati = { navController.navigate(Screen.MadrasatiHub) },
                 onOpenScienceLab = { navController.navigate(Screen.ScienceLab) },
                 onOpenRoboticsLab = { navController.navigate(Screen.RoboticsLab) },
+                onOpenCurriculum = { navController.navigate(Screen.SchoolCurriculum) },
             )
         }
         composable(Screen.SchoolTeachers) {
             SchoolStaffScreen(isTeachers = true, authManager = authManager, onBack = { navController.popBackStack() })
         }
+        composable(Screen.AdminCurriculum) { AdminCurriculumScreen { navController.popBackStack() } }
+        composable(Screen.SchoolCurriculum) { SchoolCurriculumScreen { navController.popBackStack() } }
         composable(Screen.SchoolAdministration) {
             SchoolStaffScreen(isTeachers = false, authManager = authManager, onBack = { navController.popBackStack() })
         }

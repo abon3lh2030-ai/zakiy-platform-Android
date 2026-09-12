@@ -38,14 +38,32 @@ data class LibraryBook(
     val id: String,
     val title: String,
     @SerialName("created_at") val createdAt: String? = null,
+    val source: String? = null,
 )
+
+@Serializable data class CurriculumBook(val id: String, val title: String)
+@Serializable data class CurriculumPath(
+    val id: String,
+    val name: String,
+    @SerialName("is_active") val isActive: Boolean? = null,
+    @SerialName("book_count") val bookCount: Int? = null,
+    val books: List<CurriculumBook> = emptyList(),
+)
+@Serializable data class CurriculumPathsResponse(val paths: List<CurriculumPath>)
+@Serializable data class SchoolCurriculumState(
+    @SerialName("selected_path_id") val selectedPathId: String? = null,
+    val paths: List<CurriculumPath>,
+)
+@Serializable data class CurriculumPathRequest(val name: String)
+@Serializable data class CurriculumBookRequest(val title: String, @SerialName("extracted_text") val extractedText: String)
+@Serializable data class SchoolCurriculumRequest(@SerialName("path_id") val pathId: String? = null)
 
 @Serializable
 data class LibraryBooksResponse(val books: List<LibraryBook>)
 
 @Serializable
 data class LibraryBookDetail(
-    val id: String,
+    val id: String = "",
     val title: String,
     @SerialName("extracted_text") val extractedText: String,
     @SerialName("created_at") val createdAt: String? = null,

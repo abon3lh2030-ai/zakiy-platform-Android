@@ -38,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -65,6 +66,7 @@ fun LibraryScreen(authManager: AuthManager, onOpenBook: (String) -> Unit, onBack
     var titleInput by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val genericError = stringResource(R.string.error_generic)
+    val role by authManager.role.collectAsStateWithLifecycle()
 
     suspend fun load() {
         isLoading = true
@@ -129,9 +131,12 @@ fun LibraryScreen(authManager: AuthManager, onOpenBook: (String) -> Unit, onBack
                                 IconButton(onClick = { onOpenBook(book.id) }) {
                                     Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.open_for_study))
                                 }
-                                IconButton(onClick = {
+                                if (book.source != "curriculum") IconButton(onClick = {
                                     scope.launch {
-                                        runCatching { NetworkModule.backendApi.deleteLibraryBook(book.id) }
+                                        runCatching {
+                                            if (book.source == "school") NetworkModule.backendApi.deleteSchoolLibraryBook(book.id)
+                                            else NetworkModule.backendApi.deleteLibraryBook(book.id)
+                                        }
                                         load()
                                     }
                                 }) {
@@ -165,7 +170,9 @@ fun LibraryScreen(authManager: AuthManager, onOpenBook: (String) -> Unit, onBack
                     if (title.isNotBlank()) {
                         scope.launch {
                             runCatching {
-                                NetworkModule.backendApi.createLibraryBook(mapOf("title" to title, "extracted_text" to text))
+                                if (role == "school_admin" || role == "school_administration") {
+                                    NetworkModule.backendApi.createSchoolLibraryBook(com.zakiy.platform.network.dto.CurriculumBookRequest(title, text))
+                                } else NetworkModule.backendApi.createLibraryBook(mapOf("title" to title, "extracted_text" to text))
                             }
                             load()
                         }
