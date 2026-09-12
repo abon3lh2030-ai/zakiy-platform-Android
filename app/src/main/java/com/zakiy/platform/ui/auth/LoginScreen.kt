@@ -84,7 +84,9 @@ fun LoginScreen(authManager: AuthManager, onGoToSignUp: () -> Unit) {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(
                         imageVector = if (passwordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
-                        contentDescription = null,
+                        contentDescription = stringResource(
+                            if (passwordVisible) R.string.hide_password else R.string.show_password,
+                        ),
                     )
                 }
             },

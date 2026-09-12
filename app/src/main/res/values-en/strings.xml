@@ -17,6 +17,8 @@
     <string name="signup">Sign Up</string>
     <string name="login_identifier_label">Email or username</string>
     <string name="password_label">Password</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
     <string name="confirm_password_label">Confirm password</string>
     <string name="username_label">Your name</string>
     <string name="email_label">Email</string>

@@ -7,8 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -22,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
@@ -33,6 +39,8 @@ import kotlinx.coroutines.launch
 fun ForcePasswordChangeScreen(authManager: AuthManager) {
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var newPasswordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
@@ -57,14 +65,36 @@ fun ForcePasswordChangeScreen(authManager: AuthManager) {
         OutlinedTextField(
             value = newPassword, onValueChange = { newPassword = it },
             label = { Text(stringResource(R.string.new_password_placeholder)) },
-            singleLine = true, visualTransformation = PasswordVisualTransformation(),
+            singleLine = true,
+            visualTransformation = if (newPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { newPasswordVisible = !newPasswordVisible }) {
+                    Icon(
+                        imageVector = if (newPasswordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = stringResource(
+                            if (newPasswordVisible) R.string.hide_password else R.string.show_password,
+                        ),
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.size(12.dp))
         OutlinedTextField(
             value = confirmPassword, onValueChange = { confirmPassword = it },
             label = { Text(stringResource(R.string.confirm_password_label)) },
-            singleLine = true, visualTransformation = PasswordVisualTransformation(),
+            singleLine = true,
+            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                    Icon(
+                        imageVector = if (confirmPasswordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = stringResource(
+                            if (confirmPasswordVisible) R.string.hide_password else R.string.show_password,
+                        ),
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.size(20.dp))

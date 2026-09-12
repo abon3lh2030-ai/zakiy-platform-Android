@@ -10,8 +10,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -27,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
@@ -38,6 +44,8 @@ fun SignUpScreen(authManager: AuthManager, onGoToLogin: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
@@ -73,14 +81,36 @@ fun SignUpScreen(authManager: AuthManager, onGoToLogin: () -> Unit) {
         OutlinedTextField(
             value = password, onValueChange = { password = it },
             label = { Text(stringResource(R.string.password_label)) },
-            singleLine = true, visualTransformation = PasswordVisualTransformation(),
+            singleLine = true,
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                    Icon(
+                        imageVector = if (passwordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = stringResource(
+                            if (passwordVisible) R.string.hide_password else R.string.show_password,
+                        ),
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.size(12.dp))
         OutlinedTextField(
             value = confirmPassword, onValueChange = { confirmPassword = it },
             label = { Text(stringResource(R.string.confirm_password_label)) },
-            singleLine = true, visualTransformation = PasswordVisualTransformation(),
+            singleLine = true,
+            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                    Icon(
+                        imageVector = if (confirmPasswordVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = stringResource(
+                            if (confirmPasswordVisible) R.string.hide_password else R.string.show_password,
+                        ),
+                    )
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.size(20.dp))

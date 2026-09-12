@@ -19,6 +19,8 @@
     <string name="signup">إنشاء حساب</string>
     <string name="login_identifier_label">البريد الإلكتروني أو اسم المستخدم</string>
     <string name="password_label">كلمة السر</string>
+    <string name="show_password">إظهار كلمة المرور</string>
+    <string name="hide_password">إخفاء كلمة المرور</string>
     <string name="confirm_password_label">أعد كتابة كلمة السر</string>
     <string name="username_label">اسمك</string>
     <string name="email_label">البريد الإلكتروني</string>
