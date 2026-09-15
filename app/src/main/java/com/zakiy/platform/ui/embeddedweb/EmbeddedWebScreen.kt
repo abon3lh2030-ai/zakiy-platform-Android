@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -42,6 +43,7 @@ import com.zakiy.platform.network.ApiConfig
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.network.SessionStore
 import com.zakiy.platform.network.TokenHolder
+import com.zakiy.platform.ui.sciencelab.ScienceLabData
 import org.json.JSONObject
 
 private const val SUPABASE_PROJECT_REF = "qwlbufcailgpxxatgyez"
@@ -111,6 +113,19 @@ fun EmbeddedWebView(
                         webViewClient = object : WebViewClient() {
                             private var injectedOnStart = false
 
+                            override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+                                val url = request.url
+                                if (url.scheme == "https" && url.host == "zakiy.tech" && url.path?.startsWith("/assets/biology/") == true) {
+                                    val key = url.lastPathSegment?.substringBeforeLast('.') ?: return super.shouldInterceptRequest(view, request)
+                                    val resourceId = ScienceLabData.bodyImages[key]?.imageModel as? Int
+                                    if (resourceId != null) {
+                                        val mime = if (key in listOf("frog", "elephant", "crocodile")) "image/jpeg" else "image/png"
+                                        return WebResourceResponse(mime, null, ctx.resources.openRawResource(resourceId))
+                                    }
+                                }
+                                return super.shouldInterceptRequest(view, request)
+                            }
+
                             private fun injectSession(view: WebView) {
                                 val session = sessionJson ?: return
                                 view.evaluateJavascript(
@@ -137,6 +152,15 @@ fun EmbeddedWebView(
                                 // شبكة أمان: نعيد الحقن لو onPageStarted فاتت السباق مع
                                 // سكربتات الصفحة، ثم ننادي دالة التنقّل الجاهزة بالموقع
                                 injectSession(view)
+                                view.evaluateJavascript("""
+                                    (function(){
+                                      if(typeof SL_BODY_IMAGES === 'undefined') return;
+                                      Object.keys(SL_BODY_IMAGES).forEach(function(key){
+                                        var ext = ['frog','elephant','crocodile'].includes(key) ? '.jpg' : '.png';
+                                        SL_BODY_IMAGES[key].url = 'https://zakiy.tech/assets/biology/' + key + ext;
+                                      });
+                                    })();
+                                """.trimIndent(), null)
                                 val fn = navigateJsFunction
                                 if (!fn.isNullOrBlank()) {
                                     // الموقع نفسه، بعد onAuthSuccess، يسوّي fetch شبكي غير
@@ -155,10 +179,11 @@ fun EmbeddedWebView(
                                         else -> null
                                     }
                                     val scrollTarget = targetId?.let(JSONObject::quote) ?: "null"
-                                    val js = "(function(){try{if(typeof $fn === 'function'){$fn();}" +
+                                    val js = "(function(){try{var id=$scrollTarget;var el=id?document.getElementById(id):null;" +
+                                        "if((!el||el.classList.contains('hidden'))&&typeof $fn === 'function'){$fn();" +
+                                        "el=id?document.getElementById(id):null;if(el){el.scrollIntoView({block:'start'});}}" +
                                         "if(typeof hide === 'function'){hide('mode-select');}" +
-                                        "var id=$scrollTarget;if(id){var el=document.getElementById(id);" +
-                                        "if(el){el.scrollIntoView({block:'start'});}}}catch(e){}})();"
+                                        "}catch(e){}})();"
                                     val handler = android.os.Handler(android.os.Looper.getMainLooper())
                                     for (attempt in 0..24) {
                                         handler.postDelayed({ view.evaluateJavascript(js, null) }, attempt * 800L)

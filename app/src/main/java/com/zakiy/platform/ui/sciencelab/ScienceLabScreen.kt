@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -58,6 +58,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -371,8 +372,20 @@ private fun SlAnimalDetail(animalId: String?, onBack: () -> Unit, onLog: (String
             }
             Spacer(modifier = Modifier.size(12.dp))
         }
+        if (bodyImage != null) {
+            item {
+                Text(stringResource(R.string.sl_body_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(modifier = Modifier.size(8.dp))
+                SlBodyImageWithHotspots(bodyImage = bodyImage, onLog = onLog)
+                bodyImage.creditRes?.let {
+                    Spacer(modifier = Modifier.size(6.dp))
+                    Text(stringResource(it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+        }
         if (animal != null) {
             item {
+                Spacer(modifier = Modifier.size(16.dp))
                 Card(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.padding(14.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         animal.factRes.forEach { factRes ->
@@ -382,18 +395,6 @@ private fun SlAnimalDetail(animalId: String?, onBack: () -> Unit, onLog: (String
                             }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.size(16.dp))
-            }
-        }
-        if (bodyImage != null) {
-            item {
-                Text(stringResource(R.string.sl_body_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(modifier = Modifier.size(8.dp))
-                SlBodyImageWithHotspots(bodyImage = bodyImage, onLog = onLog)
-                bodyImage.creditRes?.let {
-                    Spacer(modifier = Modifier.size(6.dp))
-                    Text(stringResource(it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
@@ -414,7 +415,7 @@ private fun SlBodyImageWithHotspots(bodyImage: SlBodyImage, onLog: (String) -> U
             .fillMaxWidth()
             .aspectRatio(bodyImage.aspectRatio)
             .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+            .background(Color.White),
     ) {
         val active = selectedHotspot
         AsyncImage(
@@ -438,7 +439,7 @@ private fun SlBodyImageWithHotspots(bodyImage: SlBodyImage, onLog: (String) -> U
                 val isSelected = active == hotspot
                 Box(
                     modifier = Modifier
-                        .offset(x = cx - 17.dp, y = cy - 17.dp)
+                        .absoluteOffset(x = cx - 17.dp, y = cy - 17.dp)
                         .size(34.dp)
                         .padding(4.dp)
                         .clip(CircleShape)
