@@ -348,6 +348,17 @@
     <string name="btn_save_study_plan">💾 حفظ</string>
 
     <string name="ai_assistant">المساعد الذكي</string>
+    <string name="handwriting_title">التعرّف على خط اليد</string>
+    <string name="handwriting_feature">✍️ التعرّف على خط اليد</string>
+    <string name="handwriting_choose_file">اختر صورة أو ملف PDF</string>
+    <string name="handwriting_supported_hint">ارفع صورة ملاحظاتك المكتوبة أو ملف PDF (حتى ١٥ ميجابايت)، ثم راجع النص قبل استخدامه.</string>
+    <string name="handwriting_review">راجع النص وعدّله إذا احتجت</string>
+    <string name="handwriting_use">استخدم النص</string>
+    <string name="handwriting_failed">تعذّر التعرّف على النص</string>
+    <string name="handwriting_too_large">حجم الملف أكبر من ١٥ ميجابايت</string>
+    <string name="handwriting_chat_context">هذا نص استخرجه ذكيّ من صورة أو خط يد. استخدمه للإجابة عن طلبي ومساعدتي:</string>
+    <string name="handwriting_from_file">نص مستخرج من صورة أو خط يد</string>
+    <string name="handwriting_board">حوّل صورة إلى نص على السبورة</string>
     <string name="ai_new_conversation">محادثة جديدة</string>
     <string name="ai_new_conversation_title">محادثة جديدة</string>
     <string name="ai_conversations_empty">ما فيه محادثات لحد الحين - ابدأ وحدة جديدة!</string>

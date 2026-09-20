@@ -135,10 +135,12 @@ private fun planFeatureText(limits: PlanLimits, isArabic: Boolean): String {
     return if (isArabic) {
         "📚 ${limits.libraryLimit ?: unlimited} كتاب · 🎯 ${limits.soloDaily ?: unlimited} جلسة فردية/يوم · " +
             "👥 ${limits.groupDaily ?: unlimited} جلسة جماعية/يوم · 🖍️ ${limits.lessonDaily ?: unlimited} درس/يوم · " +
+            "🤖 ${limits.aiAssistantDaily ?: unlimited} رسالة للمساعد الذكي/يوم · " +
             "📂 أرشيف ${limits.archiveLimit ?: full} · 📊 أداء ${limits.performanceLimit ?: full}"
     } else {
         "📚 ${limits.libraryLimit ?: unlimited} books · 🎯 ${limits.soloDaily ?: unlimited} solo/day · " +
             "👥 ${limits.groupDaily ?: unlimited} group/day · 🖍️ ${limits.lessonDaily ?: unlimited} lessons/day · " +
+            "🤖 ${limits.aiAssistantDaily ?: unlimited} standalone AI messages/day · " +
             "📂 archive ${limits.archiveLimit ?: full} · 📊 performance ${limits.performanceLimit ?: full}"
     }
 }

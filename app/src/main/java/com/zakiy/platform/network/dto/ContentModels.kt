@@ -10,6 +10,13 @@ data class UploadResponse(val message: String? = null, val filename: String)
 data class ExtractResponse(val text: String)
 
 @Serializable
+data class HandwritingResponse(
+    val text: String,
+    @SerialName("file_name") val fileName: String? = null,
+    @SerialName("mime_type") val mimeType: String? = null,
+)
+
+@Serializable
 data class SummarizeResponse(val summary: String)
 
 @Serializable

@@ -13,6 +13,7 @@ data class PlanLimits(
     @SerialName("solo_daily") val soloDaily: Int? = null,
     @SerialName("group_daily") val groupDaily: Int? = null,
     @SerialName("lesson_daily") val lessonDaily: Int? = null,
+    @SerialName("ai_assistant_daily") val aiAssistantDaily: Int? = null,
     @SerialName("archive_limit") val archiveLimit: Int? = null,
     @SerialName("performance_limit") val performanceLimit: Int? = null,
 )

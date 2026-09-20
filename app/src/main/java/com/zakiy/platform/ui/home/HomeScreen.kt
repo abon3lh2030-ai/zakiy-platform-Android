@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
 import com.zakiy.platform.network.AuthManager
 import com.zakiy.platform.network.NetworkModule
+import com.zakiy.platform.ui.common.HandwritingRecognizerDialog
 import com.zakiy.platform.ui.study.StudyFlowState
 import com.zakiy.platform.util.uriToMultipart
 import kotlinx.coroutines.launch
@@ -47,6 +48,7 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     var isProcessing by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showHandwriting by remember { mutableStateOf(false) }
     val genericError = stringResource(R.string.error_generic)
 
     val filePicker = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -105,6 +107,13 @@ fun HomeScreen(
         Spacer(modifier = Modifier.size(10.dp))
 
         Button(
+            onClick = { showHandwriting = true },
+            enabled = !isProcessing,
+            modifier = Modifier.fillMaxWidth(),
+        ) { Text(stringResource(R.string.handwriting_feature)) }
+        Spacer(modifier = Modifier.size(10.dp))
+
+        Button(
             onClick = onNavigateToGroupLobby,
             enabled = !isProcessing,
             modifier = Modifier.fillMaxWidth(),
@@ -116,5 +125,17 @@ fun HomeScreen(
             enabled = !isProcessing,
             modifier = Modifier.fillMaxWidth(),
         ) { Text(stringResource(R.string.mode_classroom)) }
+    }
+
+    if (showHandwriting) {
+        HandwritingRecognizerDialog(
+            requestContext = "solo",
+            onDismiss = { showHandwriting = false },
+            onUseText = { text ->
+                studyState.reset(text)
+                showHandwriting = false
+                onNavigateToText()
+            },
+        )
     }
 }

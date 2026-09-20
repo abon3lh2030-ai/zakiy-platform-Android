@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
 import com.zakiy.platform.network.NetworkModule
+import com.zakiy.platform.ui.common.HandwritingRecognizerDialog
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,6 +41,7 @@ fun StudyTextScreen(studyState: StudyFlowState, onNavigateToSummary: () -> Unit,
     val scope = rememberCoroutineScope()
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showHandwriting by remember { mutableStateOf(false) }
     val genericError = stringResource(R.string.error_generic)
     // نفس لغة الواجهة الحالية تُرسل للباك إند عشان ردود الذكاء الاصطناعي تجي بنفس اللغة
     val lang = java.util.Locale.getDefault().language.let { if (it == "ar") "ar" else "en" }
@@ -48,6 +51,11 @@ fun StudyTextScreen(studyState: StudyFlowState, onNavigateToSummary: () -> Unit,
             TopAppBar(
                 title = { Text(stringResource(R.string.extracted_text_label)) },
                 navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.Filled.ArrowBack, contentDescription = null) } },
+                actions = {
+                    IconButton(onClick = { showHandwriting = true }) {
+                        Icon(Icons.Filled.Draw, contentDescription = stringResource(R.string.handwriting_title))
+                    }
+                },
             )
         },
     ) { padding ->
@@ -89,5 +97,16 @@ fun StudyTextScreen(studyState: StudyFlowState, onNavigateToSummary: () -> Unit,
                 if (isLoading) CircularProgressIndicator(modifier = Modifier.size(20.dp)) else Text(stringResource(R.string.btn_summarize))
             }
         }
+    }
+
+    if (showHandwriting) {
+        HandwritingRecognizerDialog(
+            requestContext = "solo",
+            onDismiss = { showHandwriting = false },
+            onUseText = { text ->
+                studyState.reset(text)
+                showHandwriting = false
+            },
+        )
     }
 }

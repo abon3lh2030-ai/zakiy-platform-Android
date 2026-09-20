@@ -339,6 +339,17 @@
     <string name="btn_save_study_plan">💾 Save</string>
 
     <string name="ai_assistant">AI Assistant</string>
+    <string name="handwriting_title">Handwriting recognition</string>
+    <string name="handwriting_feature">✍️ Handwriting recognition</string>
+    <string name="handwriting_choose_file">Choose an image or PDF</string>
+    <string name="handwriting_supported_hint">Upload handwritten notes or a PDF (up to 15 MB), then review the text before using it.</string>
+    <string name="handwriting_review">Review and edit the text if needed</string>
+    <string name="handwriting_use">Use text</string>
+    <string name="handwriting_failed">Could not recognize the text</string>
+    <string name="handwriting_too_large">The file is larger than 15 MB</string>
+    <string name="handwriting_chat_context">Zakiy extracted this text from an image or handwriting. Use it to help with my request:</string>
+    <string name="handwriting_from_file">Text extracted from an image or handwriting</string>
+    <string name="handwriting_board">Turn an image into whiteboard text</string>
     <string name="ai_new_conversation">New conversation</string>
     <string name="ai_new_conversation_title">New conversation</string>
     <string name="ai_conversations_empty">No conversations yet - start a new one!</string>

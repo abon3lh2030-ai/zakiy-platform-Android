@@ -33,6 +33,14 @@ interface ApiService {
     @POST("api/generate-quiz")
     suspend fun generateQuiz(@Body body: GenerateQuizRequest): GenerateQuizResponse
 
+    @Multipart
+    @POST("api/handwriting/recognize")
+    suspend fun recognizeHandwriting(
+        @Part file: MultipartBody.Part,
+        @Part("context") context: RequestBody,
+        @Part("lang") lang: RequestBody,
+    ): HandwritingResponse
+
     @POST("api/quiz-attempt")
     suspend fun recordQuizAttempt(@Body body: QuizAttemptRequest)
 

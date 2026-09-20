@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,13 +38,25 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zakiy.platform.R
 import com.zakiy.platform.network.NetworkModule
 import com.zakiy.platform.network.dto.AiMessage
 import com.zakiy.platform.network.dto.SendAiMessageRequest
+import com.zakiy.platform.ui.common.HandwritingRecognizerDialog
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import retrofit2.HttpException
+
+private fun aiRequestError(error: Throwable, fallback: String): String {
+    if (error is HttpException) {
+        val backendMessage = runCatching { JSONObject(error.response()?.errorBody()?.string().orEmpty()).optString("error") }.getOrNull()
+        if (!backendMessage.isNullOrBlank()) return backendMessage
+    }
+    return error.message ?: fallback
+}
 
 /** محادثة وحدة مع المساعد الذكي - سولفة حرة أو نتيجة تلخيص كتاب. زر الرجوع
  * فوق يسار يودّي لقائمة المحادثات (مطابق لسلوك زر ⋮ بالموقع)، وزر الكتاب
@@ -63,12 +76,14 @@ fun AiConversationScreen(
     onOpenBookPicker: () -> Unit,
     onBack: () -> Unit,
 ) {
+    val context = LocalContext.current
     var title by remember { mutableStateOf("") }
     var messages by remember { mutableStateOf<List<AiMessage>>(emptyList()) }
     var input by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(true) }
     var isSending by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showHandwriting by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
     val genericError = stringResource(R.string.error_generic)
@@ -91,7 +106,7 @@ fun AiConversationScreen(
             messages = messages + AiMessage(role = "assistant", content = res.reply)
             if (!res.title.isNullOrBlank()) title = res.title
             scrollToBottom()
-        }.onFailure { errorMessage = genericError }
+        }.onFailure { errorMessage = aiRequestError(it, genericError) }
     }
 
     suspend fun load() {
@@ -147,6 +162,9 @@ fun AiConversationScreen(
                 IconButton(onClick = onOpenBookPicker) {
                     Icon(Icons.Filled.MenuBook, contentDescription = summarizeLabel)
                 }
+                IconButton(onClick = { showHandwriting = true }) {
+                    Icon(Icons.Filled.Draw, contentDescription = stringResource(R.string.handwriting_title))
+                }
                 OutlinedTextField(
                     value = input,
                     onValueChange = { input = it },
@@ -165,6 +183,22 @@ fun AiConversationScreen(
                 ) { Icon(Icons.Filled.Send, contentDescription = stringResource(R.string.ai_send)) }
             }
         }
+    }
+
+    if (showHandwriting) {
+        HandwritingRecognizerDialog(
+            requestContext = "chat",
+            onDismiss = { showHandwriting = false },
+            onUseText = { text ->
+                showHandwriting = false
+                scope.launch {
+                    sendPayload(
+                        SendAiMessageRequest(content = "${context.getString(R.string.handwriting_chat_context)}\n\n$text"),
+                        "✍️ ${context.getString(R.string.handwriting_from_file)}",
+                    )
+                }
+            },
+        )
     }
 }
 
