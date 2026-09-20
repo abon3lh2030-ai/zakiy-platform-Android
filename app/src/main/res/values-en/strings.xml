@@ -33,6 +33,17 @@
     <string name="force_pw_heading">You must change your password first</string>
     <string name="force_pw_desc">Your account was created with a temporary password - choose a new one only you know before continuing</string>
     <string name="new_password_placeholder">New password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="password_reset_title">Reset password</string>
+    <string name="send_reset_link">Send reset link</string>
+    <string name="reset_link_sent">If this email belongs to a personal account, a reset link is on its way. Check your inbox and spam folder.</string>
+    <string name="school_reset_blocked">School accounts cannot reset passwords by email. Contact the school manager or administration for a new password.</string>
+    <string name="change_password">Change password</string>
+    <string name="current_password">Current password</string>
+    <string name="update_password">Save new password</string>
+    <string name="password_too_short">Password is too short</string>
+    <string name="password_updated">Password changed</string>
+    <string name="current_password_wrong">Current password is incorrect</string>
 
     <string name="nav_home">Home</string>
     <string name="nav_library">My Library</string>

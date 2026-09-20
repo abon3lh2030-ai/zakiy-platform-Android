@@ -35,6 +35,9 @@ data class SignUpRequest(val email: String, val password: String, val data: Map<
 @Serializable
 data class UpdateUserRequest(val password: String? = null, val data: Map<String, String>? = null)
 
+@Serializable
+data class RecoverPasswordRequest(val email: String)
+
 /** نداءات مباشرة لـ Supabase Auth (GoTrue) - نفس النمط المستخدم بالضبط
  * بالموقع (@supabase/supabase-js) وiOS (supabase-swift)، بمفتاح anon
  * العام - محمي بـ RLS مو بالسرية، آمن يُشحن بتطبيق عميل. */
@@ -57,4 +60,8 @@ interface GoTrueApi {
 
     @POST("auth/v1/logout?scope=local")
     suspend fun signOut(@retrofit2.http.Header("Authorization") bearer: String, @Query("scope") scope: String = "local")
+
+    @Headers("Content-Type: application/json")
+    @POST("auth/v1/recover?redirect_to=https://zakiy.tech")
+    suspend fun recoverPassword(@Body body: RecoverPasswordRequest)
 }

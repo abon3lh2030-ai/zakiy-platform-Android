@@ -35,6 +35,17 @@
     <string name="force_pw_heading">لازم تغيّر كلمة السر أول</string>
     <string name="force_pw_desc">حسابك اتسوى بكلمة سر مؤقتة - اختر كلمة سر جديدة تعرفها بس قبل ما تكمل</string>
     <string name="new_password_placeholder">كلمة مرور جديدة</string>
+    <string name="forgot_password">نسيت كلمة المرور؟</string>
+    <string name="password_reset_title">استعادة كلمة المرور</string>
+    <string name="send_reset_link">إرسال رابط الاستعادة</string>
+    <string name="reset_link_sent">إذا كان البريد لحساب شخصي فسيصلك رابط الاستعادة. افحص الوارد والبريد غير المرغوب.</string>
+    <string name="school_reset_blocked">حسابات المدارس لا يمكنها الاستعادة عبر البريد. تواصل مع مدير المدرسة أو إدارتها لإصدار كلمة مرور جديدة.</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="update_password">حفظ كلمة المرور الجديدة</string>
+    <string name="password_too_short">كلمة المرور قصيرة</string>
+    <string name="password_updated">تم تغيير كلمة المرور</string>
+    <string name="current_password_wrong">كلمة المرور الحالية غير صحيحة</string>
 
     <!-- التنقل الرئيسي -->
     <string name="nav_home">الرئيسية</string>

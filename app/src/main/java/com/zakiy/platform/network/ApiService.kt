@@ -161,6 +161,9 @@ interface ApiService {
     @POST("api/resolve-login-identifier")
     suspend fun resolveLoginIdentifier(@Body body: ResolveIdentifierRequest): ResolveIdentifierResponse
 
+    @POST("api/auth/password-reset/eligibility")
+    suspend fun passwordResetEligibility(@Body body: PasswordResetEligibilityRequest): PasswordResetEligibilityResponse
+
     // ---- Admin (صاحب المنصة) ----
     @GET("api/admin/platform-access")
     suspend fun adminPlatformAccess(): PlatformAccessState

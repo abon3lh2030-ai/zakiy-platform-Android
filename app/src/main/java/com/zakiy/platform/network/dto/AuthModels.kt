@@ -19,6 +19,12 @@ data class ResolveIdentifierRequest(val identifier: String)
 @Serializable
 data class ResolveIdentifierResponse(val email: String)
 
+@Serializable
+data class PasswordResetEligibilityRequest(val email: String)
+
+@Serializable
+data class PasswordResetEligibilityResponse(val allowed: Boolean, val institutional: Boolean = false)
+
 /** بيانات دخول تُنشأ مرة وحدة (حساب مدرسة/معلم/طالب) - كلمة السر تظهر مرة وحدة بس */
 @Serializable
 data class GeneratedCredentials(val email: String, val password: String)

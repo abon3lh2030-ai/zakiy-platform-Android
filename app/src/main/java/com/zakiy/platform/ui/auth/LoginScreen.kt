@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,8 +47,14 @@ fun LoginScreen(authManager: AuthManager, onGoToSignUp: () -> Unit) {
     var passwordVisible by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showForgotPassword by remember { mutableStateOf(false) }
+    var showResetDialog by remember { mutableStateOf(false) }
+    var resetEmail by remember { mutableStateOf("") }
+    var resetMessage by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
     val genericError = stringResource(R.string.error_generic)
+    val resetSentMessage = stringResource(R.string.reset_link_sent)
+    val schoolResetBlocked = stringResource(R.string.school_reset_blocked)
 
     Column(
         modifier = Modifier
@@ -98,6 +105,13 @@ fun LoginScreen(authManager: AuthManager, onGoToSignUp: () -> Unit) {
             Text(errorMessage!!, color = MaterialTheme.colorScheme.error)
             androidx.compose.foundation.layout.Spacer(modifier = Modifier.size(12.dp))
         }
+        if (showForgotPassword) {
+            TextButton(onClick = {
+                resetEmail = identifier.takeIf { it.contains("@") }.orEmpty()
+                resetMessage = null
+                showResetDialog = true
+            }) { Text(stringResource(R.string.forgot_password)) }
+        }
 
         Button(
             onClick = {
@@ -110,7 +124,10 @@ fun LoginScreen(authManager: AuthManager, onGoToSignUp: () -> Unit) {
                 scope.launch {
                     val result = authManager.signIn(identifier.trim(), password)
                     isLoading = false
-                    if (result.isFailure) errorMessage = genericError
+                    if (result.isFailure) {
+                        errorMessage = genericError
+                        showForgotPassword = true
+                    }
                 }
             },
             enabled = !isLoading,
@@ -126,5 +143,29 @@ fun LoginScreen(authManager: AuthManager, onGoToSignUp: () -> Unit) {
         TextButton(onClick = { scope.launch { authManager.continueAsGuest() } }) {
             Text(stringResource(R.string.continue_as_guest))
         }
+    }
+    if (showResetDialog) {
+        AlertDialog(
+            onDismissRequest = { showResetDialog = false },
+            title = { Text(stringResource(R.string.password_reset_title)) },
+            text = {
+                Column {
+                    OutlinedTextField(value = resetEmail, onValueChange = { resetEmail = it }, label = { Text(stringResource(R.string.email_label)) }, singleLine = true)
+                    resetMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp)) }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    scope.launch {
+                        val result = authManager.requestPasswordReset(resetEmail.trim().lowercase())
+                        val exception = result.exceptionOrNull()
+                        resetMessage = if (result.isSuccess) resetSentMessage
+                        else if ((exception as? retrofit2.HttpException)?.code() == 403) schoolResetBlocked
+                        else (exception?.message ?: genericError)
+                    }
+                }, enabled = resetEmail.contains("@")) { Text(stringResource(R.string.send_reset_link)) }
+            },
+            dismissButton = { TextButton(onClick = { showResetDialog = false }) { Text(stringResource(R.string.cancel)) } },
+        )
     }
 }

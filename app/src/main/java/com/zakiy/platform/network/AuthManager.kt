@@ -104,6 +104,18 @@ class AuthManager private constructor(private val appContext: Context) {
         goTrue.updateUser("Bearer $token", UpdateUserRequest(password = newPassword))
     }
 
+    suspend fun updatePassword(currentPassword: String, newPassword: String): Result<Unit> = runCatching {
+        val email = _email.value ?: throw IllegalStateException("لا يوجد بريد للحساب")
+        val verified = goTrue.signInWithPassword(PasswordGrantRequest(email, currentPassword))
+        applySession(verified)
+        goTrue.updateUser("Bearer ${verified.accessToken}", UpdateUserRequest(password = newPassword))
+    }
+
+    suspend fun requestPasswordReset(email: String): Result<Unit> = runCatching {
+        backend.passwordResetEligibility(com.zakiy.platform.network.dto.PasswordResetEligibilityRequest(email))
+        goTrue.recoverPassword(RecoverPasswordRequest(email))
+    }
+
     suspend fun completeForcedPasswordChange() {
         runCatching { backend.completePasswordChange() }
         _mustChangePassword.value = false
