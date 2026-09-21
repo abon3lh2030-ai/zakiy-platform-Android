@@ -23,6 +23,7 @@ import com.zakiy.platform.ui.main.MainNavHost
 import com.zakiy.platform.ui.role.RoleNavHost
 import com.zakiy.platform.ui.theme.AppearanceMode
 import com.zakiy.platform.ui.theme.ZakiyTheme
+import kotlinx.coroutines.delay
 
 /** الجذر الفعلي - يقرر أي شجرة تنقّل تظهر حسب حالة الحساب، نفس منطق
  * RootView بتطبيق iOS بالضبط: بوابة تغيير كلمة سر إجبارية > توجيه حسب
@@ -36,6 +37,13 @@ fun RootApp(authManager: AuthManager) {
     val role by authManager.role.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) { authManager.bootstrap() }
+    LaunchedEffect(isAuthenticated) {
+        if (!isAuthenticated) return@LaunchedEffect
+        while (true) {
+            authManager.pingActive()
+            delay(5 * 60 * 1000L)
+        }
+    }
 
     ZakiyTheme(appearanceMode = AppearanceMode.SYSTEM) {
         Surface(modifier = Modifier.fillMaxSize()) {

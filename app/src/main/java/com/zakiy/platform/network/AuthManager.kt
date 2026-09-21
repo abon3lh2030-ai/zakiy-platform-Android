@@ -124,6 +124,10 @@ class AuthManager private constructor(private val appContext: Context) {
         _mustChangePassword.value = false
     }
 
+    suspend fun pingActive() {
+        runCatching { backend.pingActive() }
+    }
+
     /** يخرج من وضع الضيف ويرجع شجرة التطبيق إلى شاشة الدخول. بدون هذه
      * الخطوة كان الضيف يرى كلمة "تسجيل الدخول" كنص غير تفاعلي ويبقى عالقًا
      * داخل MainNavHost حتى يمسح بيانات التطبيق. */
