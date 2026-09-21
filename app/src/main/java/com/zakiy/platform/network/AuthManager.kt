@@ -60,7 +60,10 @@ class AuthManager private constructor(private val appContext: Context) {
         _isBootstrapping.value = true
         val token = sessionStore.accessTokenFlow.firstOrNull()
         val refreshToken = sessionStore.readRefreshToken()
-        _isGuest.value = sessionStore.guestModeFlow.firstOrNull() ?: false
+        // وضع الضيف أُلغي؛ نظّف القيمة القديمة حتى لا تتجاوز شاشة الدخول
+        // الحسابات التي استخدمته في إصدار سابق.
+        _isGuest.value = false
+        sessionStore.setGuestMode(false)
         if (token != null && refreshToken != null) {
             TokenHolder.accessToken = token
             _userId.value = sessionStore.userIdFlow.firstOrNull()
@@ -119,11 +122,6 @@ class AuthManager private constructor(private val appContext: Context) {
     suspend fun completeForcedPasswordChange() {
         runCatching { backend.completePasswordChange() }
         _mustChangePassword.value = false
-    }
-
-    suspend fun continueAsGuest() {
-        _isGuest.value = true
-        sessionStore.setGuestMode(true)
     }
 
     /** يخرج من وضع الضيف ويرجع شجرة التطبيق إلى شاشة الدخول. بدون هذه

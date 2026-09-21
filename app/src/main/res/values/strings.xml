@@ -28,7 +28,6 @@
     <string name="btn_signup">إنشاء الحساب</string>
     <string name="link_go_signup">ما عندك حساب؟ سجّل الآن</string>
     <string name="link_go_login">عندك حساب؟ سجّل دخولك</string>
-    <string name="continue_as_guest">استمر بدون حساب</string>
     <string name="err_fill_fields">لازم تعبي كل الحقول</string>
     <string name="err_password_mismatch">كلمتا السر غير متطابقتين</string>
     <string name="err_password_min">كلمة السر لازم ٦ أحرف على الأقل</string>

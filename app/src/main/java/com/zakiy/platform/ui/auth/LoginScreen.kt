@@ -140,9 +140,6 @@ fun LoginScreen(authManager: AuthManager, onGoToSignUp: () -> Unit) {
         TextButton(onClick = onGoToSignUp) {
             Text(stringResource(R.string.link_go_signup))
         }
-        TextButton(onClick = { scope.launch { authManager.continueAsGuest() } }) {
-            Text(stringResource(R.string.continue_as_guest))
-        }
     }
     if (showResetDialog) {
         AlertDialog(

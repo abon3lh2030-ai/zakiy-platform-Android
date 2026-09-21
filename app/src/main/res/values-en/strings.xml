@@ -26,7 +26,6 @@
     <string name="btn_signup">Create account</string>
     <string name="link_go_signup">No account? Sign up now</string>
     <string name="link_go_login">Have an account? Log in</string>
-    <string name="continue_as_guest">Continue as guest</string>
     <string name="err_fill_fields">Please fill in all fields</string>
     <string name="err_password_mismatch">Passwords don\'t match</string>
     <string name="err_password_min">Password must be at least 6 characters</string>

@@ -26,7 +26,7 @@ import com.zakiy.platform.ui.theme.ZakiyTheme
 
 /** الجذر الفعلي - يقرر أي شجرة تنقّل تظهر حسب حالة الحساب، نفس منطق
  * RootView بتطبيق iOS بالضبط: بوابة تغيير كلمة سر إجبارية > توجيه حسب
- * الدور المؤسسي > تجربة الحساب الفردي/الضيف العادية > شاشة الترحيب. */
+ * الدور المؤسسي > تجربة الحساب الفردي > شاشة تسجيل الدخول. */
 @Composable
 fun RootApp(authManager: AuthManager) {
     val isBootstrapping by authManager.isBootstrapping.collectAsStateWithLifecycle()
@@ -34,7 +34,6 @@ fun RootApp(authManager: AuthManager) {
     val didLoadRole by authManager.didLoadRole.collectAsStateWithLifecycle()
     val mustChangePassword by authManager.mustChangePassword.collectAsStateWithLifecycle()
     val role by authManager.role.collectAsStateWithLifecycle()
-    val isGuest by authManager.isGuest.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) { authManager.bootstrap() }
 
@@ -49,7 +48,7 @@ fun RootApp(authManager: AuthManager) {
                 // RoleRoutedView بتطبيق iOS بالضبط (.student -> MainTabView())
                 isAuthenticated && AccountRole.from(role) != null && AccountRole.from(role) != AccountRole.Student ->
                     RoleNavHost(role = remember(role) { AccountRole.from(role)!! }, authManager = authManager)
-                isAuthenticated || isGuest -> MainNavHost(authManager = authManager)
+                isAuthenticated -> MainNavHost(authManager = authManager)
                 else -> AuthNavHost(authManager = authManager)
             }
         }
