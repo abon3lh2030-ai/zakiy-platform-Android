@@ -62,6 +62,9 @@ interface GoTrueApi {
     suspend fun signOut(@retrofit2.http.Header("Authorization") bearer: String, @Query("scope") scope: String = "local")
 
     @Headers("Content-Type: application/json")
-    @POST("auth/v1/recover?redirect_to=https://zakiy.tech")
-    suspend fun recoverPassword(@Body body: RecoverPasswordRequest)
+    @POST("auth/v1/recover")
+    suspend fun recoverPassword(
+        @Body body: RecoverPasswordRequest,
+        @Query("redirect_to") redirectTo: String = "https://zakiy.tech/?password_recovery=1",
+    )
 }
